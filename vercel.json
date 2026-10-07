@@ -2,5 +2,44 @@
   "framework": "vite",
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
-  "functions": { "api/voice/*.js": { "maxDuration": 30 } }
+  "functions": {
+    "api/voice/*.js": {
+      "maxDuration": 30
+    }
+  },
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.warblersafety.com"
+        }
+      ],
+      "destination": "https://warblersafety.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "warbler-rx-website.vercel.app"
+        }
+      ],
+      "destination": "https://warblersafety.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "warbler-rx-website-noahdelay-techs-projects.vercel.app"
+        }
+      ],
+      "destination": "https://warblersafety.com/:path*",
+      "permanent": true
+    }
+  ]
 }
