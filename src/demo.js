@@ -1,5 +1,6 @@
 import { scenarios } from '../lib/scenarios.js';
 import './demo.css';
+import { createFeather } from './feather.js';
 
 const root = document.querySelector('#voice-demo-root');
 root.innerHTML = `
@@ -17,12 +18,12 @@ root.innerHTML = `
     </div>
     <div class="conversation-panel">
       <div class="conversation-top"><span class="step-label"><span>02</span> Talk to Warbler</span><span class="duration-label" id="duration">About 90 seconds</span></div>
-      <button id="voice-orb" class="orb-button" aria-label="Start a fictional GLP-1 voice conversation" aria-describedby="demo-disclosure">
-        <span class="orb-halo"></span><span class="orb"><span class="orb-swirl"></span><span class="orb-glint"></span></span>
-        <span class="orb-symbol" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><path d="M7 13v6M13 7v18M19 10v12M25 13v6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></span>
+      <button id="voice-feather" class="feather-button" aria-label="Start a fictional GLP-1 voice conversation" aria-describedby="demo-disclosure" data-state="idle">
+        <canvas id="voice-feather-canvas" aria-hidden="true"></canvas>
       </button>
+      <span id="voice-state" class="voice-state" aria-hidden="true">Ready when you are</span>
       <span id="connection-announcement" class="sr-only" role="status" aria-live="polite"></span>
-      <p class="voice-hint" id="voice-hint">Choose a situation, then click the orb.<br>You play the patient. Warbler takes it from there.</p>
+      <p class="voice-hint" id="voice-hint">Choose a situation, then click the feather.<br>You play the patient. Warbler takes it from there.</p>
       <div class="voice-controls"><button id="start-voice" class="primary-button">Start GLP-1 conversation <span aria-hidden="true">↗</span></button><button id="mute-voice" class="secondary-button" hidden aria-pressed="false">Mute mic</button><button id="end-voice" class="end-button" hidden>End conversation</button></div>
       <p id="demo-error" class="demo-error" role="alert" hidden></p>
       <p id="demo-disclosure" class="disclosure">AI role-play, not medical care. Use fictional details. No clinician is contacted and no refill or appointment is arranged.</p>
@@ -45,6 +46,20 @@ let startedAt = 0;
 let connected = false;
 let failure = false;
 let cancelled = false;
+let voiceMode = 'listening';
+let visualState = 'idle';
+const stateLabels = { idle: 'Ready when you are', connecting: 'Connecting…', listening: 'Listening', processing: 'Processing', speaking: 'Speaking', muted: 'Microphone off', error: 'Connection unavailable' };
+function setVisualState(mode) {
+  visualState = mode;
+  const effective = muted && connected ? 'muted' : mode;
+  $('voice-feather').dataset.state = effective;
+  $('voice-state').textContent = stateLabels[effective] || stateLabels.idle;
+}
+const feather = createFeather($('voice-feather-canvas'), () => muted && connected ? 'muted' : visualState, mode => {
+  if (!session || !connected) return 0;
+  try { return mode === 'speaking' ? session.getOutputVolume() : session.getInputVolume(); }
+  catch { return 0; }
+});
 
 function renderScenario(scenario, index) {
   const button = document.createElement('button');
@@ -89,7 +104,7 @@ $('more-scenarios').addEventListener('click', () => {
 
 function status(text, mode) {
   $('connection-announcement').textContent = text;
-  $('voice-orb').dataset.state = mode;
+  setVisualState(mode);
 }
 
 function setBusy(value) {
@@ -99,7 +114,7 @@ function setBusy(value) {
   $('start-voice').hidden = value;
   $('end-voice').hidden = !value;
   $('mute-voice').hidden = !value || !connected;
-  $('voice-orb').disabled = value;
+  $('voice-feather').disabled = value;
   $('try-again').disabled = value;
 }
 
@@ -159,7 +174,7 @@ async function start() {
   if (busy) return;
   if (!navigator.mediaDevices?.getUserMedia) { showError('Voice conversations need a browser with microphone support over a secure connection. Try a current version of Safari, Chrome, or Edge.'); return; }
   const activeRun = ++run;
-  receipt = null; connected = false; failure = false; muted = false; cancelled = false;
+  receipt = null; connected = false; failure = false; muted = false; cancelled = false; voiceMode = 'listening';
   $('demo-error').hidden = true; $('demo-result').hidden = true;
   $('mute-voice').textContent = 'Mute mic'; $('mute-voice').setAttribute('aria-pressed', 'false');
   setBusy(true); status('Connecting…', 'connecting');
@@ -185,13 +200,25 @@ async function start() {
       onConnect: () => {
         if (activeRun !== run || cancelled) return;
         connected = true; startedAt = Date.now(); setBusy(true);
-        status('Conversation connected', 'connected');
+        status('Conversation connected', voiceMode);
         $('voice-hint').textContent = 'Speak naturally. You can interrupt or end the demo at any time.';
         timer = setInterval(() => {
           const seconds = Math.floor((Date.now() - startedAt) / 1000);
           $('duration').textContent = `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')} / 2:00`;
           if (seconds >= 120) void end();
         }, 1000);
+      },
+      onModeChange: ({ mode }) => {
+        if (activeRun !== run || cancelled || !busy) return;
+        voiceMode = mode;
+        if (connected) status(mode === 'speaking' ? 'Warbler is speaking' : 'Warbler is listening', mode);
+      },
+      onMessage: ({ role, source }) => {
+        if (activeRun !== run || cancelled || !connected) return;
+        if (!muted && (role === 'user' || source === 'user')) status('Warbler is processing your response', 'processing');
+      },
+      onVadScore: ({ vadScore }) => {
+        if (activeRun === run && !cancelled && connected && !muted && vadScore > .5 && visualState === 'processing') status('Warbler is listening', 'listening');
       },
       onError: message => { if (activeRun === run && !cancelled) showError(friendlyError(new Error(message))); },
       onDisconnect: () => finish(activeRun),
@@ -211,7 +238,7 @@ async function end() {
   finally { if (busy) finish(activeRun); }
 }
 $('start-voice').addEventListener('click', start);
-$('voice-orb').addEventListener('click', start);
+$('voice-feather').addEventListener('click', start);
 $('end-voice').addEventListener('click', end);
 $('mute-voice').addEventListener('click', () => {
   if (!session || !connected) return;
@@ -219,6 +246,7 @@ $('mute-voice').addEventListener('click', () => {
   session.setMicMuted(muted);
   $('mute-voice').textContent = muted ? 'Unmute mic' : 'Mute mic';
   $('mute-voice').setAttribute('aria-pressed', String(muted));
+  status(muted ? 'Microphone muted' : 'Microphone unmuted', voiceMode);
 });
 $('try-again').addEventListener('click', () => {
   ++run; $('demo-result').hidden = true;
