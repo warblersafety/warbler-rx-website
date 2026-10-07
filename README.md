@@ -1,38 +1,40 @@
 # Warbler Rx website
 
-Marketing website with a live, fictional GLP-1 patient-support voice demo. Hosted on Vercel; the public application is independent of the Warbler Rx pharmacy application and the presenter sales demo.
+Marketing website with a fictional GLP-1 patient-support voice demo, hosted on Vercel. Independent of the pharmacy application and presenter sales demo.
 
 ## Development
 
-Node 24 and npm. `npm ci`, `npm test`, `npm run build`. `npm run dev` previews the interface; use `vercel dev` to exercise the server endpoints. Configure the keys listed in `.env.example` through Vercel's secret store or an ignored local environment file. Never prefix credentials with `VITE_`.
-
-The previous self-contained HTML export was unpacked into ordinary HTML and local image/font assets, preserving its content and design. Vite bundles only the public interface; the voice SDK is loaded after the visitor clicks Start.
+Node 24: `npm ci`, `npm test`, `npm run build`. `npm run dev` previews the interface; use `vercel dev` for server endpoints. Set `.env.example` variables in Vercel or an ignored local file. Never prefix credentials with `VITE_`.
 
 ## Voice flow
 
-- Choose coverage, side effects, forgotten refill, affordability, delivery, or restart. Click the orb or Start; allow the microphone; speak as a fictional GLP-1 patient.
-- `/api/voice/start` accepts only a scenario ID. It picks the fixed website agent/version and trusted scenario context on the server; the browser cannot override prompts, tools, storage settings, or credentials.
-- Retell's Web SDK connects browser audio directly to Retell using an ephemeral call token. No phone number or telephone call is involved. Only the end-call tool is available; there are no clinical, messaging, scheduling, insurance, or pharmacy integrations.
-- `/api/voice/result` accepts a one-hour signed receipt for that call. It verifies the website agent/surface and returns reviewed labels derived from actual analysis. Missing analysis stays unavailable/pending; it never falls back to the chosen scenario's intended outcome. No transcript, recording, model-generated free text, or provider key is returned.
-- The orb uses a constant slow rotation without audio-driven movement or listening/speaking labels. Smaller windows use a compact scenario selector. The UI supports mute, end, cancellation, microphone errors, audio playback recovery, reduced motion, and mobile layouts. A provider-side three-minute cap remains in force if the browser closes.
+Choose coverage, side effects, forgotten refill, affordability, delivery, or restart. The visitor plays a fictional GLP-1 patient. The orb rotates slowly at a constant speed without audio-driven movement or listening/speaking labels. Compact windows use a scenario selector; reduced-motion preferences disable rotation.
+
+`/api/voice/start` accepts a validated scenario ID and obtains an ephemeral ElevenLabs WebRTC token for the pinned website agent/version. The restricted provider key stays on the server. Agent prompt, voice, tools and privacy overrides are disabled. The client sends only a scenario label, treated as untrusted input by the agent, and an HMAC visitor identifier. Only the native end-call tool is enabled; no clinical, pharmacy, messaging or scheduling integrations exist.
+
+The browser supports mute, end, cancellation and microphone errors. Sessions end after two minutes on both client and provider. LiveKit is pinned to 2.16.1 per ElevenLabs plugin compatibility guidance; recheck compatibility before upgrading.
+
+`/api/voice/result` verifies a one-hour signed conversation receipt and the agent/version. It maps actual enum analysis to reviewed GLP-1 labels. Missing analysis remains pending/unavailable; it never substitutes an expected scenario result. No transcript, audio, free-form model output or API key is returned.
 
 ## Agent and privacy
 
-`agent-config.json` identifies the dedicated website agent and pinned published version. `lib/agent-prompt.js` and `lib/scenarios.js` record the prompt, fictional scenarios, and analysis contract. `scripts/configure-agent.mjs` provisions the agent once and refuses to silently create duplicates or change another agent. Subsequent prompt changes require a new draft/version and explicit read-back before updating the app pin.
+`elevenlabs-agent-config.json` records the agent, pinned version, branch and Roger voice. `scripts/configure-elevenlabs.mjs` creates the isolated agent once, refuses duplicates, and saves its readback. Subsequent changes need a new version and verified application pin. The prompt source is `lib/agent-prompt.js`; scenario definitions and analysis enums are in `lib/scenarios.js`.
 
-Retell is configured to redact detected PII and retain conversation data for one day. The UI discloses processing/retention before microphone use and asks visitors to use fictional information. Redaction is not a guarantee. Application logs contain only event, scenario, operation, and status; they do not contain transcripts or recordings. Provider metadata contains an HMAC of the connection IP for usage controls, never the raw IP. Vercel may retain its ordinary platform request logs.
+Audio is processed live by ElevenLabs but audio recording storage is disabled. Conversation text is retained for one day; PII redaction is not enabled on this Free account. The interface discloses this and requests fictional details. Logs include only operation, scenario and status. Usage metadata uses an HMAC identifier, not the raw IP; Vercel retains ordinary request logs.
 
-Clinical or product-condition concerns, missed-dose questions, GLP-1 restart/titration questions, and actual urgent symptoms have dedicated boundaries. No dosing, reassurance about symptoms, coverage guarantees, real callbacks, or refill completion claims are permitted. All results are demo previews.
+Clinical symptoms, adverse events, treatment changes, restart, missed-dose and product-condition questions go to a simulated clinician/pharmacist review. No medication instructions, symptom reassurance, coverage guarantees or real follow-up claims are permitted. Immediate emergencies end role-play and direct real-world help.
 
-## Usage controls and operation
+## Usage and deployment
 
-- Kill switch: `VOICE_DEMO_ENABLED=false` followed by redeployment.
-- Default admission threshold: 30 sessions per rolling 24 hours, at most three starts per connection per hour, and three recently active sessions. Checks use persisted Retell call history, not only serverless memory. Missing configuration or a failed history check fails closed.
-- A per-instance lock reduces duplicate starts. History checks are **not atomic across instances** and Retell history can lag; concurrent requests may exceed the thresholds. These are abuse-reduction controls, **not a guaranteed spending cap**. Reassess distributed counters and provider budgets before high-traffic promotion.
-- Provider maximum duration: 180 seconds; silence timeout: 30 seconds. No automatic retry of call creation.
-- Secret values belong in Vercel as Secrets. Agent ID, numeric version, enable flag, and daily threshold are Config values. Production and preview are separate deployment targets; the present demo uses the same isolated website agent.
-- Publish a staged production build only after checks and browser verification. Keep the existing pharmacy and presenter demo deployments untouched. To roll back, promote the prior known-good website deployment and disable the voice-demo flag if needed.
+- The account remains on ElevenLabs Free. The approved key is restricted to ElevenAgents Write, Voices Read and User access, with a 10,000-credit monthly cap. No upgrade or paid bursting is enabled.
+- Provider limits: two concurrent conversations, ten daily, 120 seconds per call, 30-second silence timeout. The server additionally checks rolling history, three starts per connection per hour and a 1,500-credit reserve. Quota/history errors fail closed.
+- History may lag and per-instance locks/counters are not distributed. User metadata is not a security boundary. These checks reduce abuse; provider limits and the Free allowance are the independent limits. Revisit controls before promoting to high traffic.
+- ElevenLabs Free does not include commercial rights; review licensing before commercial promotion. See https://elevenlabs.io/pricing/agents and https://help.elevenlabs.io/hc/en-us/articles/13313564601361-Can-I-publish-the-content-I-generate-on-the-platform . Attribution appears beside the demo.
+- `VOICE_DEMO_ENABLED=false` plus redeployment disables new calls. Production and preview use the isolated website agent. The previous Retell implementation is preserved in Git history; there is no automatic provider fallback.
+- Stage with Vercel `--prod --skip-domain`, verify, then promote. Keep the pharmacy and presenter deployments untouched. Main still serves the previous GitHub Pages export until custom-domain migration is complete.
 
 ## Verification
 
-`npm test` checks trusted scenario selection, origin/method/body restrictions, receipt tampering/expiry, persisted usage guards, clinical routing, unavailable analysis, and fail-closed configuration. `npm run build` checks the frontend production bundle. Provider simulations cover coverage, nausea, refill, restart, opt-out and urgent concerns. Browser and live-session verification results are recorded with the implementation PR. Synthetic simulations do not establish real patient safety or clinical effectiveness.
+`npm test` covers scenario validation, request restrictions, receipt tampering/expiry, usage/credit admission, clinical routing, unavailable analysis and missing configuration. `npm run build` checks the production bundle.
+
+`scripts/test-elevenlabs.mjs` creates and runs six synthetic conversation tests: coverage, side effects, refill, restart, stop and urgent symptoms. All six passed on the pinned version, including successful end-call tool execution. Provider simulations do not verify human microphone/audio quality or clinical effectiveness. Browser checks cover the compact 761×575 viewport and mobile layout; deployment checks verify session creation and signed-summary access.

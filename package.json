@@ -9,10 +9,12 @@
     "test": "node --test tests/*.test.mjs"
   },
   "dependencies": {
-    "retell-client-js-sdk": "3.0.2",
-    "retell-sdk": "6.1.1"
+    "@elevenlabs/client": "1.27.0"
   },
   "devDependencies": {
     "vite": "8.3.3"
+  },
+  "overrides": {
+    "livekit-client": "2.16.1"
   }
 }

@@ -25,10 +25,9 @@ root.innerHTML = `
       <span id="connection-announcement" class="sr-only" role="status" aria-live="polite"></span>
       <p class="voice-hint" id="voice-hint">Choose a situation, then click the orb.<br>You play the patient. Warbler takes it from there.</p>
       <div class="voice-controls"><button id="start-voice" class="primary-button">Start GLP-1 conversation <span aria-hidden="true">↗</span></button><button id="mute-voice" class="secondary-button" hidden aria-pressed="false">Mute mic</button><button id="end-voice" class="end-button" hidden>End conversation</button></div>
-      <button id="resume-audio" class="text-button" hidden>Can’t hear Warbler? Enable audio</button>
       <p id="demo-error" class="demo-error" role="alert" hidden></p>
       <p id="demo-disclosure" class="disclosure">AI role-play, not medical care. Use fictional details. No clinician is contacted and no refill or appointment is arranged.</p>
-      <details class="privacy-note"><summary>Microphone & privacy</summary><p>Your microphone connects to Retell for this conversation. Audio and transcripts are processed by Retell with PII redaction enabled and a one-day retention setting. Redaction may not catch everything—please use fictional details. Warbler does not request your name, phone number, insurance ID, or payment details. End the conversation to stop microphone access.</p></details>
+      <details class="privacy-note"><summary>Microphone & privacy</summary><p>Your microphone connects to ElevenLabs. Audio is processed live; saving audio recordings is disabled. Conversation text is retained for up to one day. Please use fictional details. Warbler does not request your name, phone number, insurance ID, or payment details. End the conversation to stop microphone access.</p></details><a class="voice-attribution" href="https://elevenlabs.io" target="_blank" rel="noopener noreferrer">Voice powered by ElevenLabs ↗</a>
     </div>
   </div>
   <div id="demo-result" class="demo-result" hidden tabindex="-1" aria-labelledby="result-title"><span class="eyebrow">YOUR CONVERSATION · DEMO PREVIEW</span><h3 id="result-title">What comes after the conversation.</h3><p id="result-status" role="status">Preparing your GLP-1 conversation summary…</p><div id="result-content" hidden><div class="result-grid"><div><span class="result-label">GLP-1 need identified</span><p id="result-barrier"></p></div><div><span class="result-label">Proposed next step</span><p id="result-team"></p></div></div><p id="result-next"></p></div><div class="result-actions"><button id="try-again" class="secondary-button">Try another GLP-1 situation</button><a class="primary-button" href="https://calendar.app.google/dAj1Fv4UhSUbFGfz8">See Warbler in your pharmacy ↗</a></div></div>
@@ -151,10 +150,9 @@ function finish(activeRun) {
   connected = false;
   session = null;
   setBusy(false);
-  $('resume-audio').hidden = true;
   $('start-voice').textContent = 'Start another conversation ↗';
   $('voice-hint').textContent = 'Try a different GLP-1 situation, or see how Warbler could support your pharmacy.';
-  status(failure ? 'Let’s try that again' : wasConnected ? 'Conversation complete' : 'Ready when you are', failure ? 'error' : 'idle');
+  status(failure ? 'Let’s try that again' : wasConnected ? 'Conversation complete' : 'Conversation ended', failure ? 'error' : 'idle');
   if (wasConnected && receipt) void getSummary(activeRun, receipt);
 }
 
@@ -166,56 +164,51 @@ async function start() {
   $('demo-error').hidden = true; $('demo-result').hidden = true;
   $('mute-voice').textContent = 'Mute mic'; $('mute-voice').setAttribute('aria-pressed', 'false');
   setBusy(true); status('Connecting…', 'connecting');
-  $('duration').textContent = 'Up to 3 minutes';
+  $('duration').textContent = 'Up to 2 minutes';
   $('voice-hint').textContent = 'Allow your microphone when asked. You can use the suggested patient line or your own fictional GLP-1 situation.';
-  let RetellClient;
-  try { ({ RetellClient } = await import('retell-client-js-sdk')); }
-  catch { showError('The voice connection couldn’t load. Check your connection and try again.'); finish(activeRun); return; }
-  if (activeRun !== run || cancelled) { finish(activeRun); return; }
-  const client = new RetellClient({
-    key: 'server-managed',
-    fetch: async (url) => {
-      if (new URL(String(url)).pathname !== '/v3/create-web-call') throw new Error('Unsupported operation');
-      const response = await fetch('/api/voice/start', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ scenarioId: selected.id }), signal: AbortSignal.timeout(25000) });
-      const body = await response.json().catch(() => ({}));
-      if (!response.ok) { const error = new Error(body.error || 'Connection unavailable'); error.demoMessage = body.error; throw error; }
-      if (activeRun !== run || cancelled) throw new Error('Conversation cancelled');
-      receipt = body.receipt;
-      delete body.receipt;
-      return new Response(JSON.stringify(body), { status: 200, headers: { 'Content-Type': 'application/json' } });
-    },
-  });
-  session = client.createWebCall({
-    agent_id: 'server-selected', transcript: false,
-    hooks: {
-      onStatus: (state) => {
-        if (activeRun !== run || cancelled) return;
-        if (state === 'live') {
-          connected = true; startedAt = Date.now(); setBusy(true);
-          status('Conversation connected', 'connected');
-          $('voice-hint').textContent = 'Speak naturally. You can interrupt or end the demo at any time.';
-          $('resume-audio').hidden = false;
-          timer = setInterval(() => {
-            const seconds = Math.floor((Date.now() - startedAt) / 1000);
-            $('duration').textContent = `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')} / 3:00`;
-            if (seconds >= 180) void end();
-          }, 1000);
-
-        }
+  try {
+    const { Conversation } = await import('@elevenlabs/client');
+    if (activeRun !== run || cancelled) return;
+    const response = await fetch('/api/voice/start', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ scenarioId: selected.id }), signal: AbortSignal.timeout(25000) });
+    const body = await response.json().catch(() => ({}));
+    if (activeRun !== run || cancelled) return;
+    if (!response.ok) { const error = new Error(body.error || 'Connection unavailable'); error.demoMessage = body.error; throw error; }
+    receipt = body.receipt;
+    const conversation = await Conversation.startSession({
+      conversationToken: body.token,
+      connectionType: 'webrtc',
+      dynamicVariables: { scenario_id: body.scenarioId },
+      userId: body.userId,
+      onConversationCreated: conversation => {
+        if (activeRun !== run || cancelled) void conversation.endSession();
+        else session = conversation;
       },
-      onError: error => { if (activeRun === run && !cancelled) showError(friendlyError(error)); },
-      onEnd: () => finish(activeRun),
-    },
-  });
-  try { await session.ready; }
-  catch (error) { if (activeRun === run && !cancelled) { showError(friendlyError(error)); finish(activeRun); } }
+      onConnect: () => {
+        if (activeRun !== run || cancelled) return;
+        connected = true; startedAt = Date.now(); setBusy(true);
+        status('Conversation connected', 'connected');
+        $('voice-hint').textContent = 'Speak naturally. You can interrupt or end the demo at any time.';
+        timer = setInterval(() => {
+          const seconds = Math.floor((Date.now() - startedAt) / 1000);
+          $('duration').textContent = `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')} / 2:00`;
+          if (seconds >= 120) void end();
+        }, 1000);
+      },
+      onError: message => { if (activeRun === run && !cancelled) showError(friendlyError(new Error(message))); },
+      onDisconnect: () => finish(activeRun),
+    });
+    if (activeRun !== run || cancelled || !busy) await conversation.endSession();
+    else session = conversation;
+  } catch (error) {
+    if (activeRun === run && !cancelled) { showError(friendlyError(error)); finish(activeRun); }
+  }
 }
 
 async function end() {
   cancelled = true;
   const activeRun = run;
   const current = session;
-  try { await current?.end(); }
+  try { await current?.endSession(); }
   finally { if (busy) finish(activeRun); }
 }
 $('start-voice').addEventListener('click', start);
@@ -224,14 +217,13 @@ $('end-voice').addEventListener('click', end);
 $('mute-voice').addEventListener('click', () => {
   if (!session || !connected) return;
   muted = !muted;
-  if (muted) session.mute(); else session.unmute();
+  session.setMicMuted(muted);
   $('mute-voice').textContent = muted ? 'Unmute mic' : 'Mute mic';
   $('mute-voice').setAttribute('aria-pressed', String(muted));
 });
-$('resume-audio').addEventListener('click', () => { session?.startAudioPlayback().catch(() => showError('Audio playback is blocked. Check your browser’s sound settings.')); });
 $('try-again').addEventListener('click', () => {
   ++run; $('demo-result').hidden = true;
   $('try-warbler').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
-  document.querySelector(`[data-scenario="${selected.id}"]`).focus({ preventScroll: true });
+  (matchMedia('(max-width: 900px)').matches ? $('scenario-select') : document.querySelector(`[data-scenario="${selected.id}"]`)).focus({ preventScroll: true });
 });
-window.addEventListener('pagehide', () => { void session?.end(); });
+window.addEventListener('pagehide', () => { void session?.endSession(); });

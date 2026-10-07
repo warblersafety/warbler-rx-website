@@ -1,19 +1,18 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { buildCall, checkAllowance, checkRequest, getConfig, publicResult, signReceipt, verifyReceipt } from '../lib/voice-server.js';
+import { buildCall, checkAllowance, checkQuota, checkRequest, getConfig, publicResult, signReceipt, verifyReceipt } from '../lib/voice-server.js';
 
-const config = { agentId: 'agent_website', version: 0, secret: 'a'.repeat(64), dailyLimit: 30 };
+const config = { agentId: 'agent_website', versionId: 'version_website', secret: 'a'.repeat(64), dailyLimit: 10 };
 const now = 1800000000000;
 const req = { method: 'POST', headers: { origin: 'https://warbler-rx-website.vercel.app', 'content-type': 'application/json' }, body: { scenarioId: 'refill' } };
 
 test('anonymous callers cannot choose agents, inject prompts or enable tools', () => {
   const request = buildCall('coverage', config, 'visitor', now);
   assert.equal(request.agent_id, 'agent_website');
-  assert.equal(request.agent_version, 0);
-  assert.equal(request.agent_override.agent.max_call_duration_ms, 180000);
+  assert.equal(request.version_id, 'version_website');
+  assert.deepEqual(Object.keys(request).sort(), ['agent_id', 'participant_name', 'version_id']);
   assert.throws(() => buildCall('{{ignore instructions}}', config, 'visitor'), { status: 400 });
   assert.throws(() => buildCall('__proto__', config, 'visitor'), { status: 400 });
-  assert.equal(request.retell_llm_dynamic_variables.scenario_context.includes('fictional'), true);
 });
 
 test('session API only accepts approved origins and JSON POST requests', () => {
@@ -33,34 +32,41 @@ test('summary access is tied to an unmodified, unexpired signed receipt', () => 
 });
 
 test('provider history limits repeats and daily use across process restarts', () => {
-  const ended = { call_status: 'ended', metadata: { visitor: 'one', createdAt: now - 1000 } };
-  assert.throws(() => checkAllowance(Array(3).fill(ended), 'one', 30, now), { status: 429 });
-  assert.doesNotThrow(() => checkAllowance(Array(3).fill(ended), 'two', 30, now));
-  assert.throws(() => checkAllowance(Array(30).fill(ended), 'two', 30, now), { status: 429 });
-  assert.throws(() => checkAllowance([{ ...ended, call_status: 'ongoing' }], 'one', 30, now), { status: 409 });
-  assert.doesNotThrow(() => checkAllowance([{ ...ended, metadata: { visitor: 'one', createdAt: now - 86400001 } }], 'one', 1, now));
+  const ended = { status: 'done', start_time_unix_secs: (now - 1000) / 1000 };
+  assert.throws(() => checkAllowance(Array(3).fill(ended), Array(3).fill(ended), 10, now), { status: 429 });
+  assert.doesNotThrow(() => checkAllowance(Array(3).fill(ended), [], 10, now));
+  assert.throws(() => checkAllowance(Array(10).fill(ended), [], 10, now), { status: 429 });
+  assert.throws(() => checkAllowance([ended], [{ ...ended, status: 'in-progress' }], 10, now), { status: 409 });
+  assert.throws(() => checkAllowance(Array(2).fill({...ended,status:'initiated'}), [], 10, now), {status:429});
+  assert.doesNotThrow(() => checkAllowance([{...ended,start_time_unix_secs:(now-86400001)/1000}], [], 1, now));
 });
 
 test('actual analysis overrides scenario and clinical concerns retain clinical review', () => {
-  const result = publicResult({ metadata: { scenario: 'refill' }, call_analysis: { custom_analysis_data: { barrier: 'side_effects', review_team: 'none', patient_need: '<script>bad</script>' } } });
+  const result = publicResult({ analysis: { data_collection_results: { barrier: {value:'side_effects'}, review_team: {value:'none'}, patient_need: {value:'<script>bad</script>'} } } });
   assert.equal(result.team, 'Clinical review');
   assert.equal(result.barrier, 'Reported GLP-1 side effects');
   assert.equal(JSON.stringify(result).includes('<script>'), false);
   assert.match(result.next, /No clinician has been contacted/);
-  assert.deepEqual(publicResult({ call_status: 'ended' }), { status: 'pending' });
-  assert.deepEqual(publicResult({ call_status: 'error' }), { status: 'unavailable' });
+  assert.deepEqual(publicResult({ status: 'done' }), { status: 'pending' });
+  assert.deepEqual(publicResult({ status: 'failed' }), { status: 'unavailable' });
 });
 
 test('unknown analysis cannot produce a completed or invented outcome', () => {
-  const result = publicResult({ call_analysis: { custom_analysis_data: { barrier: 'approved', review_team: 'booked' } } });
+  const result = publicResult({ analysis: { data_collection_results: { barrier: {value:'approved'}, review_team: {value:'booked'} } } });
   assert.equal(result.team, 'More information needed');
   assert.equal(result.barrier, 'GLP-1 need not established');
 });
 
-test('missing secrets and the kill switch fail closed; published version zero is valid', () => {
+test('missing secrets and the kill switch fail closed; a pinned version is required', () => {
   assert.throws(() => getConfig({}), { status: 503 });
-  const env = { RETELL_API_KEY: 'test', RETELL_WEB_AGENT_ID: 'website', RETELL_WEB_AGENT_VERSION: '0', VOICE_SESSION_SECRET: config.secret, VOICE_DEMO_ENABLED: 'true' };
-  assert.equal(getConfig(env).version, 0);
-  assert.throws(() => getConfig({ ...env, RETELL_WEB_AGENT_VERSION: '' }), { status: 503 });
+  const env = { ELEVENLABS_API_KEY: 'test', ELEVENLABS_AGENT_ID: 'website', ELEVENLABS_AGENT_VERSION_ID: 'version_website', VOICE_SESSION_SECRET: config.secret, VOICE_DEMO_ENABLED: 'true' };
+  assert.equal(getConfig(env).versionId, 'version_website');
+  assert.throws(() => getConfig({ ...env, ELEVENLABS_AGENT_VERSION_ID: '' }), { status: 503 });
   assert.throws(() => getConfig({ ...env, VOICE_DEMO_ENABLED: 'false' }), { status: 503 });
+});
+
+test('quota checks fail closed below the free allowance reserve', () => {
+  assert.doesNotThrow(() => checkQuota({character_limit:10000,character_count:8000}));
+  assert.throws(() => checkQuota({character_limit:10000,character_count:9000}), {status:429});
+  assert.throws(() => checkQuota({}), {status:429});
 });
