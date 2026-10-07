@@ -14,7 +14,7 @@ The previous self-contained HTML export was unpacked into ordinary HTML and loca
 - `/api/voice/start` accepts only a scenario ID. It picks the fixed website agent/version and trusted scenario context on the server; the browser cannot override prompts, tools, storage settings, or credentials.
 - Retell's Web SDK connects browser audio directly to Retell using an ephemeral call token. No phone number or telephone call is involved. Only the end-call tool is available; there are no clinical, messaging, scheduling, insurance, or pharmacy integrations.
 - `/api/voice/result` accepts a one-hour signed receipt for that call. It verifies the website agent/surface and returns reviewed labels derived from actual analysis. Missing analysis stays unavailable/pending; it never falls back to the chosen scenario's intended outcome. No transcript, recording, model-generated free text, or provider key is returned.
-- Audio drives the orb. The UI supports mute, end, cancellation, microphone errors, audio playback recovery, reduced motion, and mobile layouts. A provider-side three-minute cap remains in force if the browser closes.
+- The orb uses a constant slow rotation without audio-driven movement or listening/speaking labels. Smaller windows use a compact scenario selector. The UI supports mute, end, cancellation, microphone errors, audio playback recovery, reduced motion, and mobile layouts. A provider-side three-minute cap remains in force if the browser closes.
 
 ## Agent and privacy
 

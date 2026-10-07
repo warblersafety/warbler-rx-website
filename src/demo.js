@@ -4,12 +4,13 @@ import './demo.css';
 const root = document.querySelector('#voice-demo-root');
 root.innerHTML = `
 <section id="try-warbler" class="voice-demo" aria-labelledby="demo-title">
-  <div class="demo-intro"><span class="eyebrow"><span class="live-dot"></span> MEET YOUR GLP-1 SUPPORT AGENT</span>
-    <h2 id="demo-title">A real conversation.<br>A fictional patient.</h2>
-    <p>Step into a GLP-1 patient’s shoes. Bring a refill question, a coverage roadblock, or a concern for the care team. Hear how Warbler responds.</p>
+  <div class="demo-intro">
+    <h2 id="demo-title">Try a GLP-1 conversation.</h2>
+    <p>Choose a situation, play a fictional patient, and talk to Warbler.</p>
   </div>
   <div class="demo-layout">
     <div class="scenario-panel"><div class="step-label"><span>01</span> Choose a situation</div>
+      <div class="compact-scenarios"><label class="sr-only" for="scenario-select">Choose a GLP-1 situation</label><select id="scenario-select"></select><p id="selected-line"></p></div>
       <div id="scenario-list" class="scenario-list" role="group" aria-label="GLP-1 conversation scenarios"></div>
       <button id="more-scenarios" class="text-button" aria-expanded="false" aria-controls="extra-scenarios">More GLP-1 situations <span aria-hidden="true">＋</span></button>
       <div id="extra-scenarios" class="scenario-list" role="group" aria-label="More GLP-1 scenarios" hidden></div>
@@ -21,7 +22,7 @@ root.innerHTML = `
         <span class="orb-halo"></span><span class="orb"><span class="orb-swirl"></span><span class="orb-glint"></span></span>
         <span class="orb-symbol" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><path d="M7 13v6M13 7v18M19 10v12M25 13v6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></span>
       </button>
-      <div class="voice-status" role="status" aria-live="polite"><span id="status-dot"></span><span id="voice-status">Ready when you are</span></div>
+      <span id="connection-announcement" class="sr-only" role="status" aria-live="polite"></span>
       <p class="voice-hint" id="voice-hint">Choose a situation, then click the orb.<br>You play the patient. Warbler takes it from there.</p>
       <div class="voice-controls"><button id="start-voice" class="primary-button">Start GLP-1 conversation <span aria-hidden="true">↗</span></button><button id="mute-voice" class="secondary-button" hidden aria-pressed="false">Mute mic</button><button id="end-voice" class="end-button" hidden>End conversation</button></div>
       <button id="resume-audio" class="text-button" hidden>Can’t hear Warbler? Enable audio</button>
@@ -42,13 +43,10 @@ let muted = false;
 let receipt = null;
 let run = 0;
 let timer;
-let audioTimer;
 let startedAt = 0;
 let connected = false;
 let failure = false;
 let cancelled = false;
-let audioPeak = 0;
-let lastAudio = 0;
 
 function renderScenario(scenario, index) {
   const button = document.createElement('button');
@@ -66,9 +64,19 @@ function renderScenario(scenario, index) {
   $(index < 3 ? 'scenario-list' : 'extra-scenarios').append(button);
 }
 scenarios.forEach(renderScenario);
+$('scenario-select').replaceChildren(...scenarios.map(scenario => {
+  const option = document.createElement('option');
+  option.value = scenario.id; option.textContent = scenario.label;
+  return option;
+}));
+$('scenario-select').addEventListener('change', event => {
+  if (!busy) choose(scenarios.find(scenario => scenario.id === event.target.value));
+});
 
 function choose(scenario) {
   selected = scenario;
+  $('scenario-select').value = scenario.id;
+  $('selected-line').textContent = `“${scenario.line}”`;
   document.querySelectorAll('[data-scenario]').forEach(el => el.setAttribute('aria-pressed', String(el.dataset.scenario === scenario.id)));
   $('scenario-focus').textContent = scenario.focus;
   $('scenario-steps').replaceChildren(...scenario.steps.map(step => { const li = document.createElement('li'); li.textContent = step; return li; }));
@@ -82,13 +90,13 @@ $('more-scenarios').addEventListener('click', () => {
 });
 
 function status(text, mode) {
-  $('voice-status').textContent = text;
+  $('connection-announcement').textContent = text;
   $('voice-orb').dataset.state = mode;
-  $('status-dot').dataset.state = mode;
 }
 
 function setBusy(value) {
   busy = value;
+  $('scenario-select').disabled = value;
   document.querySelectorAll('[data-scenario]').forEach(el => { el.disabled = value; });
   $('start-voice').hidden = value;
   $('end-voice').hidden = !value;
@@ -138,13 +146,12 @@ async function getSummary(activeRun, callReceipt) {
 
 function finish(activeRun) {
   if (activeRun !== run || !busy) return;
-  clearInterval(timer); clearInterval(audioTimer);
+  clearInterval(timer);
   const wasConnected = connected;
   connected = false;
   session = null;
   setBusy(false);
   $('resume-audio').hidden = true;
-  $('voice-orb').style.setProperty('--audio', '0');
   $('start-voice').textContent = 'Start another conversation ↗';
   $('voice-hint').textContent = 'Try a different GLP-1 situation, or see how Warbler could support your pharmacy.';
   status(failure ? 'Let’s try that again' : wasConnected ? 'Conversation complete' : 'Ready when you are', failure ? 'error' : 'idle');
@@ -156,7 +163,6 @@ async function start() {
   if (!navigator.mediaDevices?.getUserMedia) { showError('Voice conversations need a browser with microphone support over a secure connection. Try a current version of Safari, Chrome, or Edge.'); return; }
   const activeRun = ++run;
   receipt = null; connected = false; failure = false; muted = false; cancelled = false;
-  audioPeak = 0; lastAudio = 0;
   $('demo-error').hidden = true; $('demo-result').hidden = true;
   $('mute-voice').textContent = 'Mute mic'; $('mute-voice').setAttribute('aria-pressed', 'false');
   setBusy(true); status('Connecting…', 'connecting');
@@ -180,13 +186,13 @@ async function start() {
     },
   });
   session = client.createWebCall({
-    agent_id: 'server-selected', transcript: false, audio: { emitRawAudioSamples: true },
+    agent_id: 'server-selected', transcript: false,
     hooks: {
       onStatus: (state) => {
         if (activeRun !== run || cancelled) return;
         if (state === 'live') {
           connected = true; startedAt = Date.now(); setBusy(true);
-          status('Listening', 'listening');
+          status('Conversation connected', 'connected');
           $('voice-hint').textContent = 'Speak naturally. You can interrupt or end the demo at any time.';
           $('resume-audio').hidden = false;
           timer = setInterval(() => {
@@ -194,16 +200,8 @@ async function start() {
             $('duration').textContent = `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')} / 3:00`;
             if (seconds >= 180) void end();
           }, 1000);
-          audioTimer = setInterval(() => {
-            const speaking = Date.now() - lastAudio < 350 && audioPeak > 0.012;
-            status(speaking ? 'Warbler is speaking' : muted ? 'Microphone muted' : 'Listening', speaking ? 'speaking' : muted ? 'muted' : 'listening');
-            $('voice-orb').style.setProperty('--audio', String(speaking ? Math.min(audioPeak * 4, 1) : 0));
-          }, 120);
+
         }
-      },
-      onAudio: samples => {
-        let sum = 0; for (const sample of samples) sum += sample * sample;
-        audioPeak = Math.sqrt(sum / Math.max(1, samples.length)); lastAudio = Date.now();
       },
       onError: error => { if (activeRun === run && !cancelled) showError(friendlyError(error)); },
       onEnd: () => finish(activeRun),
