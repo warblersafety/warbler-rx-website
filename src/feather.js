@@ -48,7 +48,7 @@ export function createFeather(canvas, getState, getVolume) {
     ctx.lineCap = 'round'; ctx.lineJoin = 'round';
     const h = 155, w = 46 * (1 - .55 * fold);
     const spine = y => 10 * Math.sin((y / h + .5) * Math.PI) + movement * 6 * Math.sin(time * 3 + y * .025) * (1 - fold);
-    ctx.globalAlpha = alpha * .65; ctx.strokeStyle = '#253b31'; ctx.lineWidth = 1.15;
+    ctx.globalAlpha = alpha * .65; ctx.strokeStyle = '#09273a'; ctx.lineWidth = 1.15;
     ctx.beginPath();
     for (let j = 0; j <= 60; j++) {
       const y = h / 2 + 15 - j * (h + 15) / 60;
@@ -62,7 +62,7 @@ export function createFeather(canvas, getState, getVolume) {
         const wave = movement * (4 + 9 * Math.sin(Math.PI * u)) * Math.sin(time * 5 - u * 8 + side * .8);
         const x = spine(y) + side * spread * (side === 1 ? 1 : .78);
         const endY = y - 22 * Math.sin(Math.PI * u) + wave;
-        ctx.strokeStyle = i % 4 === 0 ? '#253b31' : '#7f9c63';
+        ctx.strokeStyle = i % 4 === 0 ? '#09273a' : '#b39024';
         ctx.globalAlpha = alpha * (.28 + .48 * Math.sin(Math.PI * u));
         ctx.lineWidth = i % 4 === 0 ? 1 : .75;
         ctx.beginPath(); ctx.moveTo(spine(y), y);
@@ -71,7 +71,7 @@ export function createFeather(canvas, getState, getVolume) {
       }
     }
     if (animated && fold > .01) {
-      ctx.fillStyle = '#7f9c63';
+      ctx.fillStyle = '#b39024';
       for (let i = 0; i < 5; i++) {
         const q = (time * .25 + i / 5) % 1, y = h / 2 - q * h;
         ctx.globalAlpha = alpha * fold * .6 * Math.sin(q * Math.PI);

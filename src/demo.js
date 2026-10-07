@@ -9,28 +9,27 @@ root.innerHTML = `
     <h2 id="demo-title">See how a talk with our GLP-1 agent leads to an actionable next step.</h2>
   </div>
   <div class="demo-layout">
-    <div class="scenario-panel"><div class="step-label"><span>01</span> Choose a situation</div>
-      <div class="compact-scenarios"><label class="sr-only" for="scenario-select">Choose a GLP-1 situation</label><select id="scenario-select"></select><p id="selected-line"></p></div>
-      <div id="scenario-list" class="scenario-list" role="group" aria-label="GLP-1 conversation scenarios"></div>
-      <button id="more-scenarios" class="text-button" aria-expanded="false" aria-controls="extra-scenarios">More GLP-1 situations <span aria-hidden="true">＋</span></button>
-      <div id="extra-scenarios" class="scenario-list" role="group" aria-label="More GLP-1 scenarios" hidden></div>
-      <div class="scenario-context"><span class="eyebrow">WHAT THIS SCENARIO EXPLORES</span><p id="scenario-focus"></p><ol id="scenario-steps"></ol></div>
+    <div class="scenario-panel">
+      <h3 class="reasons-heading">Common reasons why people drop their GLP-1 prescription:</h3>
+      <div id="scenario-list" class="scenario-list" role="group" aria-label="Common GLP-1 prescription barriers"></div>
+      <p class="reason-prompt">Hear how Warbler responds to each barrier.</p>
+      <p id="selected-line" class="patient-line"></p>
     </div>
     <div class="conversation-panel">
-      <div class="conversation-top"><span class="step-label"><span>02</span> Talk to Warbler</span><span class="duration-label" id="duration">About 90 seconds</span></div>
+      <div class="conversation-top"><span class="step-label">Talk to Warbler</span><span class="duration-label" id="duration">About 90 seconds</span></div>
       <button id="voice-feather" class="feather-button" aria-label="Start a fictional GLP-1 voice conversation" aria-describedby="demo-disclosure" data-state="idle">
         <canvas id="voice-feather-canvas" aria-hidden="true"></canvas>
       </button>
       <span id="voice-state" class="voice-state" aria-hidden="true">Ready when you are</span>
       <span id="connection-announcement" class="sr-only" role="status" aria-live="polite"></span>
-      <p class="voice-hint" id="voice-hint">Choose a situation, then click the feather.<br>You play the patient. Warbler takes it from there.</p>
+      <p class="voice-hint" id="voice-hint">Explore a common barrier, then talk to Warbler.<br>You play the patient. Warbler takes it from there.</p>
       <div class="voice-controls"><button id="start-voice" class="primary-button">Start GLP-1 conversation <span aria-hidden="true">↗</span></button><button id="mute-voice" class="secondary-button" hidden aria-pressed="false">Mute mic</button><button id="end-voice" class="end-button" hidden>End conversation</button></div>
       <p id="demo-error" class="demo-error" role="alert" hidden></p>
       <p id="demo-disclosure" class="disclosure">AI role-play, not medical care. Use fictional details. No clinician is contacted and no refill or appointment is arranged.</p>
       <details class="privacy-note"><summary>Microphone & privacy</summary><p>Your microphone connects to ElevenLabs. Audio is processed live; saving audio recordings is disabled. Conversation text is retained for up to one day. Please use fictional details. Warbler does not request your name, phone number, insurance ID, or payment details. End the conversation to stop microphone access.</p></details>
     </div>
   </div>
-  <div id="demo-result" class="demo-result" hidden tabindex="-1" aria-labelledby="result-title"><span class="eyebrow">YOUR CONVERSATION · DEMO PREVIEW</span><h3 id="result-title">What comes after the conversation.</h3><p id="result-status" role="status">Preparing your GLP-1 conversation summary…</p><div id="result-content" hidden><div class="result-grid"><div><span class="result-label">GLP-1 need identified</span><p id="result-barrier"></p></div><div><span class="result-label">Proposed next step</span><p id="result-team"></p></div></div><p id="result-next"></p></div><div class="result-actions"><button id="try-again" class="secondary-button">Try another GLP-1 situation</button><a class="primary-button" href="https://calendar.app.google/dAj1Fv4UhSUbFGfz8">See Warbler in your pharmacy ↗</a></div></div>
+  <div id="demo-result" class="demo-result" hidden tabindex="-1" aria-labelledby="result-title"><span class="eyebrow">YOUR CONVERSATION · DEMO PREVIEW</span><h3 id="result-title">What comes after the conversation.</h3><p id="result-status" role="status">Preparing your GLP-1 conversation summary…</p><div id="result-content" hidden><div class="result-grid"><div><span class="result-label">GLP-1 need identified</span><p id="result-barrier"></p></div><div><span class="result-label">Proposed next step</span><p id="result-team"></p></div></div><p id="result-next"></p></div><div class="result-actions"><button id="try-again" class="secondary-button">Explore another GLP-1 barrier</button><a class="primary-button" href="https://calendar.app.google/dAj1Fv4UhSUbFGfz8">See Warbler in your pharmacy ↗</a></div></div>
   <p class="demo-bottom">From GLP-1 refill barriers to clinical concerns. The right conversation helps identify the right next step.</p>
 </section>`;
 
@@ -61,46 +60,32 @@ const feather = createFeather($('voice-feather-canvas'), () => muted && connecte
   catch { return 0; }
 });
 
-function renderScenario(scenario, index) {
+const reasonLabels = {
+  coverage: 'Insurance coverage changes',
+  'side-effects': 'Side effects',
+  refill: 'Forgotten refill requests',
+  cost: 'Higher out-of-pocket costs',
+  delivery: 'Delivery delays',
+  restart: 'Questions after a treatment break',
+};
+scenarios.forEach(scenario => {
   const button = document.createElement('button');
   button.className = 'scenario-card';
   button.dataset.scenario = scenario.id;
   button.setAttribute('aria-pressed', String(scenario.id === selected.id));
-  const top = document.createElement('span'); top.className = 'scenario-top';
-  const tag = document.createElement('span'); tag.textContent = scenario.tag;
-  const marker = document.createElement('span'); marker.className = 'scenario-marker'; marker.textContent = '↗'; marker.setAttribute('aria-hidden', 'true');
-  top.append(tag, marker);
-  const label = document.createElement('strong'); label.textContent = scenario.label;
-  const line = document.createElement('span'); line.className = 'scenario-line'; line.textContent = `“${scenario.line}”`;
-  button.append(top, label, line);
+  const marker = document.createElement('span');
+  marker.className = 'reason-marker'; marker.setAttribute('aria-hidden', 'true');
+  const label = document.createElement('span'); label.textContent = reasonLabels[scenario.id];
+  button.append(marker, label);
   button.addEventListener('click', () => { if (!busy) choose(scenario); });
-  $(index < 3 ? 'scenario-list' : 'extra-scenarios').append(button);
-}
-scenarios.forEach(renderScenario);
-$('scenario-select').replaceChildren(...scenarios.map(scenario => {
-  const option = document.createElement('option');
-  option.value = scenario.id; option.textContent = scenario.label;
-  return option;
-}));
-$('scenario-select').addEventListener('change', event => {
-  if (!busy) choose(scenarios.find(scenario => scenario.id === event.target.value));
+  $('scenario-list').append(button);
 });
-
 function choose(scenario) {
   selected = scenario;
-  $('scenario-select').value = scenario.id;
   $('selected-line').textContent = `“${scenario.line}”`;
   document.querySelectorAll('[data-scenario]').forEach(el => el.setAttribute('aria-pressed', String(el.dataset.scenario === scenario.id)));
-  $('scenario-focus').textContent = scenario.focus;
-  $('scenario-steps').replaceChildren(...scenario.steps.map(step => { const li = document.createElement('li'); li.textContent = step; return li; }));
 }
 choose(selected);
-$('more-scenarios').addEventListener('click', () => {
-  const expanded = $('more-scenarios').getAttribute('aria-expanded') !== 'true';
-  $('more-scenarios').setAttribute('aria-expanded', String(expanded));
-  $('more-scenarios').textContent = expanded ? 'Fewer GLP-1 situations −' : 'More GLP-1 situations ＋';
-  $('extra-scenarios').hidden = !expanded;
-});
 
 function status(text, mode) {
   $('connection-announcement').textContent = text;
@@ -109,7 +94,6 @@ function status(text, mode) {
 
 function setBusy(value) {
   busy = value;
-  $('scenario-select').disabled = value;
   document.querySelectorAll('[data-scenario]').forEach(el => { el.disabled = value; });
   $('start-voice').hidden = value;
   $('end-voice').hidden = !value;
@@ -165,7 +149,7 @@ function finish(activeRun) {
   session = null;
   setBusy(false);
   $('start-voice').textContent = 'Start another conversation ↗';
-  $('voice-hint').textContent = 'Try a different GLP-1 situation, or see how Warbler could support your pharmacy.';
+  $('voice-hint').textContent = 'Explore another barrier, or see how Warbler could support your pharmacy.';
   status(failure ? 'Let’s try that again' : wasConnected ? 'Conversation complete' : 'Conversation ended', failure ? 'error' : 'idle');
   if (wasConnected && receipt) void getSummary(activeRun, receipt);
 }
@@ -251,6 +235,6 @@ $('mute-voice').addEventListener('click', () => {
 $('try-again').addEventListener('click', () => {
   ++run; $('demo-result').hidden = true;
   $('try-warbler').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
-  (matchMedia('(max-width: 900px)').matches ? $('scenario-select') : document.querySelector(`[data-scenario="${selected.id}"]`)).focus({ preventScroll: true });
+  document.querySelector(`[data-scenario="${selected.id}"]`).focus({ preventScroll: true });
 });
 window.addEventListener('pagehide', () => { void session?.endSession(); });

@@ -8,7 +8,7 @@ Node 24: `npm ci`, `npm test`, `npm run build`. `npm run dev` previews the inter
 
 ## Voice flow
 
-Choose coverage, side effects, forgotten refill, affordability, delivery, or restart. The visitor plays a fictional GLP-1 patient. An original feather flexes with live microphone or agent audio levels, gathers while connecting/processing, and becomes still when the microphone is muted. State labels follow provider events. The renderer reuses the SDK audio analysis without requesting another microphone stream. Compact windows use a scenario selector; reduced-motion preferences keep the feather static.
+Choose coverage, side effects, forgotten refill, affordability, delivery, or restart. The visitor plays a fictional GLP-1 patient. An original feather flexes with live microphone or agent audio levels, gathers while connecting/processing, and becomes still when the microphone is muted. State labels follow provider events. The renderer reuses the SDK audio analysis without requesting another microphone stream. All six barriers remain visible as a selectable list at every screen size; reduced-motion preferences keep the feather static.
 
 `/api/voice/start` accepts a validated scenario ID and obtains an ephemeral ElevenLabs WebRTC token for the pinned website agent/version. The restricted provider key stays on the server. Agent prompt, voice, tools and privacy overrides are disabled. The client sends only a scenario label, treated as untrusted input by the agent, and an HMAC visitor identifier. Only the native end-call tool is enabled; no clinical, pharmacy, messaging or scheduling integrations exist.
 
