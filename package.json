@@ -1,0 +1,20 @@
+{
+  "name": "warbler-rx-website",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "test": "node --test tests/*.test.mjs"
+  },
+  "dependencies": {
+    "@elevenlabs/client": "1.27.0"
+  },
+  "devDependencies": {
+    "vite": "8.3.3"
+  },
+  "overrides": {
+    "livekit-client": "2.16.1"
+  }
+}
