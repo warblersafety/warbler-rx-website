@@ -5,8 +5,7 @@ const root = document.querySelector('#voice-demo-root');
 root.innerHTML = `
 <section id="try-warbler" class="voice-demo" aria-labelledby="demo-title">
   <div class="demo-intro">
-    <h2 id="demo-title">Try a GLP-1 conversation.</h2>
-    <p>Choose a situation, play a fictional patient, and talk to Warbler.</p>
+    <h2 id="demo-title">See how a talk with our GLP-1 agent leads to an actionable next step.</h2>
   </div>
   <div class="demo-layout">
     <div class="scenario-panel"><div class="step-label"><span>01</span> Choose a situation</div>
