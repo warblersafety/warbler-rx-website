@@ -2,13 +2,15 @@
 @media(max-width:600px){.site-header{gap:16px!important}.site-header nav{gap:0!important;margin-left:-14px}.site-header nav a{font-size:13px!important}.site-header nav a:last-child{padding:10px 16px!important}.voice-panel{padding:40px 20px!important}.orb{width:220px;height:220px}dialog{padding:30px 24px}dialog h2{font-size:28px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 
-/* The founder pops up without shifting the booking button or blocking clicks. */
+/* Both portraits pop up without shifting the booking button or blocking clicks. */
 .demo-booking{position:relative;isolation:isolate}
-.demo-founder{position:absolute;left:50%;bottom:calc(100% + 10px);width:72px;height:72px;object-fit:cover;border:3px solid #fff;border-radius:50%;box-shadow:0 8px 24px #0003;opacity:0;visibility:hidden;transform:translate(-50%,12px) rotate(-8deg) scale(.8);transition:opacity .18s ease,transform .22s ease,visibility .18s;pointer-events:none}
-.site-header .demo-founder,#top>section:first-child .demo-founder{bottom:auto;top:calc(100% + 10px);transform:translate(-50%,-12px) rotate(-8deg) scale(.8)}
-.demo-booking:focus-visible .demo-founder{opacity:1;visibility:visible;transform:translate(-50%,0) rotate(-6deg) scale(1)}
-@media(hover:hover) and (pointer:fine){.demo-booking:hover .demo-founder{opacity:1;visibility:visible;transform:translate(-50%,0) rotate(-6deg) scale(1)}}
-@media(prefers-reduced-motion:reduce){.demo-founder{transition:none}}
+.demo-portraits{position:absolute;left:50%;bottom:calc(100% + 10px);display:flex;align-items:center;width:max-content;opacity:0;visibility:hidden;transform:translate(-50%,12px) scale(.8);transition:opacity .18s ease,transform .22s ease,visibility .18s;pointer-events:none}
+.demo-founder{display:block;width:72px;height:72px;object-fit:cover;border:3px solid #fff;border-radius:50%;box-shadow:0 8px 24px #0003;transform:rotate(-6deg)}
+.demo-founder+.demo-founder{margin-left:-10px;transform:rotate(6deg)}
+.site-header .demo-portraits,#top>section:first-child .demo-portraits{bottom:auto;top:calc(100% + 10px);transform:translate(-50%,-12px) scale(.8)}
+.demo-booking:focus-visible .demo-portraits{opacity:1;visibility:visible;transform:translate(-50%,0) scale(1)}
+@media(hover:hover) and (pointer:fine){.demo-booking:hover .demo-portraits{opacity:1;visibility:visible;transform:translate(-50%,0) scale(1)}}
+@media(prefers-reduced-motion:reduce){.demo-portraits{transition:none}}
 
 /* Study breakdown extends the homepage's type, gold accent and open surfaces. */
 .study-section{padding:0 clamp(20px,4vw,48px) 96px}
