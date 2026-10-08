@@ -133,3 +133,41 @@ test('unknown medication or malicious analysis stays generic and never leaks fre
     assert.doesNotMatch(JSON.stringify(result), /private name|<script>|__proto__|GLP-1/);
   }
 });
+
+test('cost outcomes preserve supply and keep every permission combination independent', () => {
+  for (const cost_resources of ['accepted', 'declined', 'unclear', 'not_discussed', undefined, 'yes']) {
+    for (const cost_appointment of ['accepted', 'declined', 'unclear', 'not_discussed', undefined, 'yes']) {
+      const call = analyzed({ barrier: 'cost', review_team: 'pharmacy_support', cost_resources, cost_appointment, remaining_supply: 'two pens' });
+      call.transcript = [{ role: 'user', message: 'My copay is too high. I have two pens left.' }];
+      const result = publicResult(call);
+      assert.equal(result.barrier, 'Barrier ID: Cost with two pens');
+      assert.equal(result.team.includes('Text sent with resources'), cost_resources === 'accepted');
+      assert.equal(result.team.includes('Appointment auto-scheduled with the customer success team'), cost_appointment === 'accepted');
+      assert.equal(result.costPreview, cost_resources === 'accepted' || cost_appointment === 'accepted');
+      assert.match(result.next, /Simulated outcomes only — no text has been sent and no appointment has been booked/);
+      assert.equal(result.schedulingPreview, false);
+    }
+  }
+});
+
+test('supply is a bounded verbatim visitor phrase, never inferred or arbitrary analysis', () => {
+  for (const supply of ['two injections', 'about a week', '3 days', 'a couple of pens', '1.5 mL', 'none', 'running low']) {
+    const call = analyzed({ barrier: 'cost', remaining_supply: supply });
+    call.transcript = [{ role: 'user', message: `I have ${supply} left.` }];
+    assert.equal(publicResult(call).barrier, `Barrier ID: Cost with ${supply}`);
+  }
+  for (const supply of [undefined, '', '<script>name</script>', 'call 555 123 4567', 'two pens; John Smith', '4000 pills', 'two weeks']) {
+    const call = analyzed({ barrier: 'cost', remaining_supply: supply });
+    call.transcript = [{ role: 'user', message: 'I have two pens.' }, { role: 'agent', message: 'That means two weeks.' }];
+    assert.equal(publicResult(call).barrier, 'Barrier ID: Cost with supply not established');
+  }
+  assert.equal(publicResult(analyzed({ barrier: 'cost', remaining_supply: 'two pens' })).barrier, 'Barrier ID: Cost with supply not established');
+});
+
+test('clinical and emergency routing override cost previews even with financial permissions', () => {
+  for (const values of [{ barrier: 'cost', review_team: 'clinical', clinical_routing: 'accepted' }, { barrier: 'cost', clinical_routing: 'emergency' }, { barrier: 'side_effects', medication: 'metformin', clinical_routing: 'accepted' }]) {
+    const result = publicResult(analyzed({ ...values, cost_resources: 'accepted', cost_appointment: 'accepted' }));
+    assert.equal(result.costPreview, false);
+    assert.doesNotMatch(result.team, /Text sent|customer success/);
+  }
+});

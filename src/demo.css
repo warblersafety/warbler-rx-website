@@ -59,7 +59,7 @@
 
 /* Scheduling is highlighted only after explicit clinical-routing consent. */
 #result-next-step { padding: 16px 18px; border-radius: 14px; background: #e2e2dc; }
-#result-next-step[data-scheduling="true"] { background: #ffc51a; color: #191a15; }
-#result-next-step[data-scheduling="true"] .result-label { color: #514310; }
+#result-next-step[data-scheduling="true"], #result-next-step[data-cost="true"] { background: #ffc51a; color: #191a15; }
+#result-next-step[data-scheduling="true"] .result-label, #result-next-step[data-cost="true"] .result-label { color: #514310; }
 #result-next-step #result-team { font-weight: 600; }
 .result-grid { align-items: center; }

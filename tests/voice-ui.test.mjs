@@ -114,3 +114,15 @@ test('outcome highlights consented demo scheduling and clears the highlight for 
   assert.equal(h.element('result-next-step').dataset.scheduling, 'false');
   assert.equal(h.element('result-team').textContent, 'Clinical follow-up declined');
 });
+
+test('cost resources alone highlight the demo next step and reset on restart', async () => {
+  const resultPayload = { status: 'ready', barrier: 'Barrier ID: Cost with two pens', team: 'Text sent with resources', next: 'Simulated outcomes only — no text has been sent and no appointment has been booked.', costPreview: true };
+  const h = harness({ resultPayload });
+  h.click('voice-orb'); await flush(); await h.click('end-voice'); await flush();
+  assert.equal(h.element('result-barrier').textContent, resultPayload.barrier);
+  assert.equal(h.element('result-next-step').dataset.cost, 'true');
+  assert.equal(h.element('result-next-step').dataset.scheduling, 'false');
+  assert.equal(h.element('result-team').textContent, 'Text sent with resources');
+  h.click('try-again'); await flush();
+  assert.equal(h.element('result-next-step').dataset.cost, 'false');
+});
