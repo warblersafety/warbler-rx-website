@@ -12,6 +12,8 @@ The public homepage implements the supplied **Warbler Rx v2** design from “War
 
 The prototype’s simulated call is replaced with the real voice controller. Mute/end controls, error recovery, duration, and actual post-call analysis remain available. The gold connector and result-card reveal are retained. Reduced-motion preferences disable animation. The demo caption reflects browser role-play rather than implying that this demo makes phone calls or sends texts.
 
+The original 53.6% first-year discontinuation statistic from JAMA Network Open remains above the breakdown, paired with Warbler’s intended role in addressing barriers. The two studies are identified separately; neither is evidence of Warbler’s effectiveness.
+
 The study section summarizes reasons for first-year discontinuation from [Gasoyan et al., Obesity (2025)](https://pmc.ncbi.nlm.nih.gov/articles/PMC12636059/), n=288: 27.4% side effects/unspecified/weight-loss concerns, 47.6% cost or insurance, and 25.0% shortages/compounded switches/other. These are Warbler groupings of rounded published percentages, not measured outreach effectiveness. The page keeps the cohort context and makes affordability conditional on available pharmacy-approved options.
 
 ## Voice flow
