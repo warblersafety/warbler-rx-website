@@ -56,3 +56,24 @@
 @keyframes result-detail{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @media(max-width:640px){.result-flow{padding-top:56px}.result-connector{height:56px}}
 @media(prefers-reduced-motion:reduce){.result-flow .result-connector,.result-flow .demo-result,.result-flow .result-eyebrow,.result-flow h3,.result-flow #result-status,.result-flow #try-again,#result-content:not([hidden]) .result-grid>div,#result-content:not([hidden]) #result-next{animation:none}}
+
+/* Conversation prompts are suggestions, with no implied selected scenario. */
+.barrier-card{gap:18px;padding:30px}
+.barrier-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.barrier-eyebrow{font-size:10px;line-height:16px;letter-spacing:.08em;color:#73736b}
+.barrier-badge{padding:5px 10px;border:1px solid #e5e5df;border-radius:999px;font-size:10px;color:#66665e;white-space:nowrap}
+.barrier-card h2{font-size:32px;line-height:1.12;letter-spacing:-.04em;max-width:320px}
+.barrier-intro{font-size:14px;line-height:22px;color:#73736b;max-width:340px}
+.barrier-list{gap:0}
+.barrier-list li{display:flex;align-items:flex-start;gap:14px;padding:14px 0;border-radius:0;border-bottom:1px solid #efefeb;font-weight:400}
+.barrier-list li:first-child{background:transparent}
+.barrier-list li:last-child{border-bottom:0}
+.barrier-list li::before{content:none}
+.barrier-number{display:flex;align-items:center;justify-content:center;flex-shrink:0;width:30px;height:30px;border-radius:10px;background:#f4f4f0;color:#79796b;font-size:10px;line-height:1;margin-top:2px}
+.barrier-list li:nth-child(2) .barrier-number,.barrier-list li:nth-child(5) .barrier-number{background:#fff3cc;color:#857224}
+.barrier-name{display:block;font-size:14px;font-weight:500;line-height:21px;color:#20201c}
+.barrier-example{display:block;margin-top:3px;font-size:12px;line-height:18px;color:#797971;text-wrap:pretty}
+.barrier-footer{display:flex;align-items:center;gap:8px;padding-top:14px;border-top:1px solid #e9e9e2;font-size:10px;line-height:17px;color:#77776c}
+.barrier-footer-dot{width:5px;height:5px;flex-shrink:0;border-radius:50%;background:#b8962a}
+@media(max-width:960px){.barrier-card{padding:24px}.barrier-card h2{font-size:29px}}
+@media(max-width:640px){.barrier-card{padding:24px 20px}.barrier-card h2{font-size:30px}.barrier-list li{padding:13px 0}}
