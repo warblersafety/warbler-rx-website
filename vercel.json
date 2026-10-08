@@ -16,7 +16,7 @@
           "value": "www.warblersafety.com"
         }
       ],
-      "destination": "https://warblersafety.com/:path*",
+      "destination": "https://warbler-health.com/:path*",
       "permanent": true
     },
     {
@@ -27,7 +27,7 @@
           "value": "warbler-rx-website.vercel.app"
         }
       ],
-      "destination": "https://warblersafety.com/:path*",
+      "destination": "https://warbler-health.com/:path*",
       "permanent": true
     },
     {
@@ -38,7 +38,29 @@
           "value": "warbler-rx-website-noahdelay-techs-projects.vercel.app"
         }
       ],
-      "destination": "https://warblersafety.com/:path*",
+      "destination": "https://warbler-health.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "warblersafety.com"
+        }
+      ],
+      "destination": "https://warbler-health.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.warbler-health.com"
+        }
+      ],
+      "destination": "https://warbler-health.com/:path*",
       "permanent": true
     }
   ]

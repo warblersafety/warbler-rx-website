@@ -1,4 +1,4 @@
-# Warbler Rx website
+# Warbler Health website
 
 Marketing website with a fictional GLP-1 patient-support voice demo, hosted on Vercel. Independent of the pharmacy application and presenter sales demo.
 
@@ -8,7 +8,7 @@ Node 24: `npm ci`, `npm test`, `npm run build`. `npm run dev` previews the inter
 
 ## Homepage design
 
-The public homepage implements the supplied **Warbler Rx v2** design from “Warbler Safety design review.zip” (October 8, 2026): Geist typography, a simplified header, gold animated voice orb, numbered barriers, study context, process cards, founder photo, security section and closing call to action. The original calendar destination remains connected. Privacy, demo terms and security overview links open accessible dialogs with factual information about the current website demo.
+The public homepage implements the supplied **Warbler Rx v2** design from “Warbler Safety design review.zip” (October 8, 2026): Geist typography, a simplified header, gold animated voice orb, numbered barriers, study context, process cards, founder photo, security section and closing call to action. The original calendar destination remains connected. All three Book a demo buttons reveal the existing founder photo on mouse hover or keyboard focus, with reduced-motion support and no layout shift. The “Read the security overview” section link is removed; footer policy access remains available. Privacy, demo terms and security overview links open accessible dialogs with factual information about the current website demo.
 
 The prototype’s simulated call is replaced with the real voice controller. Mute/end controls, error recovery, duration, and actual post-call analysis remain available. The gold connector and result-card reveal are retained. Reduced-motion preferences disable animation. The demo caption reflects browser role-play rather than implying that this demo makes phone calls or sends texts.
 
@@ -37,7 +37,7 @@ Clinical symptoms, adverse events, treatment changes, restart, missed-dose and p
 - History may lag and per-instance locks/counters are not distributed. User metadata is not a security boundary. These checks reduce abuse; provider limits and the Free allowance are the independent limits. Revisit controls before promoting to high traffic.
 - ElevenLabs Free does not include commercial rights; review licensing before commercial promotion. See https://elevenlabs.io/pricing/agents and https://help.elevenlabs.io/hc/en-us/articles/13313564601361-Can-I-publish-the-content-I-generate-on-the-platform . The optional attribution link is omitted from the demo interface.
 - `VOICE_DEMO_ENABLED=false` plus redeployment disables new calls. Production and preview use the isolated website agent. The previous Retell implementation is preserved in Git history; there is no automatic provider fallback.
-- Stage with Vercel `--prod --skip-domain`, verify, then promote. Keep the pharmacy and presenter deployments untouched. The canonical site is https://warblersafety.com; www redirects there and GitHub Pages is retired.
+- Stage with Vercel `--prod --skip-domain`, verify, then promote. Keep the pharmacy and presenter deployments untouched. The canonical site is https://warbler-health.com; both old warblersafety.com hosts, the new www host and stable Vercel aliases redirect there with paths and queries preserved. GoDaddy remains the registrar/DNS provider; Vercel hosts the site. Existing email addresses remain unchanged until replacement mailboxes are configured. GitHub Pages is retired.
 
 ## Verification
 

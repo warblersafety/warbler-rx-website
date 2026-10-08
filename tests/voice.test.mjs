@@ -18,10 +18,11 @@ test('anonymous callers cannot choose agents, inject prompts or enable tools', (
 test('session API only accepts approved origins and JSON POST requests', () => {
   assert.doesNotThrow(() => checkRequest(req, { VERCEL: '1' }));
   const originRequest = origin => ({ ...req, headers: { ...req.headers, origin } });
+  for (const origin of ['https://warbler-health.com', 'https://www.warbler-health.com']) assert.doesNotThrow(() => checkRequest(originRequest(origin), { VERCEL: '1' }));
   assert.doesNotThrow(() => checkRequest(originRequest('https://warbler-rx-website-noahdelay-techs-projects.vercel.app'), { VERCEL: '1' }));
   assert.doesNotThrow(() => checkRequest(originRequest('https://production.example.test'), { VERCEL: '1', VERCEL_PROJECT_PRODUCTION_URL: 'production.example.test' }));
   assert.throws(() => checkRequest(originRequest('https://warbler-rx-website-noahdelay-techs-projects.vercel.app.evil.test'), { VERCEL: '1' }), { status: 403 });
-  for (const origin of ['https://warblersafety.com.evil.test', 'null', undefined, 'http://localhost:5173']) assert.throws(() => checkRequest({ ...req, headers: { ...req.headers, origin } }, { VERCEL: '1' }), { status: 403 });
+  for (const origin of ['https://warbler-health.com.evil.test', 'http://warbler-health.com', 'https://warblersafety.com.evil.test', 'null', undefined, 'http://localhost:5173']) assert.throws(() => checkRequest({ ...req, headers: { ...req.headers, origin } }, { VERCEL: '1' }), { status: 403 });
   assert.throws(() => checkRequest({ ...req, method: 'GET' }), { status: 405 });
   assert.throws(() => checkRequest({ ...req, body: { value: 'x'.repeat(3000) } }), { status: 400 });
 });
