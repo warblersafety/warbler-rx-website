@@ -11,7 +11,7 @@ function harness({ tokenResponse, sessionResponse, resultResponse, resultPayload
       addEventListener(type, fn) { this.handlers[type] = fn; }, setAttribute(k,v) { this.attributes[k] = v; }, focus() {}, scrollIntoView() {} });
     return elements.get(id);
   };
-  const startButtons = ['voice-orb', 'start-voice', 'try-again', 'nav-demo'].map(element);
+  const startButtons = ['voice-orb', 'start-voice', 'nav-demo'].map(element);
   let callbacks, starts = 0, ends = 0, requests = 0, intervals = 0;
   const muted = [];
   const session = { async endSession() { ends++; callbacks?.onDisconnect(); }, setMicMuted(value) { muted.push(value); } };
@@ -91,7 +91,7 @@ test('restart hides the reveal and ignores analysis arriving from the previous c
   h.click('voice-orb'); await flush(); await h.click('end-voice');
   assert.equal(h.element('result-flow').hidden, false);
   assert.equal(h.element('result-content').hidden, true);
-  h.click('try-again'); await flush();
+  h.click('start-voice'); await flush();
   assert.equal(h.element('result-flow').hidden, true);
   resultResponse.resolve(); await flush();
   assert.equal(h.element('result-flow').hidden, true);
@@ -105,8 +105,7 @@ test('outcome highlights consented demo scheduling and clears the highlight for 
   assert.equal(h.element('result-barrier').textContent, resultPayload.barrier);
   assert.equal(h.element('result-next-step').dataset.scheduling, 'true');
   assert.equal(h.element('result-team').textContent, 'Automatic scheduling');
-  assert.match(h.element('result-next').textContent, /Demo preview only/);
-  h.click('try-again'); await flush();
+  h.click('start-voice'); await flush();
   assert.equal(h.element('result-next-step').dataset.scheduling, 'false');
   resultPayload.schedulingPreview = false;
   resultPayload.team = 'Clinical follow-up declined';
@@ -119,10 +118,17 @@ test('cost resources alone highlight the demo next step and reset on restart', a
   const resultPayload = { status: 'ready', barrier: 'Barrier ID: Cost with two pens', team: 'Text sent with resources', next: 'Simulated outcomes only — no text has been sent and no appointment has been booked.', costPreview: true };
   const h = harness({ resultPayload });
   h.click('voice-orb'); await flush(); await h.click('end-voice'); await flush();
-  assert.equal(h.element('result-barrier').textContent, resultPayload.barrier);
+  assert.equal(h.element('result-barrier').textContent, 'Cost with two pens');
   assert.equal(h.element('result-next-step').dataset.cost, 'true');
   assert.equal(h.element('result-next-step').dataset.scheduling, 'false');
-  assert.equal(h.element('result-team').textContent, 'Text sent with resources');
-  h.click('try-again'); await flush();
+  assert.equal(h.element('result-team').textContent, 'Text with resources');
+  h.click('start-voice'); await flush();
   assert.equal(h.element('result-next-step').dataset.cost, 'false');
+});
+
+test('cost actions remain distinct and prospective in the two-section result', async () => {
+  const h = harness({ resultPayload: { status: 'ready', barrier: 'Barrier ID: Cost with two pens', team: 'Text sent with resources · Appointment auto-scheduled with the customer success team', costPreview: true } });
+  h.click('voice-orb'); await flush(); await h.click('end-voice'); await flush();
+  assert.equal(h.element('result-barrier').textContent, 'Cost with two pens');
+  assert.equal(h.element('result-team').textContent, 'Text with resources\nAutomatic scheduling with the customer success team');
 });

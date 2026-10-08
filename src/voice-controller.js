@@ -41,7 +41,6 @@ function setBusy(value) {
   $('end-voice').hidden = !value;
   $('mute-voice').hidden = !value || !connected;
   $('voice-orb').disabled = value;
-  $('try-again').disabled = value;
 }
 
 function showError(message) {
@@ -61,7 +60,7 @@ async function getSummary(activeRun, callReceipt) {
   $('demo-result').hidden = false;
   $('result-content').hidden = true;
   $('result-status').hidden = false;
-  $('result-status').textContent = 'Preparing your conversation summary…';
+  $('result-status').textContent = 'Identifying your barrier and next step…';
   $('demo-result').focus({ preventScroll: true });
   for (let attempt = 0; attempt < 15; attempt++) {
     if (run !== activeRun) return;
@@ -71,9 +70,11 @@ async function getSummary(activeRun, callReceipt) {
       if (run !== activeRun) return;
       if (!response.ok || result.status === 'unavailable') break;
       if (result.status === 'ready') {
-        $('result-barrier').textContent = result.barrier;
-        $('result-team').textContent = result.team;
-        $('result-next').textContent = result.next;
+        $('result-barrier').textContent = result.barrier.replace(/^Barrier ID:\s*/i, '');
+        $('result-team').textContent = result.team
+          .replace('Text sent with resources', 'Text with resources')
+          .replace('Appointment auto-scheduled with the customer success team', 'Automatic scheduling with the customer success team')
+          .replaceAll(' · ', '\n');
         $('result-next-step').dataset.scheduling = String(result.schedulingPreview === true);
         $('result-next-step').dataset.cost = String(result.costPreview === true);
         $('result-content').hidden = false;
@@ -83,7 +84,7 @@ async function getSummary(activeRun, callReceipt) {
     } catch { break; }
     await new Promise(resolve => setTimeout(resolve, 2000));
   }
-  if (run === activeRun) $('result-status').textContent = 'Your conversation has ended, but its summary isn’t available yet. No GLP-1 refill or clinical follow-up has been arranged. You can try another situation or book a demo.';
+  if (run === activeRun) $('result-status').textContent = 'Your call has ended. Analysis is unavailable. Try another conversation using the button above.';
 }
 
 function finish(activeRun) {
