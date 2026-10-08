@@ -57,6 +57,7 @@ function friendlyError(error) {
 }
 
 async function getSummary(activeRun, callReceipt) {
+  $('result-flow').hidden = false;
   $('demo-result').hidden = false;
   $('result-content').hidden = true;
   $('result-status').hidden = false;
@@ -101,7 +102,7 @@ async function start() {
   if (!navigator.mediaDevices?.getUserMedia) { showError('Voice conversations need a browser with microphone support over a secure connection. Try a current version of Safari, Chrome, or Edge.'); return; }
   const activeRun = ++run;
   receipt = null; connected = false; failure = false; muted = false; cancelled = false; voiceMode = 'listening';
-  $('demo-error').hidden = true; $('demo-result').hidden = true;
+  $('demo-error').hidden = true; $('demo-result').hidden = true; $('result-flow').hidden = true;
   $('mute-voice').textContent = 'Mute mic'; $('mute-voice').setAttribute('aria-pressed', 'false');
   setBusy(true); status('Connecting…', 'connecting');
   $('duration').textContent = 'Up to 2 minutes';

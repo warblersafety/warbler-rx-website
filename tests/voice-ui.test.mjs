@@ -4,7 +4,7 @@ import { initVoiceDemo } from '../src/voice-controller.js';
 
 const flush = () => new Promise(resolve => setImmediate(resolve));
 const deferred = () => { let resolve; const promise = new Promise(r => { resolve = r; }); return { promise, resolve }; };
-function harness({ tokenResponse, sessionResponse, failure } = {}) {
+function harness({ tokenResponse, sessionResponse, resultResponse, failure } = {}) {
   const elements = new Map();
   const element = id => {
     if (!elements.has(id)) elements.set(id, { dataset: {}, hidden: false, disabled: false, textContent: '', handlers: {}, attributes: {},
@@ -26,7 +26,10 @@ function harness({ tokenResponse, sessionResponse, failure } = {}) {
       options.onConversationCreated(session); options.onConnect(); return session;
     } } }),
     fetch: async url => {
-      if (url.endsWith('/result')) return { ok: true, json: async () => ({ status: 'unavailable' }) };
+      if (url.endsWith('/result')) {
+        if (resultResponse) await resultResponse.promise;
+        return { ok: true, json: async () => ({ status: 'ready', barrier: 'Coverage barrier', team: 'Pharmacy support', next: 'Demo preview only.' }) };
+      }
       requests++;
       if (tokenResponse) await tokenResponse.promise;
       return { ok: true, json: async () => ({ token: 'fictional-token', receipt: 'test-receipt', scenarioId: 'coverage', userId: 'test' }) };
@@ -81,4 +84,16 @@ test('leaving the page ends the current session', async () => {
   const h = harness(); h.click('voice-orb'); await flush();
   h.window.handlers.pagehide(); await flush();
   assert.equal(h.ends, 1);
+});
+
+test('restart hides the reveal and ignores analysis arriving from the previous conversation', async () => {
+  const resultResponse = deferred(); const h = harness({ resultResponse });
+  h.click('voice-orb'); await flush(); await h.click('end-voice');
+  assert.equal(h.element('result-flow').hidden, false);
+  assert.equal(h.element('result-content').hidden, true);
+  h.click('try-again'); await flush();
+  assert.equal(h.element('result-flow').hidden, true);
+  resultResponse.resolve(); await flush();
+  assert.equal(h.element('result-flow').hidden, true);
+  assert.equal(h.element('result-content').hidden, true);
 });
