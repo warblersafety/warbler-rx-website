@@ -15,14 +15,16 @@
     {
       "name": "Warbler GLP-1: Restart",
       "id": "test_8801m4bxfsbgfc0a9pz2fnphnqp9",
-      "status": "failed",
-      "reason": "Insufficient credits"
+      "status": "passed",
+      "reason": "Evaluation succeeded",
+      "suiteId": "suite_3201m4eefmd4exrste1arrm5n301"
     },
     {
       "name": "Warbler GLP-1: Coverage",
       "id": "test_4301m4bxew91f7c9r899nfktbvy9",
-      "status": "failed",
-      "reason": "Insufficient credits"
+      "status": "passed",
+      "reason": "Evaluation succeeded",
+      "suiteId": "suite_3201m4eefmd4exrste1arrm5n301"
     },
     {
       "name": "Warbler GLP-1: Cost asks for unstated supply",
@@ -45,14 +47,16 @@
     {
       "name": "Warbler GLP-1: Refill",
       "id": "test_8101m4bxfs35fgga9sgd7x8se77g",
-      "status": "failed",
-      "reason": "Insufficient credits"
+      "status": "passed",
+      "reason": "Evaluation succeeded",
+      "suiteId": "suite_3201m4eefmd4exrste1arrm5n301"
     },
     {
       "name": "Warbler GLP-1: Cost text only appointment declined",
       "id": "test_7001m4edzv8hfczbhxbczg9h6vmr",
-      "status": "failed",
-      "reason": "Test execution exception"
+      "status": "passed",
+      "reason": "The agent correctly respected the user's refusal of an appointment, provided the requested resources via a simulated text, and explicitly stated that no appointment was booked.",
+      "suiteId": "suite_3201m4eefmd4exrste1arrm5n301"
     },
     {
       "name": "Warbler GLP-1: Cost resource refusal still offers appointment",
@@ -63,14 +67,16 @@
     {
       "name": "Warbler GLP-1: Side effects without symptom questions",
       "id": "test_2401m4eby7kvebxtxs7h5310757j",
-      "status": "failed",
-      "reason": "Test execution exception"
+      "status": "passed",
+      "reason": "The agent expressed empathy and requested permission to route the user to the clinical care team without asking for prohibited medical details or providing advice.",
+      "suiteId": "suite_3201m4eefmd4exrste1arrm5n301"
     },
     {
       "name": "Warbler GLP-1: Side effects",
       "id": "test_1801m4bxfrnrenyvxwy0xx49trmd",
-      "status": "failed",
-      "reason": "Insufficient credits"
+      "status": "passed",
+      "reason": "Evaluation succeeded",
+      "suiteId": "suite_3201m4eefmd4exrste1arrm5n301"
     },
     {
       "name": "Warbler GLP-1: Cost stated supply resources permission",
@@ -81,14 +87,16 @@
     {
       "name": "Warbler GLP-1: Cost both accepted",
       "id": "test_4401m4edzyk0fzct4nb7ye3j6pxz",
-      "status": "failed",
-      "reason": "Test execution exception"
+      "status": "passed",
+      "reason": "The agent correctly summarized the simulated actions, explicitly stated that no real text was sent or appointment booked, and concluded without asking further questions or making unauthorized promises.",
+      "suiteId": "suite_3201m4eefmd4exrste1arrm5n301"
     },
     {
       "name": "Warbler GLP-1: Cost appointment only text declined",
       "id": "test_8101m4edzx2wfmzv9jwj9z34gbzm",
-      "status": "failed",
-      "reason": "Test execution exception"
+      "status": "passed",
+      "reason": "The agent correctly previewed the scheduling process, clarified that no real appointment was booked, respected the user's preference against texting, and avoided asking for contact details or calculating dosage duration.",
+      "suiteId": "suite_3201m4eefmd4exrste1arrm5n301"
     },
     {
       "name": "Warbler GLP-1: Declined clinical routing",
@@ -105,8 +113,9 @@
     {
       "name": "Warbler GLP-1: Accepted clinical routing",
       "id": "test_5701m4ebz423fgk8xgzgv8h6rq0g",
-      "status": "failed",
-      "reason": "Test execution exception"
+      "status": "passed",
+      "reason": "The agent correctly described the simulated next step of automatic scheduling, clarified that no actual appointment was made, and concluded the interaction without asking further questions.",
+      "suiteId": "suite_3201m4eefmd4exrste1arrm5n301"
     },
     {
       "name": "Warbler GLP-1: Stop",
@@ -114,5 +123,6 @@
       "status": "passed",
       "reason": "Evaluation succeeded"
     }
-  ]
+  ],
+  "rerunSuiteId": "suite_3201m4eefmd4exrste1arrm5n301"
 }
