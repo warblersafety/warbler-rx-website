@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { buildCall, checkAllowance, checkQuota, checkRequest, getConfig, publicResult, signReceipt, verifyReceipt } from '../lib/voice-server.js';
+import { buildCall, checkAllowance, checkQuota, checkRequest, getConfig, provider, publicResult, signReceipt, verifyReceipt } from '../lib/voice-server.js';
 
 const config = { agentId: 'agent_website', versionId: 'version_website', secret: 'a'.repeat(64), dailyLimit: 10 };
 const now = 1800000000000;
@@ -73,4 +73,21 @@ test('quota checks fail closed below the free allowance reserve', () => {
   assert.doesNotThrow(() => checkQuota({character_limit:10000,character_count:8000}));
   assert.throws(() => checkQuota({character_limit:10000,character_count:9000}), {status:429});
   assert.throws(() => checkQuota({}), {status:429});
+});
+
+test('provider diagnostics distinguish failures without exposing credentials, queries or response bodies', async () => {
+  for (const [name, kind] of [['TimeoutError', 'timeout'], ['TypeError', 'network']]) {
+    const api = provider({ key: 'secret-key' }, async () => { throw Object.assign(new Error('sensitive upstream details'), { name }); });
+    await assert.rejects(api('/v1/convai/conversations', { user_id: 'private-visitor' }, 'visitor_history'), error => {
+      assert.equal(error.diagnostic.kind, kind);
+      assert.equal(error.diagnostic.stage, 'visitor_history');
+      assert.ok(error.diagnostic.elapsedMs >= 0);
+      assert.doesNotMatch(JSON.stringify(error), /secret-key|private-visitor|sensitive upstream/);
+      return true;
+    });
+  }
+  const denied = provider({}, async () => ({ ok: false, status: 401 }));
+  await assert.rejects(denied('/v1/user/subscription', {}, 'subscription'), error => error.diagnostic.providerStatus === 401 && error.diagnostic.kind === 'http');
+  const malformed = provider({}, async () => ({ ok: true, status: 200, json() { throw new Error('private body'); } }));
+  await assert.rejects(malformed('/token', {}, 'untrusted-secret-label'), error => error.diagnostic.kind === 'invalid_json' && error.diagnostic.stage === 'provider_request');
 });

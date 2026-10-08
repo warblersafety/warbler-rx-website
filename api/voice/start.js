@@ -17,10 +17,10 @@ export default async function handler(req, res) {
     starting.add(visitor); ownsLock = true;
     const api = provider(config);
     const filter = { agent_id: config.agentId, call_start_after_unix: Math.floor((now-86400_000)/1000), page_size:100 };
-    const [history, own, quota] = await Promise.all([api('/v1/convai/conversations', filter), api('/v1/convai/conversations', {...filter,user_id:visitor}),api('/v1/user/subscription')]);
+    const [history, own, quota] = await Promise.all([api('/v1/convai/conversations', filter, 'history'), api('/v1/convai/conversations', {...filter,user_id:visitor}, 'visitor_history'),api('/v1/user/subscription', {}, 'subscription')]);
     checkQuota(quota);
     checkAllowance(history.conversations, own.conversations, config.dailyLimit, now);
-    const call = await api('/v1/convai/conversation/token', request);
+    const call = await api('/v1/convai/conversation/token', request, 'session_token');
     if(!call.token || !call.conversation_id) throw new Error('Invalid session response');
     attempts.set(visitor,[...(attempts.get(visitor)||[]),now]);
     console.info(JSON.stringify({ event: 'voice_demo_created', scenario: req.body.scenarioId, provider:'elevenlabs' }));
