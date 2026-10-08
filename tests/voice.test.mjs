@@ -48,8 +48,8 @@ test('provider history limits repeats and daily use across process restarts', ()
 
 test('actual analysis overrides scenario and clinical concerns retain clinical review', () => {
   const result = publicResult({ analysis: { data_collection_results: { barrier: {value:'side_effects'}, review_team: {value:'none'}, patient_need: {value:'<script>bad</script>'} } } });
-  assert.equal(result.team, 'Clinical review');
-  assert.equal(result.barrier, 'Reported GLP-1 side effects');
+  assert.equal(result.team, 'Clinical care team');
+  assert.equal(result.barrier, 'Reported medication side effect');
   assert.equal(JSON.stringify(result).includes('<script>'), false);
   assert.match(result.next, /No clinician has been contacted/);
   assert.deepEqual(publicResult({ status: 'done' }), { status: 'pending' });
@@ -91,4 +91,45 @@ test('provider diagnostics distinguish failures without exposing credentials, qu
   await assert.rejects(denied('/v1/user/subscription', {}, 'subscription'), error => error.diagnostic.providerStatus === 401 && error.diagnostic.kind === 'http');
   const malformed = provider({}, async () => ({ ok: true, status: 200, json() { throw new Error('private body'); } }));
   await assert.rejects(malformed('/token', {}, 'untrusted-secret-label'), error => error.diagnostic.kind === 'invalid_json' && error.diagnostic.stage === 'provider_request');
+});
+
+function analyzed(values) {
+  return { analysis: { data_collection_results: Object.fromEntries(Object.entries(values).map(([key, value]) => [key, { value }])) } };
+}
+
+test('side-effect summary names the stated medication and previews scheduling only with consent', () => {
+  for (const [medication, name] of [['glp1', 'GLP-1'], ['ozempic', 'Ozempic'], ['metformin', 'metformin'], ['amoxicillin', 'amoxicillin']]) {
+    const result = publicResult(analyzed({ barrier: 'side_effects', medication, clinical_routing: 'accepted' }));
+    assert.equal(result.barrier, `Reported ${name} side effect`);
+    assert.equal(result.team, 'Automatic scheduling');
+    assert.equal(result.schedulingPreview, true);
+    assert.match(result.next, /clinical care team’s availability/);
+    assert.match(result.next, /Demo preview only — no appointment has been booked/);
+  }
+});
+
+test('declined, unanswered and missing consent never become a scheduling preview', () => {
+  for (const clinical_routing of ['declined', 'unclear', 'not_discussed', undefined, 'booked']) {
+    const result = publicResult(analyzed({ barrier: 'side_effects', clinical_routing }));
+    assert.equal(result.schedulingPreview, false);
+    assert.doesNotMatch(result.team, /Automatic scheduling/);
+    if (clinical_routing === 'declined') assert.match(result.team, /declined/);
+    else assert.match(result.next, /Permission for follow-up was not confirmed/);
+  }
+  assert.equal(publicResult(analyzed({ barrier: 'coverage', clinical_routing: 'accepted' })).schedulingPreview, false);
+});
+
+test('emergency routing overrides routine follow-up even when classification is logistical', () => {
+  const result = publicResult(analyzed({ barrier: 'coverage', review_team: 'pharmacy_support', clinical_routing: 'emergency' }));
+  assert.equal(result.schedulingPreview, false);
+  assert.equal(result.team, 'Immediate medical help');
+  assert.match(result.next, /local emergency services/);
+});
+
+test('unknown medication or malicious analysis stays generic and never leaks free text', () => {
+  for (const medication of ['other', 'unknown', undefined, '__proto__', 'constructor', '<script>private name</script>']) {
+    const result = publicResult(analyzed({ barrier: 'side_effects', medication }));
+    assert.equal(result.barrier, 'Reported medication side effect');
+    assert.doesNotMatch(JSON.stringify(result), /private name|<script>|__proto__|GLP-1/);
+  }
 });

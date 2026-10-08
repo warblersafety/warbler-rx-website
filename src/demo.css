@@ -56,3 +56,10 @@
 @keyframes result-detail{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @media(max-width:640px){.result-flow{padding-top:56px}.result-connector{height:56px}}
 @media(prefers-reduced-motion:reduce){.result-flow .result-connector,.result-flow .demo-result,.result-flow .result-eyebrow,.result-flow h3,.result-flow #result-status,.result-flow #try-again,#result-content:not([hidden]) .result-grid>div,#result-content:not([hidden]) #result-next{animation:none}}
+
+/* Scheduling is highlighted only after explicit clinical-routing consent. */
+#result-next-step { padding: 16px 18px; border-radius: 14px; background: #e2e2dc; }
+#result-next-step[data-scheduling="true"] { background: #ffc51a; color: #191a15; }
+#result-next-step[data-scheduling="true"] .result-label { color: #514310; }
+#result-next-step #result-team { font-weight: 600; }
+.result-grid { align-items: center; }
