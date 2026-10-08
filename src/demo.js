@@ -238,3 +238,19 @@ $('try-again').addEventListener('click', () => {
   document.querySelector(`[data-scenario="${selected.id}"]`).focus({ preventScroll: true });
 });
 window.addEventListener('pagehide', () => { void session?.endSession(); });
+
+// The Paper homepage opens the existing voice experience only on explicit interaction.
+const voiceDialog = document.getElementById('voice-dialog');
+let demoOpener;
+document.querySelectorAll('[data-open-demo]').forEach(button => {
+  button.addEventListener('click', () => {
+    demoOpener = button;
+    voiceDialog.showModal();
+  });
+});
+document.getElementById('close-demo').addEventListener('click', () => voiceDialog.close());
+voiceDialog.addEventListener('close', () => {
+  if (busy) void end();
+  demoOpener?.focus({ preventScroll: true });
+});
+if (location.hash === '#try-warbler') voiceDialog.showModal();

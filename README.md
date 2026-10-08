@@ -6,6 +6,10 @@ Marketing website with a fictional GLP-1 patient-support voice demo, hosted on V
 
 Node 24: `npm ci`, `npm test`, `npm run build`. `npm run dev` previews the interface; use `vercel dev` for server endpoints. Set `.env.example` variables in Vercel or an ignored local file. Never prefix credentials with `VITE_`.
 
+## Homepage design
+
+The public homepage follows the **Warbler — Home (Desktop)** artboard in [Warbler Rx — Redesign](https://app.paper.design/file/01M4C37DJS1R87AYKD1SFRFJYG/p-1-0), exported October 7, 2026. `index.html` and `src/site.css` implement the Paper content, type, yellow orb, barrier list, process cards and responsive layout. Booking buttons retain the existing calendar link. Voice buttons open the existing live demo in an accessible dialog; opening the dialog does not start audio. Closing or pressing Escape ends an active session and returns focus to the opener. The separate conversation-routing concept and inline motion prototype are excluded from this release.
+
 ## Voice flow
 
 Choose coverage, side effects, forgotten refill, affordability, delivery, or restart. The visitor plays a fictional GLP-1 patient. An original feather flexes with live microphone or agent audio levels, gathers while connecting/processing, and becomes still when the microphone is muted. State labels follow provider events. The renderer reuses the SDK audio analysis without requesting another microphone stream. All six barriers remain visible as a selectable list at every screen size; reduced-motion preferences keep the feather static.
@@ -31,7 +35,7 @@ Clinical symptoms, adverse events, treatment changes, restart, missed-dose and p
 - History may lag and per-instance locks/counters are not distributed. User metadata is not a security boundary. These checks reduce abuse; provider limits and the Free allowance are the independent limits. Revisit controls before promoting to high traffic.
 - ElevenLabs Free does not include commercial rights; review licensing before commercial promotion. See https://elevenlabs.io/pricing/agents and https://help.elevenlabs.io/hc/en-us/articles/13313564601361-Can-I-publish-the-content-I-generate-on-the-platform . The optional attribution link is omitted from the demo interface.
 - `VOICE_DEMO_ENABLED=false` plus redeployment disables new calls. Production and preview use the isolated website agent. The previous Retell implementation is preserved in Git history; there is no automatic provider fallback.
-- Stage with Vercel `--prod --skip-domain`, verify, then promote. Keep the pharmacy and presenter deployments untouched. Main still serves the previous GitHub Pages export until custom-domain migration is complete.
+- Stage with Vercel `--prod --skip-domain`, verify, then promote. Keep the pharmacy and presenter deployments untouched. The canonical site is https://warblersafety.com; www redirects there and GitHub Pages is retired.
 
 ## Verification
 
