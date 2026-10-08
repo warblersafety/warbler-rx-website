@@ -10,6 +10,9 @@
   <meta property="og:title" content="Warbler Rx — Catch prescription drop off before it happens">
   <meta property="og:description" content="Every patient deserves a follow-up call.">
   <meta name="theme-color" content="#ffffff">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/warbler-favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/assets/warbler-icon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/warbler-apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400&family=Instrument+Serif:ital@1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -19,22 +22,34 @@
 <a class="skip-link" href="#main">Skip to content</a>
 <div class="site">
   <header class="site-header">
-    <a class="wordmark" href="#main" aria-label="Warbler Rx home">Warbler Rx</a>
+    <a class="wordmark" href="#main" aria-label="Warbler Rx home"><img src="/assets/warbler-logo.png" width="56" height="56" alt=""><span>Warbler Rx</span></a>
     <nav class="nav-links" aria-label="Main navigation"><a href="#product">Product</a><a href="#how-it-works">How it works</a><a href="#for-pharmacies">For pharmacies</a><a href="#security">Security</a><a href="#company">Company</a></nav>
-    <div class="nav-actions"><button class="text-button" data-open-demo>Try the agent</button><a class="pill small" href="https://calendar.app.google/dAj1Fv4UhSUbFGfz8">Book a demo</a></div>
+    <div class="nav-actions"><button class="text-button" data-start-demo>Try the agent</button><a class="pill small" href="https://calendar.app.google/dAj1Fv4UhSUbFGfz8">Book a demo</a></div>
   </header>
   <main id="main">
     <section class="hero" aria-labelledby="hero-title">
       <h1 id="hero-title"><span>Catch prescription drop off</span><span class="hero-second"><em>before</em> it happens.</span></h1>
       <p>Warbler Rx automatically identifies patients who are likely to stop their prescription, calls them, and offers personalized solutions on the same call.</p>
-      <div class="hero-actions"><a class="pill" href="https://calendar.app.google/dAj1Fv4UhSUbFGfz8">Book a demo</a><button class="pill soft" data-open-demo>Hear a sample call</button></div>
+      <div class="hero-actions"><a class="pill" href="https://calendar.app.google/dAj1Fv4UhSUbFGfz8">Book a demo</a><button class="pill soft" data-start-demo>Hear a sample call</button></div>
     </section>
     <section class="try-section" id="product" aria-label="Talk to Warbler">
       <div class="try-stage">
-        <div class="orb-side">
-          <div class="orb" aria-hidden="true"></div>
-          <button class="pill talk-button" data-open-demo><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3" fill="#FFC21A"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg>Talk to Warbler</button>
-          <p class="mono orb-caption">YOU PLAY THE PATIENT · 2 MIN DEMO</p>
+        <div class="orb-side" id="try-warbler">
+          <button class="orb" id="voice-orb" data-start-demo data-state="idle" aria-label="Talk to Warbler — start voice demo" aria-describedby="demo-disclosure"></button>
+          <div class="orb-interface">
+            <span id="voice-state" class="voice-state" aria-hidden="true">Click the orb to talk</span>
+            <span id="connection-announcement" class="sr-only" role="status" aria-live="polite"></span>
+            <div class="voice-controls">
+              <button class="pill talk-button" id="start-voice" data-start-demo>Talk to Warbler</button>
+              <button class="pill soft" id="mute-voice" hidden aria-pressed="false">Mute mic</button>
+              <button class="pill" id="end-voice" hidden>End conversation</button>
+            </div>
+            <p class="mono orb-caption">YOU PLAY THE PATIENT · <span id="duration">2 MIN DEMO</span></p>
+            <p id="voice-hint" class="voice-hint">Click the orb and allow your microphone. Try any of these barriers in your own words.</p>
+            <p id="demo-error" class="demo-error" role="alert" hidden></p>
+            <p id="demo-disclosure" class="disclosure">AI role-play, not medical care. Use fictional details. No clinician is contacted and no refill or appointment is arranged.</p>
+            <details class="privacy-note"><summary>Microphone &amp; privacy</summary><p>Your microphone connects to ElevenLabs. Audio is processed live; saving audio recordings is disabled. Conversation text is retained for up to one day. Please use fictional details. End the conversation to stop microphone access.</p></details>
+          </div>
         </div>
         <div class="barrier-side">
           <div class="barrier-card">
@@ -44,6 +59,13 @@
             <div class="barrier-rule" aria-hidden="true"></div>
           </div>
         </div>
+      </div>
+      <div id="demo-result" class="demo-result" hidden tabindex="-1" aria-labelledby="result-title">
+        <span class="mono result-eyebrow">YOUR CONVERSATION · DEMO PREVIEW</span>
+        <h3 id="result-title">What comes after the conversation.</h3>
+        <p id="result-status" role="status">Preparing your conversation summary…</p>
+        <div id="result-content" hidden><div class="result-grid"><div><span class="result-label">Barrier identified</span><p id="result-barrier"></p></div><div><span class="result-label">Proposed next step</span><p id="result-team"></p></div></div><p id="result-next"></p></div>
+        <button id="try-again" class="pill soft" data-start-demo>Talk to Warbler again</button>
       </div>
     </section>
     <section class="problem" id="for-pharmacies" aria-labelledby="problem-title">
@@ -59,11 +81,10 @@
       </div>
     </section>
     <section class="trust" id="security" aria-label="Built for pharmacies"><div><h3>HIPAA-ready by design</h3><p>BAAs, encrypted call data, and audit logs for every conversation.</p></div><div><h3>Pharmacist in the loop</h3><p>Clinical questions are escalated, never improvised.</p></div><div><h3>Your brand, your voice</h3><p>Calls go out under your pharmacy's name, with your tone and scripts.</p></div><div><h3>Live in weeks</h3><p>Connects to your fulfillment and CRM data. No rip-and-replace.</p></div></section>
-    <section class="closing" aria-labelledby="closing-title"><div class="closing-inner"><div class="closing-copy"><p class="mono">SEE IT IN YOUR PHARMACY</p><h2 id="closing-title">Every patient deserves a follow-up call.</h2></div><div class="closing-glow" aria-hidden="true"></div><div class="closing-actions"><a class="pill yellow" href="https://calendar.app.google/dAj1Fv4UhSUbFGfz8">Book a demo</a><button class="pill outline" data-open-demo>Talk to Warbler</button></div></div></section>
+    <section class="closing" aria-labelledby="closing-title"><div class="closing-inner"><div class="closing-copy"><p class="mono">SEE IT IN YOUR PHARMACY</p><h2 id="closing-title">Every patient deserves a follow-up call.</h2></div><div class="closing-glow" aria-hidden="true"></div><div class="closing-actions"><a class="pill yellow" href="https://calendar.app.google/dAj1Fv4UhSUbFGfz8">Book a demo</a><button class="pill outline" data-start-demo>Talk to Warbler</button></div></div></section>
   </main>
   <footer id="company"><p>© 2026 Warbler Rx</p><a href="mailto:hello@warblersafety.com">hello@warblersafety.com</a></footer>
 </div>
-<dialog id="voice-dialog" aria-label="Warbler voice demo"><div class="dialog-toolbar"><span>Warbler Rx · Live voice demo</span><button id="close-demo" aria-label="Close voice demo">Close <span aria-hidden="true">×</span></button></div><div id="voice-demo-root"></div></dialog>
 <script type="module" src="/src/demo.js"></script>
 </body>
 </html>
