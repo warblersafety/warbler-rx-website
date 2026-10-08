@@ -80,12 +80,20 @@
   </div>
       <div id="result-flow" class="result-flow" hidden>
       <div class="result-connector" aria-hidden="true"></div>
-      <div id="demo-result" class="demo-result" hidden tabindex="-1" aria-labelledby="result-title">
-        <span class="mono result-eyebrow">YOUR CONVERSATION · DEMO PREVIEW</span>
-        <h3 id="result-title">What comes after the conversation.</h3>
-        <p id="result-status" role="status">Preparing your conversation summary…</p>
-        <div id="result-content" hidden><div class="result-grid"><div><span class="result-label">Barrier identified</span><p id="result-barrier"></p></div><div id="result-next-step" data-scheduling="false"><span class="result-label">Next step · demo preview</span><p id="result-team"></p></div></div><p id="result-next"></p></div>
-        <button id="try-again" class="pill soft" data-start-demo>Talk to Warbler again</button>
+      <div id="demo-result" class="demo-result" hidden tabindex="-1" aria-label="Call analysis">
+        <p id="result-status" role="status">Identifying your barrier and next step…</p>
+        <div id="result-content" hidden>
+          <div class="result-grid">
+            <section class="result-card" aria-labelledby="barrier-label">
+              <h3 id="barrier-label" class="result-label">Barrier ID</h3>
+              <p id="result-barrier" class="result-value"></p>
+            </section>
+            <section id="result-next-step" class="result-card" data-scheduling="false" data-cost="false" aria-labelledby="next-step-label">
+              <div class="result-card-heading"><h3 id="next-step-label" class="result-label">Next step</h3><span class="result-preview">Demo preview</span></div>
+              <p id="result-team" class="result-value"></p>
+            </section>
+          </div>
+        </div>
       </div>
       </div>
 </section>
