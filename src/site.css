@@ -31,3 +31,17 @@
 .study-source cite{font-style:italic}
 @media(max-width:760px){.study-section{padding-bottom:64px}.study-heading{align-items:start;flex-direction:column;gap:20px;margin-bottom:28px}.study-heading>p{max-width:440px}.study-groups{grid-template-columns:1fr;gap:28px}.study-group{display:grid;grid-template-columns:132px minmax(0,1fr);column-gap:20px;row-gap:8px;padding-bottom:28px;border-bottom:1px solid #ecece7}.study-number{grid-row:1 / 3;font-size:64px;margin:0}.study-group h3{font-size:20px;margin:0}.study-group>p:last-child{font-size:15px}.study-source{margin-top:28px}}
 @media(max-width:360px){.study-group{grid-template-columns:110px minmax(0,1fr);column-gap:14px}.study-number{font-size:54px}}
+
+/* Keep the scale of the problem above the reasons and intended response. */
+.adherence-gap{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:48px 80px;align-items:end;padding:0 clamp(20px,4vw,48px) 72px}
+.adherence-stat{display:flex;flex-direction:column;gap:20px}
+.adherence-number{font-size:clamp(110px,15vw,220px);line-height:.9;letter-spacing:-.06em;font-weight:300}
+.adherence-stat h2{font-size:clamp(28px,2.8vw,40px);line-height:1.08;letter-spacing:-.02em;max-width:640px;text-wrap:pretty}
+.adherence-source{font-size:13px;line-height:1.55;color:#5e5e5a;max-width:520px}
+.adherence-source a{text-decoration:underline;text-underline-offset:3px;color:#0a0a0a}
+.adherence-purpose{max-width:460px;padding-bottom:8px}
+.adherence-purpose h3{font-size:clamp(30px,3vw,42px);line-height:1.15;letter-spacing:-.035em;margin-bottom:22px}
+.adherence-purpose>p{font-size:20px;line-height:1.5;letter-spacing:-.01em;color:#5e5e5a;text-wrap:pretty}
+.study-section{border-top:1px solid #ecece7;padding-top:56px}
+.study-heading h2{max-width:760px}
+@media(max-width:760px){.adherence-gap{grid-template-columns:1fr;gap:36px;padding-bottom:48px}.adherence-purpose>p{font-size:18px}.study-section{padding-top:40px}}
