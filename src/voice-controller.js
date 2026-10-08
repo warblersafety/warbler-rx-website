@@ -75,6 +75,7 @@ async function getSummary(activeRun, callReceipt) {
         $('result-team').textContent = result.team;
         $('result-next').textContent = result.next;
         $('result-next-step').dataset.scheduling = String(result.schedulingPreview === true);
+        $('result-next-step').dataset.cost = String(result.costPreview === true);
         $('result-content').hidden = false;
         $('result-status').hidden = true;
         return;
@@ -105,6 +106,7 @@ async function start() {
   receipt = null; connected = false; failure = false; muted = false; cancelled = false; voiceMode = 'listening';
   $('demo-error').hidden = true; $('demo-result').hidden = true; $('result-flow').hidden = true;
   $('result-next-step').dataset.scheduling = 'false';
+  $('result-next-step').dataset.cost = 'false';
   $('mute-voice').textContent = 'Mute mic'; $('mute-voice').setAttribute('aria-pressed', 'false');
   setBusy(true); status('Connecting…', 'connecting');
   $('duration').textContent = 'Up to 2 minutes';

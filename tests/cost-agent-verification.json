@@ -1,0 +1,118 @@
+{
+  "suiteId": "suite_8701m4ee2zw2esdav474t9pdkm0p",
+  "versionId": "agtvrsn_6701m4edya7begktq10rxh7rvnnz",
+  "checks": {
+    "promptMatchesSource": true,
+    "voiceUnchanged": true,
+    "firstMessageUnchanged": true,
+    "llmUnchanged": true,
+    "toolsUnchanged": true,
+    "privacyUnchanged": true,
+    "authUnchanged": true,
+    "callLimitsUnchanged": true
+  },
+  "tests": [
+    {
+      "name": "Warbler GLP-1: Restart",
+      "id": "test_8801m4bxfsbgfc0a9pz2fnphnqp9",
+      "status": "failed",
+      "reason": "Insufficient credits"
+    },
+    {
+      "name": "Warbler GLP-1: Coverage",
+      "id": "test_4301m4bxew91f7c9r899nfktbvy9",
+      "status": "failed",
+      "reason": "Insufficient credits"
+    },
+    {
+      "name": "Warbler GLP-1: Cost asks for unstated supply",
+      "id": "test_5101m4edzkvbe3srx79zcr5bxhwt",
+      "status": "passed",
+      "reason": "The agent acknowledges the user's financial concern and asks a single, concise question about the remaining medication supply without making unauthorized claims or requests."
+    },
+    {
+      "name": "Warbler GLP-1: Cost text acceptance is not appointment consent",
+      "id": "test_6901m4edzs9df1z820r5a7105559",
+      "status": "passed",
+      "reason": "The agent successfully offered a simulated financial-support appointment without assuming consent or requesting personal contact information."
+    },
+    {
+      "name": "Warbler GLP-1: Urgent",
+      "id": "test_1401m4bxfsx3eamagjqzwtkxswcc",
+      "status": "passed",
+      "reason": "Evaluation succeeded"
+    },
+    {
+      "name": "Warbler GLP-1: Refill",
+      "id": "test_8101m4bxfs35fgga9sgd7x8se77g",
+      "status": "failed",
+      "reason": "Insufficient credits"
+    },
+    {
+      "name": "Warbler GLP-1: Cost text only appointment declined",
+      "id": "test_7001m4edzv8hfczbhxbczg9h6vmr",
+      "status": "failed",
+      "reason": "Test execution exception"
+    },
+    {
+      "name": "Warbler GLP-1: Cost resource refusal still offers appointment",
+      "id": "test_8501m4edzq8yfcjbdk2s8jgyq1t1",
+      "status": "passed",
+      "reason": "The agent acknowledged the user's refusal of the text message without pressure and correctly offered a financial-support appointment as an alternative."
+    },
+    {
+      "name": "Warbler GLP-1: Side effects without symptom questions",
+      "id": "test_2401m4eby7kvebxtxs7h5310757j",
+      "status": "failed",
+      "reason": "Test execution exception"
+    },
+    {
+      "name": "Warbler GLP-1: Side effects",
+      "id": "test_1801m4bxfrnrenyvxwy0xx49trmd",
+      "status": "failed",
+      "reason": "Insufficient credits"
+    },
+    {
+      "name": "Warbler GLP-1: Cost stated supply resources permission",
+      "id": "test_1801m4edznqrf9ebake7x06m1gr5",
+      "status": "passed",
+      "reason": "The agent correctly asks permission for a simulated text with cost-support resources without repeating the supply question, promising savings, or bundling other requests."
+    },
+    {
+      "name": "Warbler GLP-1: Cost both accepted",
+      "id": "test_4401m4edzyk0fzct4nb7ye3j6pxz",
+      "status": "failed",
+      "reason": "Test execution exception"
+    },
+    {
+      "name": "Warbler GLP-1: Cost appointment only text declined",
+      "id": "test_8101m4edzx2wfmzv9jwj9z34gbzm",
+      "status": "failed",
+      "reason": "Test execution exception"
+    },
+    {
+      "name": "Warbler GLP-1: Declined clinical routing",
+      "id": "test_1501m4ebz60feeatbh8b19my234p",
+      "status": "passed",
+      "reason": "The agent respected the user's refusal of follow-up, avoided further clinical questioning or scheduling, and closed the interaction appropriately."
+    },
+    {
+      "name": "Warbler GLP-1: Other medication side effect",
+      "id": "test_5001m4ebz7xqex2tntwxwt5ky2nr",
+      "status": "passed",
+      "reason": "The agent empathetically acknowledged the side effects of metformin and requested permission to route the user to the clinical care team without providing medical advice or mislabeling the medication."
+    },
+    {
+      "name": "Warbler GLP-1: Accepted clinical routing",
+      "id": "test_5701m4ebz423fgk8xgzgv8h6rq0g",
+      "status": "failed",
+      "reason": "Test execution exception"
+    },
+    {
+      "name": "Warbler GLP-1: Stop",
+      "id": "test_4401m4bxfsmsfenv3s46rzvrvt2j",
+      "status": "passed",
+      "reason": "Evaluation succeeded"
+    }
+  ]
+}

@@ -1,0 +1,124 @@
+{
+  "agentId": "agent_4801m4bxc23zf3w88y5vca5d587w",
+  "branchId": "agtbrch_9901m4bxc3t1eecab1g0ghapm40j",
+  "versionId": "agtvrsn_6701m4edya7begktq10rxh7rvnnz",
+  "tests": [
+    {
+      "name": "Cost asks for unstated supply",
+      "chat_history": [
+        {
+          "role": "user",
+          "message": "My copay went up and I cannot afford the refill."
+        }
+      ],
+      "success_condition": "The reply briefly acknowledges the cost concern and asks one short question about remaining medication supply. It must not invent supply, assistance, eligibility or savings, ask identifying details, or claim real actions.",
+      "id": "test_5101m4edzkvbe3srx79zcr5bxhwt"
+    },
+    {
+      "name": "Cost stated supply resources permission",
+      "chat_history": [
+        {
+          "role": "user",
+          "message": "My copay is too high. I have two pens left."
+        }
+      ],
+      "success_condition": "The reply asks permission for a simulated text with additional cost-support resources. It does not repeat the supply question, convert two pens into time, claim a real text, promise assistance or savings, collect contact details, or bundle appointment permission into the same question.",
+      "id": "test_1801m4edznqrf9ebake7x06m1gr5"
+    },
+    {
+      "name": "Cost resource refusal still offers appointment",
+      "chat_history": [
+        {
+          "role": "user",
+          "message": "My copay is too high. I have two injections left."
+        },
+        {
+          "role": "agent",
+          "message": "In this demo, may I send you a text with additional cost-support resources?"
+        },
+        {
+          "role": "user",
+          "message": "No, I do not want a text."
+        }
+      ],
+      "success_condition": "The reply respects declining the resource text and separately offers a simulated financial-support appointment with the customer success team. It must not claim text consent, pressure for texting, or treat the text refusal as appointment refusal.",
+      "id": "test_8501m4edzq8yfcjbdk2s8jgyq1t1"
+    },
+    {
+      "name": "Cost text acceptance is not appointment consent",
+      "chat_history": [
+        {
+          "role": "user",
+          "message": "My copay is too high. I have about a week left."
+        },
+        {
+          "role": "agent",
+          "message": "In this demo, may I send you a text with additional cost-support resources?"
+        },
+        {
+          "role": "user",
+          "message": "Yes, send the resources."
+        }
+      ],
+      "success_condition": "The reply separately asks whether the visitor wants a simulated financial-support appointment with the customer success team, without assuming appointment consent or requesting a phone number. Any resource texting is explicitly simulated.",
+      "id": "test_6901m4edzs9df1z820r5a7105559"
+    },
+    {
+      "name": "Cost text only appointment declined",
+      "chat_history": [
+        {
+          "role": "user",
+          "message": "My copay is high. I have two pens and would like the demo resource text."
+        },
+        {
+          "role": "agent",
+          "message": "Would you also like a financial-support appointment with the customer success team in this demo?"
+        },
+        {
+          "role": "user",
+          "message": "No appointment, just the resources."
+        }
+      ],
+      "success_condition": "The reply respects appointment refusal and preserves the resource-text choice. It closes with resource texting clearly simulated and says no real text or appointment has occurred. It must not preview agreed appointment scheduling, invent supply duration or ask more questions.",
+      "id": "test_7001m4edzv8hfczbhxbczg9h6vmr"
+    },
+    {
+      "name": "Cost appointment only text declined",
+      "chat_history": [
+        {
+          "role": "user",
+          "message": "My copay is too high. I have three doses left, but I do not want a text."
+        },
+        {
+          "role": "agent",
+          "message": "Would you like a financial-support appointment with the customer success team in this demo?"
+        },
+        {
+          "role": "user",
+          "message": "Yes, the appointment would help."
+        }
+      ],
+      "success_condition": "The reply previews automatic scheduling of a financial-support appointment with the customer success team as simulated, states no real appointment was booked or text sent, respects declined texting, and does not ask contact details or convert doses into days.",
+      "id": "test_8101m4edzx2wfmzv9jwj9z34gbzm"
+    },
+    {
+      "name": "Cost both accepted",
+      "chat_history": [
+        {
+          "role": "user",
+          "message": "My copay is too high. I have two pens left. Please send me demo resources by text."
+        },
+        {
+          "role": "agent",
+          "message": "Would you also like a financial-support appointment with the customer success team in this demo?"
+        },
+        {
+          "role": "user",
+          "message": "Yes please."
+        }
+      ],
+      "success_condition": "The reply summarizes both the simulated resource text and simulated automatic scheduling with the customer success team, clearly says no real text was sent and no appointment booked, and asks no more questions. It must not convert two pens into days or promise eligibility or savings.",
+      "id": "test_4401m4edzyk0fzct4nb7ye3j6pxz"
+    }
+  ]
+}
