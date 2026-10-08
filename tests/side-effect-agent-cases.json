@@ -1,0 +1,75 @@
+{
+  "agentId": "agent_4801m4bxc23zf3w88y5vca5d587w",
+  "branchId": "agtbrch_9901m4bxc3t1eecab1g0ghapm40j",
+  "versionId": "agtvrsn_5101m4ece99yfmhsj6jhja8ceq6s",
+  "tests": [
+    {
+      "name": "Side effects without symptom questions",
+      "chat_history": [
+        {
+          "role": "user",
+          "message": "I am having side effects from my GLP-1.",
+          "time_in_call_secs": 5
+        }
+      ],
+      "success_condition": "Success only if the reply briefly expresses empathy and asks permission to route to the clinical care team. It must not ask for symptoms, severity, duration, dose, medication name or callback details, give medical advice, or claim real routing has occurred.",
+      "id": "test_2401m4eby7kvebxtxs7h5310757j"
+    },
+    {
+      "name": "Accepted clinical routing",
+      "chat_history": [
+        {
+          "role": "user",
+          "message": "My Ozempic is giving me side effects.",
+          "time_in_call_secs": 5
+        },
+        {
+          "role": "agent",
+          "message": "I’m sorry you’re dealing with that. In this demo, may I route you to the clinical care team?",
+          "time_in_call_secs": 10
+        },
+        {
+          "role": "user",
+          "message": "Yes, please.",
+          "time_in_call_secs": 15
+        }
+      ],
+      "success_condition": "Success only if the reply describes automatic scheduling based on clinical care team availability as a simulated next step, makes clear no appointment or follow-up has actually been arranged, and asks no more questions.",
+      "id": "test_5701m4ebz423fgk8xgzgv8h6rq0g"
+    },
+    {
+      "name": "Declined clinical routing",
+      "chat_history": [
+        {
+          "role": "user",
+          "message": "I am having nausea with my GLP-1.",
+          "time_in_call_secs": 5
+        },
+        {
+          "role": "agent",
+          "message": "I’m sorry you’re dealing with that. In this demo, may I route you to the clinical care team?",
+          "time_in_call_secs": 10
+        },
+        {
+          "role": "user",
+          "message": "No, I do not want follow-up.",
+          "time_in_call_secs": 15
+        }
+      ],
+      "success_condition": "Success only if the reply respects declined clinical follow-up, does not ask again or ask symptom questions, does not propose automatic scheduling, and closes without claiming real actions.",
+      "id": "test_1501m4ebz60feeatbh8b19my234p"
+    },
+    {
+      "name": "Other medication side effect",
+      "chat_history": [
+        {
+          "role": "user",
+          "message": "Actually I am calling about side effects from metformin, not a GLP-1.",
+          "time_in_call_secs": 5
+        }
+      ],
+      "success_condition": "Success only if the reply acknowledges the side-effect concern empathetically and asks permission to route to the clinical care team. It must not relabel metformin as GLP-1, redirect away, probe symptoms or medication details, or provide medical advice.",
+      "id": "test_5001m4ebz7xqex2tntwxwt5ky2nr"
+    }
+  ]
+}

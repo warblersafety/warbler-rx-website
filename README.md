@@ -24,7 +24,7 @@ Click the gold orb to talk about a fictional GLP-1 prescription barrier in your 
 
 The browser supports mute, end, cancellation and microphone errors. Sessions end after two minutes on both client and provider. LiveKit is pinned to 2.16.1 per ElevenLabs plugin compatibility guidance; recheck compatibility before upgrading.
 
-`/api/voice/result` verifies a one-hour signed conversation receipt and the agent/version. It maps actual enum analysis to reviewed GLP-1 labels. Missing analysis remains pending/unavailable; it never substitutes an expected scenario result. No transcript, audio, free-form model output or API key is returned.
+`/api/voice/result` verifies a one-hour signed conversation receipt and the agent/version. It maps actual enum analysis to reviewed labels. Side effects use the medication explicitly reported by the visitor, including supported non-GLP-1 medications; an unknown or unlisted medication stays generic rather than being relabeled GLP-1. Missing analysis remains pending/unavailable; it never substitutes an expected scenario result. No transcript, audio, free-form model output or API key is returned.
 
 ## Agent and privacy
 
@@ -32,7 +32,7 @@ The browser supports mute, end, cancellation and microphone errors. Sessions end
 
 Audio is processed live by ElevenLabs but audio recording storage is disabled. Conversation text is retained for one day; PII redaction is not enabled on this Free account. The interface discloses this and requests fictional details. Failure logs include bounded request-stage labels, error categories, HTTP status and elapsed time, excluding credentials, query values and provider response bodies. Usage metadata uses an HMAC identifier, not the raw IP; Vercel retains ordinary request logs.
 
-Clinical symptoms, adverse events, treatment changes, restart, missed-dose and product-condition questions go to a simulated clinician/pharmacist review. No medication instructions, symptom reassurance, coverage guarantees or real follow-up claims are permitted. Immediate emergencies end role-play and direct real-world help.
+Side effects receive brief empathy and a request for permission to route to the clinical care team, with no symptom, dose, medication-name or callback-time questions. An explicit request for clinical follow-up already counts as permission. Accepted routing highlights **Automatic scheduling** based on the clinical care team’s availability, clearly labeled as a demo preview with no appointment booked. Declined, unanswered and missing consent do not display scheduling; immediate emergencies instead direct real-world help. Other treatment, restart, missed-dose and product-condition questions go to simulated clinician/pharmacist review. No medication instructions, symptom reassurance, coverage guarantees or real follow-up claims are permitted. Immediate emergencies end role-play and direct real-world help.
 
 ## Usage and deployment
 
@@ -47,4 +47,4 @@ Clinical symptoms, adverse events, treatment changes, restart, missed-dose and p
 
 `npm test` covers direct orb initiation, duplicate-click prevention, mute/end, cancellation during token fetch and SDK setup, microphone denial, page exit, scenario validation, request restrictions, receipt tampering/expiry, usage/credit admission, clinical routing, unavailable analysis and missing configuration. `npm run build` checks the production bundle.
 
-`scripts/test-elevenlabs.mjs` creates and runs six synthetic conversation tests: coverage, side effects, refill, restart, stop and urgent symptoms. All six passed on the pinned version, including successful end-call tool execution. Provider simulations do not verify human microphone/audio quality or clinical effectiveness. Browser checks cover the compact 761×575 viewport and mobile layout; deployment checks verify session creation and signed-summary access.
+`scripts/test-elevenlabs.mjs` runs the six existing synthetic conversation tests (coverage, side effects, refill, restart, stop and urgent symptoms) plus four side-effect response regressions from `tests/side-effect-agent-cases.json`: no symptom probing, accepted routing, declined routing and a non-GLP-1 medication. All ten passed on version `agtvrsn_5101m4ece99yfmhsj6jhja8ceq6s` (suite `suite_7101m4echhn4e3ktxdq4as5v1991`). The provider editor normalizes prompt whitespace; readback verified identical prompt content and preservation of voice, tools, privacy, limits and unrelated settings. Provider simulations do not verify human microphone/audio quality or clinical effectiveness. Browser checks cover the compact 761×575 viewport and mobile layout; deployment checks verify session creation and signed-summary access.

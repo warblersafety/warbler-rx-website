@@ -61,7 +61,7 @@ async function getSummary(activeRun, callReceipt) {
   $('demo-result').hidden = false;
   $('result-content').hidden = true;
   $('result-status').hidden = false;
-  $('result-status').textContent = 'Preparing your GLP-1 conversation summary…';
+  $('result-status').textContent = 'Preparing your conversation summary…';
   $('demo-result').focus({ preventScroll: true });
   for (let attempt = 0; attempt < 15; attempt++) {
     if (run !== activeRun) return;
@@ -74,6 +74,7 @@ async function getSummary(activeRun, callReceipt) {
         $('result-barrier').textContent = result.barrier;
         $('result-team').textContent = result.team;
         $('result-next').textContent = result.next;
+        $('result-next-step').dataset.scheduling = String(result.schedulingPreview === true);
         $('result-content').hidden = false;
         $('result-status').hidden = true;
         return;
@@ -103,6 +104,7 @@ async function start() {
   const activeRun = ++run;
   receipt = null; connected = false; failure = false; muted = false; cancelled = false; voiceMode = 'listening';
   $('demo-error').hidden = true; $('demo-result').hidden = true; $('result-flow').hidden = true;
+  $('result-next-step').dataset.scheduling = 'false';
   $('mute-voice').textContent = 'Mute mic'; $('mute-voice').setAttribute('aria-pressed', 'false');
   setBusy(true); status('Connecting…', 'connecting');
   $('duration').textContent = 'Up to 2 minutes';

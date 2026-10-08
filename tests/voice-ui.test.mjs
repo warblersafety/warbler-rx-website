@@ -4,7 +4,7 @@ import { initVoiceDemo } from '../src/voice-controller.js';
 
 const flush = () => new Promise(resolve => setImmediate(resolve));
 const deferred = () => { let resolve; const promise = new Promise(r => { resolve = r; }); return { promise, resolve }; };
-function harness({ tokenResponse, sessionResponse, resultResponse, failure } = {}) {
+function harness({ tokenResponse, sessionResponse, resultResponse, resultPayload, failure } = {}) {
   const elements = new Map();
   const element = id => {
     if (!elements.has(id)) elements.set(id, { dataset: {}, hidden: false, disabled: false, textContent: '', handlers: {}, attributes: {},
@@ -28,7 +28,7 @@ function harness({ tokenResponse, sessionResponse, resultResponse, failure } = {
     fetch: async url => {
       if (url.endsWith('/result')) {
         if (resultResponse) await resultResponse.promise;
-        return { ok: true, json: async () => ({ status: 'ready', barrier: 'Coverage barrier', team: 'Pharmacy support', next: 'Demo preview only.' }) };
+        return { ok: true, json: async () => (resultPayload || { status: 'ready', barrier: 'Coverage barrier', team: 'Pharmacy support', next: 'Demo preview only.' }) };
       }
       requests++;
       if (tokenResponse) await tokenResponse.promise;
@@ -96,4 +96,21 @@ test('restart hides the reveal and ignores analysis arriving from the previous c
   resultResponse.resolve(); await flush();
   assert.equal(h.element('result-flow').hidden, true);
   assert.equal(h.element('result-content').hidden, true);
+});
+
+test('outcome highlights consented demo scheduling and clears the highlight for a new call', async () => {
+  const resultPayload = { status: 'ready', barrier: 'Reported metformin side effect', team: 'Automatic scheduling', next: 'Based on clinical team availability. Demo preview only.', schedulingPreview: true };
+  const h = harness({ resultPayload });
+  h.click('voice-orb'); await flush(); await h.click('end-voice'); await flush();
+  assert.equal(h.element('result-barrier').textContent, resultPayload.barrier);
+  assert.equal(h.element('result-next-step').dataset.scheduling, 'true');
+  assert.equal(h.element('result-team').textContent, 'Automatic scheduling');
+  assert.match(h.element('result-next').textContent, /Demo preview only/);
+  h.click('try-again'); await flush();
+  assert.equal(h.element('result-next-step').dataset.scheduling, 'false');
+  resultPayload.schedulingPreview = false;
+  resultPayload.team = 'Clinical follow-up declined';
+  await h.click('end-voice'); await flush();
+  assert.equal(h.element('result-next-step').dataset.scheduling, 'false');
+  assert.equal(h.element('result-team').textContent, 'Clinical follow-up declined');
 });
