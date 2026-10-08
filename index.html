@@ -1,135 +1,69 @@
-<!DOCTYPE html>
-<html lang="en"><head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="canonical" href="https://warblersafety.com/">
-<meta property="og:url" content="https://warblersafety.com/">
-
-<title>Warbler Rx — GLP-1 patient support</title>
-<meta name="description" content="Try a live GLP-1 patient conversation with Warbler Rx. Explore refill support, coverage barriers, and clinical follow-up in a fictional voice demo.">
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<style>/* latin-ext */
-@font-face {
-  font-family: 'DM Sans';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url("/assets/dm-sans-ext.woff2") format('woff2');
-  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
-}
-/* latin */
-@font-face {
-  font-family: 'DM Sans';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url("/assets/dm-sans.woff2") format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-/* latin-ext */
-@font-face {
-  font-family: 'DM Sans';
-  font-style: normal;
-  font-weight: 500;
-  font-display: swap;
-  src: url("/assets/dm-sans-ext.woff2") format('woff2');
-  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
-}
-/* latin */
-@font-face {
-  font-family: 'DM Sans';
-  font-style: normal;
-  font-weight: 500;
-  font-display: swap;
-  src: url("/assets/dm-sans.woff2") format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-/* latin-ext */
-@font-face {
-  font-family: 'DM Sans';
-  font-style: normal;
-  font-weight: 600;
-  font-display: swap;
-  src: url("/assets/dm-sans-ext.woff2") format('woff2');
-  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
-}
-/* latin */
-@font-face {
-  font-family: 'DM Sans';
-  font-style: normal;
-  font-weight: 600;
-  font-display: swap;
-  src: url("/assets/dm-sans.woff2") format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-</style>
-<style>
-body{margin:0;background:#fff;color:#09273a;font-family:'DM Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
-a{color:#09273a;text-decoration:none}a:hover{color:#0f4a6b}
-*{box-sizing:border-box}
-</style>
-
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Warbler Rx — Catch prescription drop off before it happens</title>
+  <meta name="description" content="Warbler Rx helps pharmacies identify prescription drop-off, understand what gets in the way, and connect patients with the follow-up they need.">
+  <link rel="canonical" href="https://warblersafety.com/">
+  <meta property="og:url" content="https://warblersafety.com/">
+  <meta property="og:title" content="Warbler Rx — Catch prescription drop off before it happens">
+  <meta property="og:description" content="Every patient deserves a follow-up call.">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400&family=Instrument+Serif:ital@1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/src/site.css">
 </head>
 <body>
-
-
-
-<div style="position:sticky;top:0;z-index:10;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-bottom:1px solid #e6eaed">
-  <nav style="max-width:1200px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:24px">
-    <a href="#" style="display:flex;align-items:center;gap:10px;flex:none">
-      <img src="/assets/warbler.png" alt="" style="width:40px;height:40px;object-fit:contain">
-      <span style="font-size:22px;font-weight:600;letter-spacing:-.03em;white-space:nowrap">Warbler <span style="font-weight:500;color:#5a6e7b">Rx</span></span>
-    </a>
-    <div style="display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:8px 22px;font-size:15px;white-space:nowrap">
-      <a href="#try-warbler" style="color:#34505f">Try the voice agent</a>
-      <a href="https://calendar.app.google/dAj1Fv4UhSUbFGfz8" style="background:#09273a;color:#fff;padding:10px 18px;border-radius:999px;font-weight:500;white-space:nowrap">Book a demo</a>
-    </div>
-  </nav>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="site">
+  <header class="site-header">
+    <a class="wordmark" href="#main" aria-label="Warbler Rx home">Warbler Rx</a>
+    <nav class="nav-links" aria-label="Main navigation"><a href="#product">Product</a><a href="#how-it-works">How it works</a><a href="#for-pharmacies">For pharmacies</a><a href="#security">Security</a><a href="#company">Company</a></nav>
+    <div class="nav-actions"><button class="text-button" data-open-demo>Try the agent</button><a class="pill small" href="https://calendar.app.google/dAj1Fv4UhSUbFGfz8">Book a demo</a></div>
+  </header>
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <h1 id="hero-title"><span>Catch prescription drop off</span><span class="hero-second"><em>before</em> it happens.</span></h1>
+      <p>Warbler Rx automatically identifies patients who are likely to stop their prescription, calls them, and offers personalized solutions on the same call.</p>
+      <div class="hero-actions"><a class="pill" href="https://calendar.app.google/dAj1Fv4UhSUbFGfz8">Book a demo</a><button class="pill soft" data-open-demo>Hear a sample call</button></div>
+    </section>
+    <section class="try-section" id="product" aria-label="Talk to Warbler">
+      <div class="try-stage">
+        <div class="orb-side">
+          <div class="orb" aria-hidden="true"></div>
+          <button class="pill talk-button" data-open-demo><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3" fill="#FFC21A"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg>Talk to Warbler</button>
+          <p class="mono orb-caption">YOU PLAY THE PATIENT · 2 MIN DEMO</p>
+        </div>
+        <div class="barrier-side">
+          <div class="barrier-card">
+            <p class="mono disclaimer">THIS IS A DEMO, NOT CERTIFIED ADVICE.</p>
+            <h2>Our agent specializes in resolving barriers to care that come with DTC pharmacies</h2>
+            <ul class="barrier-list"><li>Side effects</li><li>Cost or insurance coverage</li><li>Forgot while traveling</li><li>Refill or renewal delays</li><li>Pickup or delivery problems</li><li>Clinician-directed change</li></ul>
+            <div class="barrier-rule" aria-hidden="true"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="problem" id="for-pharmacies" aria-labelledby="problem-title">
+      <div class="stat"><div class="stat-number">53.6%</div><h2 id="problem-title">of patients discontinue GLP‑1 treatment within a year.</h2><a class="study-source" href="https://jamanetwork.com/journals/jamanetworkopen/fullarticle/2829779">Source: 2025 U.S. observational study</a></div>
+      <p class="problem-copy">We provide personalized guidance to make it easy for patients to get the follow up and continuing care they need.</p>
+    </section>
+    <section class="how" id="how-it-works" aria-labelledby="how-title">
+      <h2 id="how-title">One call between a lapsed refill and a lost patient.</h2>
+      <div class="steps">
+        <article class="step"><div class="step-top"><span class="mono">01 · DETECT</span><svg width="120" height="40" viewBox="0 0 120 40" aria-hidden="true"><path d="M0 8L20 10L40 9L60 14L80 22L100 30L120 36" fill="none" stroke="#0A0A0A" stroke-width="1.5"/><circle cx="80" cy="22" r="5" fill="#FFC21A" stroke="#0A0A0A" stroke-width="1.5"/></svg></div><div><h3>Flag who's drifting</h3><p>Late refills, skipped titration steps, and support tickets are scored daily, so you see risk weeks before a cancellation.</p></div></article>
+        <article class="step dark"><div class="step-top"><span class="mono">02 · CALL</span><svg width="120" height="40" viewBox="0 0 120 40" aria-hidden="true"><path d="M4 18v4M14 12v16M24 6v28M34 14v12M44 2v36M54 10v20M64 16v8M74 8v24M84 13v14M94 4v32M104 15v10M114 18v4" fill="none" stroke="#FFC21A" stroke-width="3" stroke-linecap="round"/></svg></div><div><h3>Ask why, like a person would</h3><p>A warm, natural voice agent calls in your pharmacy's name, listens for side effects, cost, and confusion, and adjusts in real time.</p></div></article>
+        <article class="step"><div class="step-top"><span class="mono">03 · RETAIN</span><svg width="120" height="40" viewBox="0 0 120 40" aria-hidden="true"><path d="M0 34C30 34 40 8 70 8L120 8" fill="none" stroke="#0A0A0A" stroke-width="1.5"/><circle cx="104" cy="8" r="5" fill="#4A5320"/></svg></div><div><h3>Close the loop</h3><p>Patients get tailored guidance on the call. Clinical concerns go straight to your Rx team, and every outcome syncs back to your system.</p></div></article>
+      </div>
+    </section>
+    <section class="trust" id="security" aria-label="Built for pharmacies"><div><h3>HIPAA-ready by design</h3><p>BAAs, encrypted call data, and audit logs for every conversation.</p></div><div><h3>Pharmacist in the loop</h3><p>Clinical questions are escalated, never improvised.</p></div><div><h3>Your brand, your voice</h3><p>Calls go out under your pharmacy's name, with your tone and scripts.</p></div><div><h3>Live in weeks</h3><p>Connects to your fulfillment and CRM data. No rip-and-replace.</p></div></section>
+    <section class="closing" aria-labelledby="closing-title"><div class="closing-inner"><div class="closing-copy"><p class="mono">SEE IT IN YOUR PHARMACY</p><h2 id="closing-title">Every patient deserves a follow-up call.</h2></div><div class="closing-glow" aria-hidden="true"></div><div class="closing-actions"><a class="pill yellow" href="https://calendar.app.google/dAj1Fv4UhSUbFGfz8">Book a demo</a><button class="pill outline" data-open-demo>Talk to Warbler</button></div></div></section>
+  </main>
+  <footer id="company"><p>© 2026 Warbler Rx</p><a href="mailto:hello@warblersafety.com">hello@warblersafety.com</a></footer>
 </div>
-<main id="main">
-<section data-screen-label="Hero" style="max-width:1200px;margin:0 auto;padding:88px 24px 72px;display:block">
-  <div style="display:flex;flex-direction:column;gap:28px;max-width:none">
-
-    <h1 style="margin:0;font-size:clamp(44px,6vw,76px);line-height:1.02;letter-spacing:-.045em;font-weight:500;text-wrap:pretty">Catch prescription drop-off before it happens.</h1>
-    <div style="margin: 0; font-size: clamp(22px,2.2vw,27px); line-height: 1.5; color: #2c4452; max-width: none; text-wrap: pretty"><p>We work with DTC pharmacies to identify patients at risk of dropping their prescriptions, understand why, and deliver personalized guidance in a single call.</p></div>
-    <div style="display:flex;flex-wrap:wrap;align-items:center;gap:20px">
-      <a href="https://calendar.app.google/dAj1Fv4UhSUbFGfz8" style="display:flex;align-items:center;gap:12px;background:#09273a;color:#fff;padding:8px 22px 8px 8px;border-radius:999px;font-weight:500;font-size:16px;white-space:nowrap">
-        <img src="/assets/founder.jpg" alt="" style="width:40px;height:40px;border-radius:50%;object-fit:cover">Book a demo with the founder ↗</a>
-    </div>
-  </div>
-
-</section>
-<div id="voice-demo-root"></div>
-<section data-screen-label="Problem" style="background:#09273a;color:#fff">
-  <div style="max-width:1200px;margin:0 auto;padding:72px 24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:48px;align-items:end">
-    <div style="display:flex;flex-direction:column;gap:18px">
-      <div style="font-size:clamp(72px,10vw,128px);line-height:.9;letter-spacing:-.05em;font-weight:500">53.6<span style="color:#f5c518">%</span></div>
-      <div style="height:6px;background:rgba(255,255,255,.15);border-radius:3px;max-width:420px"><div style="width:53.6%;height:100%;background:#f5c518;border-radius:3px"></div></div>
-      <p style="margin:0;font-size:20px;line-height:1.5;color:#d6e0e6;max-width:460px">of patients discontinued GLP‑1 treatment within a year in a large U.S. study.<a href="#study-note" style="color:#f5c518"> ¹</a></p>
-    </div>
-    <p style="margin: 0; font-size: clamp(40px,5vw,64px); line-height: 1.08; letter-spacing: -.04em; text-wrap: balance">Most pharmacies don't follow up with patients.&nbsp;<span style="color: rgb(245, 197, 24);">Warbler does.</span></p>
-  </div>
-</section>
-<section data-screen-label="CTA" style="background:#09273a;color:#fff">
-  <div style="max-width:1200px;margin:0 auto;padding:112px 24px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:40px">
-    <div style="display:flex;flex-direction:column;gap:16px">
-      <h2 style="margin:0;font-size:clamp(40px,5vw,64px);line-height:1;letter-spacing:-.045em;font-weight:500">See it in your pharmacy</h2>
-    </div>
-    <a href="https://calendar.app.google/dAj1Fv4UhSUbFGfz8" style="display:flex;align-items:center;gap:12px;background:#f5c518;color:#09273a;padding:8px 26px 8px 8px;border-radius:999px;font-weight:600;font-size:17px;white-space:nowrap">
-      <img src="/assets/founder.jpg" alt="" style="width:48px;height:48px;border-radius:50%;object-fit:cover">Book a demo ↗</a>
-  </div>
-</section>
-<footer style="max-width:1200px;margin:0 auto;padding:40px 24px 48px;display:flex;flex-direction:column;gap:28px">
-  <p id="study-note" style="margin:0;font-size:13px;line-height:1.6;color:#5a6e7b">¹ 2025 observational study of U.S. adults with overweight or obesity. Discontinuation: at least 60 days without GLP‑1 medication on hand. <a href="https://jamanetwork.com/journals/jamanetworkopen/fullarticle/2829779" style="text-decoration:underline">JAMA Network Open</a>.</p>
-  <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;font-size:14px;color:#5a6e7b">
-    <a href="mailto:hello@warblersafety.com" style="color:#09273a">hello@warblersafety.com</a><span>© 2026 Warbler Rx</span>
-  </div>
-</footer>
-</main>
-
-
-
-
+<dialog id="voice-dialog" aria-label="Warbler voice demo"><div class="dialog-toolbar"><span>Warbler Rx · Live voice demo</span><button id="close-demo" aria-label="Close voice demo">Close <span aria-hidden="true">×</span></button></div><div id="voice-demo-root"></div></dialog>
 <script type="module" src="/src/demo.js"></script>
-</body></html>
+</body>
+</html>
