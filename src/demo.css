@@ -16,14 +16,33 @@
 .privacy-note summary{cursor:pointer;text-decoration:underline;text-underline-offset:3px}
 .privacy-note p{margin-top:10px}
 .demo-error{padding:12px 16px;border:1px solid #d5a19a;border-radius:12px;background:#fff5f1;color:#7d2923;font-size:14px;line-height:21px}
-.demo-result{margin-top:24px;border-radius:24px;padding:32px;background:#0a0a0a;color:#fff;display:flex;flex-direction:column;gap:20px}
+.demo-result{margin-top:0;border-radius:24px;padding:32px;background:#ebebe7;color:#0a0a0a;display:flex;flex-direction:column;gap:20px}
 .demo-result:focus{outline:3px solid #b29124;outline-offset:4px}
-.result-eyebrow{font-size:11px;letter-spacing:.08em;color:#d3ca9b}
+.result-eyebrow{font-size:11px;letter-spacing:.08em;color:#6e5f1f}
 .demo-result h3{font-size:28px;line-height:34px;letter-spacing:-.025em}
-.demo-result p{font-size:15px;line-height:24px;color:#ddd}
+.demo-result p{font-size:15px;line-height:24px;color:#3a3a38}
 .result-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:18px}
-.result-label{display:block;margin-bottom:8px;font-size:12px;color:#d3ca9b}
+.result-label{display:block;margin-bottom:8px;font-size:12px;color:#6e5f1f}
 .demo-result .pill{align-self:flex-start;font-size:14px}
 @keyframes orb-breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.025)}}
 @media(max-width:640px){.wordmark{gap:4px}.wordmark img{width:42px;height:42px}.orb-side{gap:26px}.voice-controls{gap:8px}.voice-controls .pill{padding:12px 16px;font-size:13px}.result-grid{grid-template-columns:1fr}.demo-result{padding:24px}}
 @media(prefers-reduced-motion:reduce){.orb{animation:none!important;transition:none}}
+
+/* The connector leads from the completed conversation into its saved result. */
+.result-flow{position:relative;padding-top:88px}
+.result-connector{position:absolute;top:0;left:50%;width:4px;height:88px;margin-left:-2px;background:#b8962a;border-radius:2px;transform-origin:top;animation:result-line 1.8s .35s cubic-bezier(.65,0,.35,1) both;pointer-events:none}
+.result-flow .demo-result{transform-origin:50% 0;animation:result-card .62s 2.1s cubic-bezier(.34,1.45,.64,1) both}
+.result-flow .result-eyebrow,.result-flow h3,.result-flow #result-status,.result-flow #try-again{animation:result-detail .48s 2.32s cubic-bezier(.22,1,.36,1) both}
+.result-flow h3{animation-delay:2.39s}
+.result-flow #result-status{animation-delay:2.46s}
+.result-flow #try-again{animation-delay:2.6s}
+#result-content:not([hidden]) .result-grid>div,#result-content:not([hidden]) #result-next{animation:result-detail .48s cubic-bezier(.22,1,.36,1) both}
+#result-content:not([hidden]) .result-grid>div:nth-child(2){animation-delay:.07s}
+#result-content:not([hidden]) #result-next{animation-delay:.14s}
+.demo-result .pill.soft{background:#0a0a0a;color:#fff}
+.demo-result .pill.soft:hover{background:#262626}
+@keyframes result-line{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes result-card{from{opacity:0;transform:translateY(14px) scale(.94)}to{opacity:1;transform:none}}
+@keyframes result-detail{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media(max-width:640px){.result-flow{padding-top:56px}.result-connector{height:56px}}
+@media(prefers-reduced-motion:reduce){.result-flow .result-connector,.result-flow .demo-result,.result-flow .result-eyebrow,.result-flow h3,.result-flow #result-status,.result-flow #try-again,#result-content:not([hidden]) .result-grid>div,#result-content:not([hidden]) #result-next{animation:none}}
