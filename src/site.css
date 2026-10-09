@@ -12,29 +12,9 @@
 @media(hover:hover) and (pointer:fine){.demo-booking:hover .demo-portraits{opacity:1;visibility:visible;transform:translate(-50%,0) scale(1)}}
 @media(prefers-reduced-motion:reduce){.demo-portraits{transition:none}}
 
-/* Study breakdown extends the homepage's type, gold accent and open surfaces. */
-.study-section{padding:0 clamp(20px,4vw,48px) 96px}
-.study-heading{display:flex;align-items:end;justify-content:space-between;gap:32px;margin-bottom:40px}
-.study-heading h2{font-size:clamp(32px,3.6vw,52px);line-height:1.08;letter-spacing:-.04em;text-wrap:balance}
-.study-heading>p{max-width:320px;font-size:16px;line-height:1.5;color:#5e5e5a;text-wrap:pretty}
-.study-bar{display:flex;gap:4px;height:10px;margin-bottom:32px;overflow:hidden;border-radius:999px}
-.study-bar span:nth-child(1){flex:27.4;background:#ffc21a}
-.study-bar span:nth-child(2){flex:47.6;background:#0a0a0a}
-.study-bar span:nth-child(3){flex:25;background:#deded8}
-.study-groups{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:40px}
-.study-group{min-width:0}
-.study-number{font-size:clamp(64px,7.5vw,108px);line-height:1;letter-spacing:-.06em;font-weight:300;margin-bottom:22px}
-.study-number span{font-size:.58em;letter-spacing:-.04em}
-.study-group h3{font-size:23px;line-height:1.25;letter-spacing:-.025em;margin-bottom:12px;font-weight:500}
 .study-highlight{background:#ffc21a;padding:0 4px;margin-left:-4px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
-.study-group>p:last-child{font-size:16px;line-height:1.55;color:#5e5e5a;max-width:340px;text-wrap:pretty}
-.study-source{max-width:980px;font-size:13px;line-height:1.6;color:#5e5e5a;margin-top:36px}
-.study-source a{color:#0a0a0a;text-decoration:underline;text-underline-offset:3px}
-.study-source cite{font-style:italic}
-@media(max-width:760px){.study-section{padding-bottom:64px}.study-heading{align-items:start;flex-direction:column;gap:20px;margin-bottom:28px}.study-heading>p{max-width:440px}.study-groups{grid-template-columns:1fr;gap:28px}.study-group{display:grid;grid-template-columns:132px minmax(0,1fr);column-gap:20px;row-gap:8px;padding-bottom:28px;border-bottom:1px solid #ecece7}.study-number{grid-row:1 / 3;font-size:64px;margin:0}.study-group h3{font-size:20px;margin:0}.study-group>p:last-child{font-size:15px}.study-source{margin-top:28px}}
-@media(max-width:360px){.study-group{grid-template-columns:110px minmax(0,1fr);column-gap:14px}.study-number{font-size:54px}}
 
-/* Keep the scale of the problem above the reasons and intended response. */
+/* Pair the scale of the problem with Warbler’s intended response. */
 .adherence-gap{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:48px 80px;align-items:end;padding:0 clamp(20px,4vw,48px) 72px}
 .adherence-stat{display:flex;flex-direction:column;gap:20px}
 .adherence-number{font-size:clamp(110px,15vw,220px);line-height:.9;letter-spacing:-.06em;font-weight:300}
@@ -44,6 +24,4 @@
 .adherence-purpose{max-width:460px;padding-bottom:8px}
 .adherence-purpose h3{font-size:clamp(30px,3vw,42px);line-height:1.15;letter-spacing:-.035em;margin-bottom:22px}
 .adherence-purpose>p{font-size:20px;line-height:1.5;letter-spacing:-.01em;color:#5e5e5a;text-wrap:pretty}
-.study-section{border-top:1px solid #ecece7;padding-top:56px}
-.study-heading h2{max-width:760px}
-@media(max-width:760px){.adherence-gap{grid-template-columns:1fr;gap:36px;padding-bottom:48px}.adherence-purpose>p{font-size:18px}.study-section{padding-top:40px}}
+@media(max-width:760px){.adherence-gap{grid-template-columns:1fr;gap:36px;padding-bottom:48px}.adherence-purpose>p{font-size:18px}}
