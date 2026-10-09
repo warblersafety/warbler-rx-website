@@ -50,3 +50,19 @@ Side effects receive brief empathy and a request for permission to route to the 
 ## October 9 Sites copy update
 
 Imported the approved ChatGPT Sites copy revisions: simplified demo and founder captions, customized-agent messaging, new workflow and closing headings, and generic voice-service privacy wording. The Vercel site retains its embedded live voice demo. The idle orb says “Tap to speak”; microphone guidance appears while starting a call.
+
+## Call analysis and next-step choices
+
+The post-call card now uses a warm glow and staggered reveal, with a Barrier ID above accessible Autonomous Action / Route to Support tabs. The agreed choice is selected first; each tab separately reports acceptance, refusal, or unconfirmed permission. Reduced-motion preferences disable decorative motion. Clinical concerns hide autonomous actions.
+
+| Barrier | Autonomous demo option | Support demo route |
+| --- | --- | --- |
+| Side effects / adverse events | None | Clinical care team |
+| Cost | Cost-support resource text | Customer success financial-support appointment |
+| Coverage | Coverage-review checklist text | Pharmacy insurance support |
+| Routine changes | Reminder for the existing prescribed routine | Pharmacy support |
+| Renewal / prior authorization delay | Status-check reminder | Pharmacy renewal team |
+| Forgotten refill | Refill-request reminder | Pharmacy support |
+| Pickup / delivery | Pharmacy information text | Fulfillment support |
+
+All actions remain simulated. The agent cannot send texts, set reminders, contact support, check status or book appointments. Medication-use questions, symptoms and emergencies override logistical choices. The server returns reviewed text and enumerated permission states, not free-form extracted patient details. `autonomous_action` and `support_routing` supplement the existing independent cost and clinical permission fields. The deployment must pin `ELEVENLABS_AGENT_VERSION_ID` to the tested version in `elevenlabs-agent-config.json`.

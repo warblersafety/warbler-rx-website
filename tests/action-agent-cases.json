@@ -1,0 +1,28 @@
+{
+  "tests": [
+    {
+      "id": "test_5601m4ha4y36eqjsqard6vr8cyjk",
+      "name": "Routine reminder"
+    },
+    {
+      "id": "test_1601m4ha5sg2fvzb72907pnd49kz",
+      "name": "Renewal support"
+    },
+    {
+      "id": "test_1301m4ha5ssve70aqbyxj36ka4rf",
+      "name": "Delivery information"
+    },
+    {
+      "id": "test_9601m4ha5t2bfj4b9f3kr1yz2qn5",
+      "name": "Coverage checklist"
+    },
+    {
+      "id": "test_3401m4ha5tc1fcpaf0tk0f141269",
+      "name": "Adverse event overrides action"
+    },
+    {
+      "id": "test_1601m4ha5v2ee7wtd4tkjsb3kgsp",
+      "name": "Reminder withdrawal"
+    }
+  ]
+}

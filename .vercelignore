@@ -5,3 +5,6 @@ dist
 .env*
 *.local.json
 .DS_Store
+
+.local-preview.html
+src/test-preview.local.js

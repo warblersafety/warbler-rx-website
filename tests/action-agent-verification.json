@@ -1,0 +1,100 @@
+{
+  "suiteId": "suite_8701m4haa5mkfr5s95dwz5bc1e04",
+  "versionId": "agtvrsn_1101m4haa4z3ecrap9zx1dd4sbev",
+  "passed": 23,
+  "total": 23,
+  "results": [
+    {
+      "name": "Warbler GLP-1: Cost asks for unstated supply",
+      "status": "passed"
+    },
+    {
+      "name": "Warbler GLP-1: Stop",
+      "status": "passed"
+    },
+    {
+      "name": "Warbler analysis: Adverse event overrides action",
+      "status": "passed"
+    },
+    {
+      "name": "Warbler GLP-1: Cost text only appointment declined",
+      "status": "passed"
+    },
+    {
+      "name": "Warbler GLP-1: Cost both accepted",
+      "status": "passed"
+    },
+    {
+      "name": "Warbler GLP-1: Side effects without symptom questions",
+      "status": "passed"
+    },
+    {
+      "name": "Warbler analysis: Reminder withdrawal",
+      "status": "passed"
+    },
+    {
+      "name": "Warbler GLP-1: Cost resource refusal still offers appointment",
+      "status": "passed"
+    },
+    {
+      "name": "Warbler GLP-1: Declined clinical routing",
+      "status": "passed"
+    },
+    {
+      "name": "Warbler GLP-1: Coverage",
+      "status": "passed"
+    },
+    {
+      "name": "Warbler GLP-1: Other medication side effect",
+      "status": "passed"
+    },
+    {
+      "name": "Warbler GLP-1: Side effects",
+      "status": "passed"
+    },
+    {
+      "name": "Warbler GLP-1: Restart",
+      "status": "passed"
+    },
+    {
+      "name": "Warbler GLP-1: Refill",
+      "status": "passed"
+    },
+    {
+      "name": "Warbler GLP-1: Urgent",
+      "status": "passed"
+    },
+    {
+      "name": "Warbler analysis: Routine reminder",
+      "status": "passed"
+    },
+    {
+      "name": "Warbler analysis: Renewal support",
+      "status": "passed"
+    },
+    {
+      "name": "Warbler analysis: Delivery information",
+      "status": "passed"
+    },
+    {
+      "name": "Warbler analysis: Coverage checklist",
+      "status": "passed"
+    },
+    {
+      "name": "Warbler GLP-1: Cost stated supply resources permission",
+      "status": "passed"
+    },
+    {
+      "name": "Warbler GLP-1: Cost text acceptance is not appointment consent",
+      "status": "passed"
+    },
+    {
+      "name": "Warbler GLP-1: Cost appointment only text declined",
+      "status": "passed"
+    },
+    {
+      "name": "Warbler GLP-1: Accepted clinical routing",
+      "status": "passed"
+    }
+  ]
+}
