@@ -1,0 +1,89 @@
+{
+  "versionId": "agtvrsn_8001m4hb5dmff8yr4erm5jy0hnm3",
+  "results": [
+    {
+      "name": "refill-outreach",
+      "result": {
+        "status": "ready",
+        "barrier": "GLP-1 refill support",
+        "team": "Pharmacy support",
+        "next": "The pharmacy support team would review the GLP-1 access barrier. No insurance review, order, or follow-up has been arranged.",
+        "schedulingPreview": false,
+        "costPreview": false,
+        "autonomous": {
+          "title": "Remind the pharmacy or prescriber",
+          "description": "Preview a reminder to the pharmacist or prescribing clinician to review and, if appropriate, submit the refill or renewal request.",
+          "status": "accepted"
+        },
+        "support": {
+          "title": "Pharmacy support",
+          "description": "Help with the next refill request.",
+          "status": "accepted"
+        },
+        "clinicalOnly": false
+      }
+    },
+    {
+      "name": "prescriber-renewal",
+      "result": {
+        "status": "ready",
+        "barrier": "Refill or renewal delays",
+        "team": "Pharmacy support",
+        "next": "The pharmacy support team would review the GLP-1 access barrier. No insurance review, order, or follow-up has been arranged.",
+        "schedulingPreview": false,
+        "costPreview": false,
+        "autonomous": {
+          "title": "Remind the renewal team",
+          "description": "Preview a reminder to the prescribing office or authorization team to review the pending renewal or prior authorization request.",
+          "status": "accepted"
+        },
+        "support": {
+          "title": "Pharmacy renewal team",
+          "description": "Review the prescription renewal or prior authorization delay.",
+          "status": "accepted"
+        },
+        "clinicalOnly": false
+      }
+    },
+    {
+      "name": "outreach-declined",
+      "result": {
+        "status": "ready",
+        "barrier": "Refill or renewal delays",
+        "team": "Pharmacy support",
+        "next": "The pharmacy support team would review the GLP-1 access barrier. No insurance review, order, or follow-up has been arranged.",
+        "schedulingPreview": false,
+        "costPreview": false,
+        "autonomous": {
+          "title": "Remind the renewal team",
+          "description": "Preview a reminder to the prescribing office or authorization team to review the pending renewal or prior authorization request.",
+          "status": "declined"
+        },
+        "support": {
+          "title": "Pharmacy renewal team",
+          "description": "Review the prescription renewal or prior authorization delay.",
+          "status": "accepted"
+        },
+        "clinicalOnly": false
+      }
+    },
+    {
+      "name": "clinical-override",
+      "result": {
+        "status": "ready",
+        "barrier": "Reported medication side effect",
+        "team": "Automatic scheduling",
+        "next": "Based on the clinical care team’s availability. Demo preview only — no appointment has been booked or clinician contacted.",
+        "schedulingPreview": true,
+        "costPreview": false,
+        "autonomous": null,
+        "support": {
+          "title": "Clinical care team",
+          "description": "Based on the clinical care team’s availability. Demo preview only — no appointment has been booked or clinician contacted.",
+          "status": "accepted"
+        },
+        "clinicalOnly": true
+      }
+    }
+  ]
+}

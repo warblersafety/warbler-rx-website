@@ -1,0 +1,28 @@
+{
+  "tests": [
+    {
+      "id": "test_2901m4hb5npafxp8hvcdt0rzntz4",
+      "name": "Recommend pharmacist reminder"
+    },
+    {
+      "id": "test_1301m4hb5p1wfcrvcranza2crt0x",
+      "name": "Recommend prescriber renewal"
+    },
+    {
+      "id": "test_5301m4hb5pbrfkha189c4e3stdaw",
+      "name": "Recommend authorization follow-up"
+    },
+    {
+      "id": "test_1501m4hb5pmzfbvbap7hnfv465j4",
+      "name": "Recommend coverage action"
+    },
+    {
+      "id": "test_9801m4hb5pxqf0q8tzyj38r9h8b2",
+      "name": "Recommend routine action"
+    },
+    {
+      "id": "test_0801m4hb5q6yfxea52k676ejdwks",
+      "name": "Recommend delivery action"
+    }
+  ]
+}

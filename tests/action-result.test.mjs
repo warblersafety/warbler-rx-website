@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { publicResult } from '../lib/voice-server.js';
 const result = values => publicResult({analysis:{data_collection_results:Object.fromEntries(Object.entries(values).map(([k,value])=>[k,{value}]))}});
 test('all logistical barriers map only matching accepted actions and retain independent support consent',()=>{
- for(const [barrier,id] of [['coverage','coverage_checklist'],['routine','routine_reminder'],['renewal','renewal_reminder'],['refill','refill_reminder'],['delivery','delivery_information']]) {
+ for(const [barrier,id] of [['coverage','coverage_checklist'],['routine','routine_reminder'],['renewal','renewal_outreach'],['refill','refill_outreach'],['delivery','delivery_information']]) {
   const r=result({barrier,autonomous_action:id,support_routing:'declined'});
   assert.equal(r.autonomous.status,'accepted');assert.equal(r.support.status,'declined');
   for(const value of [undefined,'unclear','not_discussed','declined','malicious','cost_resources']) {
@@ -28,4 +28,12 @@ test('cost choices use their specific permissions, unknown barriers never invent
   const r=result({barrier,autonomous_action:'routine_reminder',support_routing:'accepted'});
   assert.equal(r.autonomous,null);assert.equal(r.support.status,'not_discussed');
  }
+});
+
+test('administrative prescriber reminders remain autonomous and never imply an issued prescription',()=>{
+ const r=result({barrier:'refill',review_team:'pharmacy_support',clinical_routing:'not_discussed',autonomous_action:'refill_outreach'});
+ assert.equal(r.autonomous.status,'accepted');
+ assert.match(r.autonomous.description,/Preview a reminder to the pharmacist or prescribing clinician/);
+ assert.match(r.autonomous.description,/if appropriate/);
+ assert.equal(r.clinicalOnly,false);
 });
