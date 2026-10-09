@@ -8,7 +8,7 @@
   <link rel="canonical" href="https://warbler-health.com/">
   <meta property="og:url" content="https://warbler-health.com/">
   <meta property="og:title" content="Warbler Health — Catch prescription drop off before it happens">
-  <meta property="og:description" content="Every patient deserves a follow-up call.">
+  <meta property="og:description" content="Enable patients to stick to their treatment.">
   <meta name="theme-color" content="#ffffff">
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/warbler-favicon-32.png">
   <link rel="icon" type="image/png" sizes="192x192" href="/assets/warbler-icon-192.png">
@@ -47,11 +47,10 @@
 <section id="demo" style="padding:40px clamp(20px,4vw,48px) 112px">
   <div style="background:#f4f4f2;border-radius:32px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));overflow:hidden">
     <div id="try-warbler" class="voice-panel" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;padding:56px 24px;text-align:center">
-      <p style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.08em;color:#5e5e5a">TRY A CONVERSATION · YOU PLAY THE PATIENT</p>
       <button class="orb" id="voice-orb" data-start-demo data-state="idle" aria-label="Talk to Warbler — start voice demo" aria-describedby="demo-disclosure"></button>
-      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;min-height:52px">
-        <p id="voice-state" aria-hidden="true" style="font-size:15px;font-weight:500;color:#0a0a0a">Ready when you are</p><span id="connection-announcement" class="sr-only" role="status" aria-live="polite"></span>
-        <p id="voice-hint" style="font-size:14px;line-height:1.5;color:#5e5e5a;max-width:340px;text-wrap:pretty">Tap the orb and allow your microphone.</p>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+        <p id="voice-state" aria-hidden="true" style="font-size:15px;font-weight:500;color:#0a0a0a">Tap to speak</p><span id="connection-announcement" class="sr-only" role="status" aria-live="polite"></span>
+        <p id="voice-hint" style="font-size:14px;line-height:1.5;color:#5e5e5a;max-width:340px;text-wrap:pretty" hidden></p>
       </div>
       <div class="voice-controls">
 <button class="pill" id="start-voice" data-start-demo>Talk to Warbler</button>
@@ -73,7 +72,7 @@
           <li style="display:grid;grid-template-columns:28px minmax(0,1fr);gap:14px;padding:14px 0;border-top:1px solid #ececE7"><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#6b5a14;padding-top:3px">03</span><div style="display:flex;flex-direction:column;gap:3px"><span style="font-size:16px;font-weight:500">Routine changes</span><span style="font-size:14px;line-height:1.5;color:#5e5e5a">Travel or a busy stretch breaks the dosing schedule.</span></div></li>
           <li style="display:grid;grid-template-columns:28px minmax(0,1fr);gap:14px;padding:14px 0;border-top:1px solid #ececE7"><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#6b5a14;padding-top:3px">04</span><div style="display:flex;flex-direction:column;gap:3px"><span style="font-size:16px;font-weight:500">Refill or renewal delays</span><span style="font-size:14px;line-height:1.5;color:#5e5e5a">Waiting on a prescription renewal or prior authorization.</span></div></li>
           <li style="display:grid;grid-template-columns:28px minmax(0,1fr);gap:14px;padding:14px 0;border-top:1px solid #ececE7"><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#6b5a14;padding-top:3px">05</span><div style="display:flex;flex-direction:column;gap:3px"><span style="font-size:16px;font-weight:500">Pickup or delivery</span><span style="font-size:14px;line-height:1.5;color:#5e5e5a">A missed shipment or a hard trip to the pharmacy.</span></div></li>
-          <li style="display:grid;grid-template-columns:28px minmax(0,1fr);gap:14px;padding:14px 0;border-top:1px solid #ececE7;border-bottom:1px solid #ececE7"><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#6b5a14;padding-top:3px">06</span><div style="display:flex;flex-direction:column;gap:3px"><span style="font-size:16px;font-weight:500">Treatment plan changes</span><span style="font-size:14px;line-height:1.5;color:#5e5e5a">A clinician adjusted the dose or switched medications.</span></div></li>
+          <li style="display:grid;grid-template-columns:28px minmax(0,1fr);gap:14px;padding:14px 0;border-top:1px solid #ececE7;border-bottom:1px solid #ececE7"><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#6b5a14;padding-top:3px">06</span><div style="display:flex;flex-direction:column;gap:3px"><span style="font-size:16px;font-weight:500">And many more</span><span style="font-size:14px;line-height:1.5;color:#5e5e5a">We customize our voice agent based on your needs.</span></div></li>
         </ul>
       </div>
     </div>
@@ -106,12 +105,11 @@
   </div>
   <div class="adherence-purpose">
     <h3>Warbler is designed to<br><span class="study-highlight">change that.</span></h3>
-    <p>Find out why patients stop. Help address the barrier. Bring in the right care team when needed.</p>
   </div>
 </section>
 
 <section id="how" style="border-top:1px solid #ececE7;display:flex;flex-direction:column;gap:48px;padding:96px clamp(20px,4vw,48px) 112px">
-  <h2 style="font-size:clamp(36px,4vw,56px);line-height:1.07;letter-spacing:-0.04em;max-width:720px;text-wrap:balance">One call between a lapsed refill and a lost patient.</h2>
+  <h2 style="font-size:clamp(36px,4vw,56px);line-height:1.07;letter-spacing:-0.04em;max-width:720px;text-wrap:balance">We discover barriers to a prescription refill, provide approved guidance or route to the relevant support person.</h2>
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:20px">
     <article style="background:#f4f4f2;border-radius:24px;padding:32px;display:flex;flex-direction:column;justify-content:space-between;gap:48px;min-height:340px">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
@@ -151,7 +149,6 @@
     <div style="border:1px solid #ececE7;border-radius:24px;padding:32px;display:flex;gap:24px;align-items:center;flex-wrap:wrap">
       <img src="/assets/founder.jpg" alt="Warbler Health founder" style="width:112px;height:112px;border-radius:50%;object-fit:cover;display:block;flex-shrink:0">
       <div style="display:flex;flex-direction:column;gap:12px;flex:1;min-width:220px">
-        <p style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.08em;color:#5e5e5a">TALK TO THE FOUNDER</p>
         <p style="font-size:20px;line-height:1.35;letter-spacing:-0.01em;text-wrap:pretty">Every demo is run by our founder.&nbsp;</p>
         <a href="https://calendar.app.google/dAj1Fv4UhSUbFGfz8" style="font-size:15px;font-weight:500;text-decoration:underline;text-underline-offset:4px">Book a time ↗</a>
       </div>
@@ -165,7 +162,7 @@
 
     <div style="position:relative;display:flex;flex-direction:column;gap:20px;max-width:640px">
 
-      <h2 style="font-size:clamp(34px,4vw,56px);line-height:1.07;letter-spacing:-0.04em;text-wrap:balance">Every patient deserves a follow-up call.</h2>
+      <h2 style="font-size:clamp(34px,4vw,56px);line-height:1.07;letter-spacing:-0.04em;text-wrap:balance">Enable patients to stick to their treatment.</h2>
     </div>
     <div style="position:relative;display:flex;gap:12px;flex-wrap:wrap">
       <a class="demo-booking" href="https://calendar.app.google/dAj1Fv4UhSUbFGfz8" style="display:inline-flex;align-items:center;background:#ffc21a;color:#0a0a0a;border-radius:999px;white-space:nowrap;padding:16px 28px;font-size:16px;font-weight:500;text-decoration:none"><span>Learn more</span><span class="demo-portraits" aria-hidden="true"><img class="demo-founder" src="/assets/founder.jpg" alt="" width="72" height="72"><img class="demo-founder" src="/assets/demo-portrait.png" alt="" width="72" height="72"></span></a>
@@ -187,7 +184,7 @@
 </footer>
 
 </div>
-<dialog id="privacy-policy" aria-labelledby="privacy-title"><form method="dialog"><button class="dialog-close" aria-label="Close privacy information">×</button></form><p class="mono policy-eyebrow">VOICE DEMO</p><h2 id="privacy-title">Your microphone &amp; privacy</h2><p>When you start the demo, your browser asks for microphone permission. ElevenLabs processes your audio live. Audio recording storage is disabled; conversation text is retained for up to one day. Please use fictional details.</p><p>End the conversation to stop microphone access. The demo uses a hashed connection identifier to limit repeated sessions. Vercel retains ordinary website request logs.</p><p>Questions? <a href="mailto:hello@warblersafety.com">hello@warblersafety.com</a></p></dialog>
+<dialog id="privacy-policy" aria-labelledby="privacy-title"><form method="dialog"><button class="dialog-close" aria-label="Close privacy information">×</button></form><p class="mono policy-eyebrow">VOICE DEMO</p><h2 id="privacy-title">Your microphone &amp; privacy</h2><p>When you start the demo, your browser asks for microphone permission. A third party AI voice-to-text service processes your audio live. Audio recording storage is disabled; conversation text is retained for up to one day. Please use fictional details.</p><p>End the conversation to stop microphone access. The demo uses a hashed connection identifier to limit repeated sessions. Vercel retains ordinary website request logs.</p><p>Questions? <a href="mailto:hello@warblersafety.com">hello@warblersafety.com</a></p></dialog>
 <dialog id="terms" aria-labelledby="terms-title"><form method="dialog"><button class="dialog-close" aria-label="Close demo terms">×</button></form><p class="mono policy-eyebrow">DEMO USE</p><h2 id="terms-title">A fictional conversation</h2><p>This website demo is an AI role-play, not medical care. Use fictional details. It cannot arrange refills, appointments or clinical follow-up, and it does not send texts or contact a clinician.</p><p>Sessions last up to two minutes and are subject to availability and usage limits. Discuss medication decisions with your pharmacist or prescribing clinician.</p></dialog>
 <dialog id="security-overview" aria-labelledby="security-title"><form method="dialog"><button class="dialog-close" aria-label="Close security overview">×</button></form><p class="mono policy-eyebrow">WEBSITE DEMO</p><h2 id="security-title">How this demo is protected</h2><p>Provider credentials stay on the server. Temporary voice-session tokens connect your browser to the configured agent. Usage checks run before a connection is allowed.</p><p>Conversation summaries require a signed, expiring receipt. The website returns reviewed summary labels rather than transcripts. Audio recording storage is disabled, and conversation text is retained for up to one day.</p><p>This public demo is for fictional information. Production pharmacy use requires separate agreements and readiness review; the demo does not establish HIPAA compliance.</p></dialog>
 

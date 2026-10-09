@@ -21,7 +21,7 @@ let failure = false;
 let cancelled = false;
 let voiceMode = 'listening';
 let visualState = 'idle';
-const stateLabels = { idle: 'Ready when you are', connecting: 'Connecting…', listening: 'Listening', processing: 'Processing', speaking: 'Speaking', muted: 'Microphone off', error: 'Connection unavailable' };
+const stateLabels = { idle: 'Tap to speak', connecting: 'Connecting…', listening: 'Listening', processing: 'Processing', speaking: 'Speaking', muted: 'Microphone off', error: 'Connection unavailable' };
 function setVisualState(mode) {
   visualState = mode;
   const effective = muted && connected ? 'muted' : mode;
@@ -95,7 +95,7 @@ function finish(activeRun) {
   session = null;
   setBusy(false);
   $('start-voice').textContent = 'Talk to Warbler again';
-  $('voice-hint').textContent = 'Explore another barrier, or see how Warbler could support your pharmacy.';
+  $('voice-hint').hidden = true;
   status(failure ? 'Let’s try that again' : wasConnected ? 'Conversation complete' : 'Conversation ended', failure ? 'error' : 'idle');
   if (wasConnected && receipt) void getSummary(activeRun, receipt);
 }
@@ -111,6 +111,7 @@ async function start() {
   $('mute-voice').textContent = 'Mute mic'; $('mute-voice').setAttribute('aria-pressed', 'false');
   setBusy(true); status('Connecting…', 'connecting');
   $('duration').textContent = 'Up to 2 minutes';
+  $('voice-hint').hidden = false;
   $('voice-hint').textContent = 'Allow your microphone when asked, then describe a fictional prescription barrier.';
   try {
     const { Conversation } = await loadConversation();
