@@ -61,8 +61,10 @@ The post-call card now uses a warm glow and staggered reveal, with a Barrier ID 
 | Cost | Cost-support resource text | Customer success financial-support appointment |
 | Coverage | Coverage-review checklist text | Pharmacy insurance support |
 | Routine changes | Reminder for the existing prescribed routine | Pharmacy support |
-| Renewal / prior authorization delay | Status-check reminder | Pharmacy renewal team |
-| Forgotten refill | Refill-request reminder | Pharmacy support |
+| Renewal / prior authorization delay | Reminder to prescribing office / authorization team | Pharmacy renewal team |
+| Forgotten refill | Reminder to pharmacist / prescribing clinician | Pharmacy support |
 | Pickup / delivery | Pharmacy information text | Fulfillment support |
 
 All actions remain simulated. The agent cannot send texts, set reminders, contact support, check status or book appointments. Medication-use questions, symptoms and emergencies override logistical choices. The server returns reviewed text and enumerated permission states, not free-form extracted patient details. `autonomous_action` and `support_routing` supplement the existing independent cost and clinical permission fields. The deployment must pin `ELEVENLABS_AGENT_VERSION_ID` to the tested version in `elevenlabs-agent-config.json`.
+
+The agent leads with a recommended autonomous action, then asks permission. Refill and renewal reminders are directed to pharmacy or prescribing staff rather than asking the patient to chase the request. Administrative prescriber reminders remain distinct from clinical consultations; prescribing and approval decisions remain with the responsible professional.

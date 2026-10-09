@@ -19,7 +19,10 @@ for(const [scenario,name,persona,condition] of cases){
 }
 const routingCases=JSON.parse(await fs.readFile(new URL('../tests/side-effect-agent-cases.json',import.meta.url)));
 const costCases=JSON.parse(await fs.readFile(new URL('../tests/cost-agent-cases.json',import.meta.url)));
-const testIds=[...new Set([...state.tests.map(t=>t.id),...routingCases.tests.map(t=>t.id),...costCases.tests.map(t=>t.id)])];
+const actionCases=JSON.parse(await fs.readFile(new URL('../tests/action-agent-cases.json',import.meta.url)));
+const proactiveCases=JSON.parse(await fs.readFile(new URL('../tests/proactive-agent-cases.json',import.meta.url)));
+// The patient status-reminder scenario was superseded by staff-directed renewal outreach.
+const testIds=[...new Set([...state.tests.map(t=>t.id),...routingCases.tests.map(t=>t.id),...costCases.tests.map(t=>t.id),...actionCases.tests.filter(t=>t.name!=='Renewal support').map(t=>t.id),...proactiveCases.tests.map(t=>t.id)])];
 const result=await api(`/v1/convai/agents/${config.agentId}/run-tests`,{tests:testIds.map(test_id=>({test_id})),branch_id:config.branchId,repeat_count:1});
 state.run=result;await fs.writeFile(new URL('../.elevenlabs-tests.local.json',import.meta.url),JSON.stringify(state));
 console.log(JSON.stringify({id:result.id,tests:state.tests.map(t=>t.name)}));
