@@ -78,22 +78,38 @@
     </div>
   </div>
       <div id="result-flow" class="result-flow" hidden>
-      <div class="result-connector" aria-hidden="true"></div>
-      <div id="demo-result" class="demo-result" hidden tabindex="-1" aria-label="Call analysis">
-        <p id="result-status" role="status">Identifying your barrier and next step…</p>
-        <div id="result-content" hidden>
-          <div class="result-grid">
-            <section class="result-card" aria-labelledby="barrier-label">
+        <div class="analysis-aura" aria-hidden="true"></div>
+        <div id="demo-result" class="demo-result" hidden tabindex="-1" aria-label="Call analysis" aria-busy="true">
+          <div class="analysis-heading"><span class="analysis-mark" aria-hidden="true">✦</span><span>Conversation insights</span><span class="result-preview">Demo preview</span></div>
+          <div id="result-loading" class="analysis-loading">
+            <div class="analysis-orbit" aria-hidden="true"><i></i><i></i><i></i></div>
+            <p id="result-status" role="status">Identifying your barrier and next step…</p>
+          </div>
+          <div id="result-content" hidden>
+            <section class="barrier-card" aria-labelledby="barrier-label">
               <h3 id="barrier-label" class="result-label">Barrier ID</h3>
               <p id="result-barrier" class="result-value"></p>
+              <p id="result-clinical-note" class="result-description" hidden>Clinical review required. Autonomous action is not available for this concern.</p>
             </section>
-            <section id="result-next-step" class="result-card" data-scheduling="false" data-cost="false" aria-labelledby="next-step-label">
-              <div class="result-card-heading"><h3 id="next-step-label" class="result-label">Next step</h3><span class="result-preview">Demo preview</span></div>
-              <p id="result-team" class="result-value"></p>
-            </section>
+            <div id="result-next-step" class="result-next-step">
+              <div class="result-tabs" role="tablist" aria-label="Next step options">
+                <button id="result-auto-tab" type="button" role="tab" aria-controls="result-auto-panel" aria-selected="true">Autonomous Action <span id="result-auto-dot" class="tab-dot" hidden aria-label="Agreed in call"></span></button>
+                <button id="result-support-tab" type="button" role="tab" aria-controls="result-support-panel" aria-selected="false" tabindex="-1">Route to Support <span id="result-support-dot" class="tab-dot" hidden aria-label="Agreed in call"></span></button>
+              </div>
+              <section id="result-auto-panel" class="action-panel" role="tabpanel" aria-labelledby="result-auto-tab" tabindex="0">
+                <span id="result-auto-status" class="action-status"></span>
+                <h4 id="result-auto-title" class="action-title"></h4>
+                <p id="result-auto-description" class="result-description"></p>
+              </section>
+              <section id="result-support-panel" class="action-panel" role="tabpanel" aria-labelledby="result-support-tab" tabindex="0" hidden>
+                <span id="result-support-status" class="action-status"></span>
+                <h4 id="result-support-title" class="action-title"></h4>
+                <p id="result-support-description" class="result-description"></p>
+              </section>
+            </div>
+            <p class="analysis-disclaimer">Demo only. No messages sent, reminders set, appointments booked, or support contacted.</p>
           </div>
         </div>
-      </div>
       </div>
 </section>
 

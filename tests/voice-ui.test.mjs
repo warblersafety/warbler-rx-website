@@ -98,37 +98,34 @@ test('restart hides the reveal and ignores analysis arriving from the previous c
   assert.equal(h.element('result-content').hidden, true);
 });
 
-test('outcome highlights consented demo scheduling and clears the highlight for a new call', async () => {
-  const resultPayload = { status: 'ready', barrier: 'Reported metformin side effect', team: 'Automatic scheduling', next: 'Based on clinical team availability. Demo preview only.', schedulingPreview: true };
-  const h = harness({ resultPayload });
+test('clinical results hide autonomous actions and open support', async () => {
+  const h = harness({ resultPayload: { status: 'ready', barrier: 'Reported medication side effect', autonomous: null, clinicalOnly: true, support: { title: 'Clinical care team', description: 'Demo preview.', status: 'accepted' } } });
   h.click('voice-orb'); await flush(); await h.click('end-voice'); await flush();
-  assert.equal(h.element('result-barrier').textContent, resultPayload.barrier);
-  assert.equal(h.element('result-next-step').dataset.scheduling, 'true');
-  assert.equal(h.element('result-team').textContent, 'Automatic scheduling');
-  h.click('start-voice'); await flush();
-  assert.equal(h.element('result-next-step').dataset.scheduling, 'false');
-  resultPayload.schedulingPreview = false;
-  resultPayload.team = 'Clinical follow-up declined';
-  await h.click('end-voice'); await flush();
-  assert.equal(h.element('result-next-step').dataset.scheduling, 'false');
-  assert.equal(h.element('result-team').textContent, 'Clinical follow-up declined');
+  assert.equal(h.element('result-auto-tab').hidden, true);
+  assert.equal(h.element('result-support-panel').hidden, false);
+  assert.equal(h.element('result-clinical-note').hidden, false);
+  assert.equal(h.element('demo-result').attributes['aria-busy'], 'false');
 });
 
-test('cost resources alone highlight the demo next step and reset on restart', async () => {
-  const resultPayload = { status: 'ready', barrier: 'Barrier ID: Cost with two pens', team: 'Text sent with resources', next: 'Simulated outcomes only — no text has been sent and no appointment has been booked.', costPreview: true };
-  const h = harness({ resultPayload });
+test('accepted action opens first, tabs preserve independent results and keyboard navigation', async () => {
+  const h = harness({ resultPayload: { status: 'ready', barrier: 'Routine changes', autonomous: { title: 'Routine reminder', status: 'accepted' }, support: { title: 'Pharmacy support', status: 'declined' } } });
   h.click('voice-orb'); await flush(); await h.click('end-voice'); await flush();
-  assert.equal(h.element('result-barrier').textContent, 'Cost with two pens');
-  assert.equal(h.element('result-next-step').dataset.cost, 'true');
-  assert.equal(h.element('result-next-step').dataset.scheduling, 'false');
-  assert.equal(h.element('result-team').textContent, 'Text with resources');
+  assert.equal(h.element('result-auto-panel').hidden, false);
+  assert.match(h.element('result-auto-status').textContent, /Agreed in call/);
+  assert.equal(h.element('result-support-status').textContent, 'Declined in call');
+  h.click('result-support-tab');
+  assert.equal(h.element('result-auto-panel').hidden, true);
+  assert.equal(h.element('result-support-tab').attributes['aria-selected'], 'true');
+  h.element('result-support-tab').handlers.keydown({ key: 'Home', preventDefault() {} });
+  assert.equal(h.element('result-auto-tab').attributes['aria-selected'], 'true');
   h.click('start-voice'); await flush();
-  assert.equal(h.element('result-next-step').dataset.cost, 'false');
+  assert.equal(h.element('result-flow').hidden, true);
 });
 
-test('cost actions remain distinct and prospective in the two-section result', async () => {
-  const h = harness({ resultPayload: { status: 'ready', barrier: 'Barrier ID: Cost with two pens', team: 'Text sent with resources · Appointment auto-scheduled with the customer success team', costPreview: true } });
+test('support acceptance takes focus when autonomous action was declined', async () => {
+  const h = harness({ resultPayload: { status: 'ready', barrier: 'Refill or renewal delays', autonomous: { title: 'Status reminder', status: 'declined' }, support: { title: 'Renewal team', status: 'accepted' } } });
   h.click('voice-orb'); await flush(); await h.click('end-voice'); await flush();
-  assert.equal(h.element('result-barrier').textContent, 'Cost with two pens');
-  assert.equal(h.element('result-team').textContent, 'Text with resources\nAutomatic scheduling with the customer success team');
+  assert.equal(h.element('result-support-panel').hidden, false);
+  assert.equal(h.element('result-auto-dot').hidden, true);
+  assert.equal(h.element('result-support-dot').hidden, false);
 });

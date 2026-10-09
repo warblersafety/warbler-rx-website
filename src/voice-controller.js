@@ -55,13 +55,49 @@ function friendlyError(error) {
   return error?.demoMessage || 'We couldn’t connect the conversation. Check your connection and microphone, then try again.';
 }
 
+function selectResultTab(name, focus = false) {
+  for (const type of ['auto', 'support']) {
+    const selected = type === name;
+    const tab = $(`result-${type}-tab`);
+    tab.setAttribute('aria-selected', String(selected));
+    tab.setAttribute('tabindex', selected ? '0' : '-1');
+    $(`result-${type}-panel`).hidden = !selected;
+    if (selected && focus) tab.focus();
+  }
+}
+for (const type of ['auto', 'support']) {
+  $(`result-${type}-tab`).addEventListener('click', () => selectResultTab(type));
+  $(`result-${type}-tab`).addEventListener('keydown', event => {
+    if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+    event.preventDefault();
+    const target = $('result-auto-tab').hidden ? 'support' : event.key === 'Home' ? 'auto' : event.key === 'End' ? 'support' : type === 'auto' ? 'support' : 'auto';
+    selectResultTab(target, true);
+  });
+}
+function renderActions(result) {
+  const statuses = { accepted: 'Agreed in call · demo preview', declined: 'Declined in call', unclear: 'Permission not confirmed', not_discussed: 'Not discussed in call', urgent: 'Immediate help needed' };
+  $('result-auto-tab').hidden = !result.autonomous;
+  $('result-clinical-note').hidden = !result.clinicalOnly;
+  for (const [type, action] of [['auto', result.autonomous], ['support', result.support]]) {
+    $(`result-${type}-title`).textContent = action?.title || '';
+    $(`result-${type}-description`).textContent = action?.description || '';
+    $(`result-${type}-status`).textContent = statuses[action?.status] || statuses.not_discussed;
+    $(`result-${type}-panel`).dataset.status = action?.status || 'not_discussed';
+    $(`result-${type}-dot`).hidden = action?.status !== 'accepted';
+  }
+  selectResultTab(result.autonomous && (result.autonomous.status === 'accepted' || result.support?.status !== 'accepted') ? 'auto' : 'support');
+}
+
 async function getSummary(activeRun, callReceipt) {
   $('result-flow').hidden = false;
   $('demo-result').hidden = false;
   $('result-content').hidden = true;
+  $('result-loading').hidden = false;
+  $('demo-result').setAttribute('aria-busy', 'true');
   $('result-status').hidden = false;
   $('result-status').textContent = 'Identifying your barrier and next step…';
   $('demo-result').focus({ preventScroll: true });
+  $('result-flow').scrollIntoView({ behavior: window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'start' });
   for (let attempt = 0; attempt < 15; attempt++) {
     if (run !== activeRun) return;
     try {
@@ -71,12 +107,9 @@ async function getSummary(activeRun, callReceipt) {
       if (!response.ok || result.status === 'unavailable') break;
       if (result.status === 'ready') {
         $('result-barrier').textContent = result.barrier.replace(/^Barrier ID:\s*/i, '');
-        $('result-team').textContent = result.team
-          .replace('Text sent with resources', 'Text with resources')
-          .replace('Appointment auto-scheduled with the customer success team', 'Automatic scheduling with the customer success team')
-          .replaceAll(' · ', '\n');
-        $('result-next-step').dataset.scheduling = String(result.schedulingPreview === true);
-        $('result-next-step').dataset.cost = String(result.costPreview === true);
+        renderActions(result);
+        $('result-loading').hidden = true;
+        $('demo-result').setAttribute('aria-busy', 'false');
         $('result-content').hidden = false;
         $('result-status').hidden = true;
         return;
@@ -84,7 +117,10 @@ async function getSummary(activeRun, callReceipt) {
     } catch { break; }
     await new Promise(resolve => setTimeout(resolve, 2000));
   }
-  if (run === activeRun) $('result-status').textContent = 'Your call has ended. Analysis is unavailable. Try another conversation using the button above.';
+  if (run === activeRun) {
+    $('demo-result').setAttribute('aria-busy', 'false');
+    $('result-status').textContent = 'Your call has ended. Analysis is unavailable. Try another conversation using the button above.';
+  }
 }
 
 function finish(activeRun) {
@@ -106,8 +142,6 @@ async function start() {
   const activeRun = ++run;
   receipt = null; connected = false; failure = false; muted = false; cancelled = false; voiceMode = 'listening';
   $('demo-error').hidden = true; $('demo-result').hidden = true; $('result-flow').hidden = true;
-  $('result-next-step').dataset.scheduling = 'false';
-  $('result-next-step').dataset.cost = 'false';
   $('mute-voice').textContent = 'Mute mic'; $('mute-voice').setAttribute('aria-pressed', 'false');
   setBusy(true); status('Connecting…', 'connecting');
   $('duration').textContent = 'Up to 2 minutes';

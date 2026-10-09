@@ -1,0 +1,67 @@
+{
+  "versionId": "agtvrsn_1101m4haa4z3ecrap9zx1dd4sbev",
+  "results": [
+    {
+      "name": "renewal",
+      "result": {
+        "status": "ready",
+        "barrier": "Refill or renewal delays",
+        "team": "Pharmacy support",
+        "next": "The pharmacy support team would review the GLP-1 access barrier. No insurance review, order, or follow-up has been arranged.",
+        "schedulingPreview": false,
+        "costPreview": false,
+        "autonomous": {
+          "title": "Renewal status reminder",
+          "description": "Preview a reminder to check renewal or prior authorization status with the pharmacy.",
+          "status": "declined"
+        },
+        "support": {
+          "title": "Pharmacy renewal team",
+          "description": "Review the prescription renewal or prior authorization delay.",
+          "status": "accepted"
+        },
+        "clinicalOnly": false
+      }
+    },
+    {
+      "name": "routine",
+      "result": {
+        "status": "ready",
+        "barrier": "Routine changes",
+        "team": "No staff follow-up identified",
+        "next": "No staff follow-up was identified in this demo. A plan to request a GLP-1 refill is not a confirmed order or evidence of medication use.",
+        "schedulingPreview": false,
+        "costPreview": false,
+        "autonomous": {
+          "title": "Routine reminder",
+          "description": "Preview a reminder to follow the existing prescribed routine.",
+          "status": "accepted"
+        },
+        "support": {
+          "title": "Pharmacy support",
+          "description": "Help organize a routine around travel or a busy schedule.",
+          "status": "declined"
+        },
+        "clinicalOnly": false
+      }
+    },
+    {
+      "name": "adverse-event",
+      "result": {
+        "status": "ready",
+        "barrier": "Reported medication side effect",
+        "team": "Automatic scheduling",
+        "next": "Based on the clinical care team’s availability. Demo preview only — no appointment has been booked or clinician contacted.",
+        "schedulingPreview": true,
+        "costPreview": false,
+        "autonomous": null,
+        "support": {
+          "title": "Clinical care team",
+          "description": "Based on the clinical care team’s availability. Demo preview only — no appointment has been booked or clinician contacted.",
+          "status": "accepted"
+        },
+        "clinicalOnly": true
+      }
+    }
+  ]
+}
