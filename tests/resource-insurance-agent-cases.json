@@ -1,0 +1,24 @@
+{
+  "tests": [
+    {
+      "id": "test_6701m4rgcn0tfg5r1ackrp1vgkbg",
+      "name": "Financial text offer"
+    },
+    {
+      "id": "test_3401m4rgcnqffs38cp2700z9cnh2",
+      "name": "Financial text refusal"
+    },
+    {
+      "id": "test_7601m4rgcp2mf7srs1w6k570revh",
+      "name": "Insurance request offer"
+    },
+    {
+      "id": "test_8701m4rgcpdqfhxa9bkr8v00csmz",
+      "name": "Insurance request refusal"
+    }
+  ],
+  "regressions": [
+    "test_9401m4ra47wpf1fahysbqw87qhby",
+    "test_9901m4ra49v7fh39apqs18v3pta3"
+  ]
+}

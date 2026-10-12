@@ -1,0 +1,47 @@
+{
+  "reviewedAt": "2026-10-12",
+  "suite": "suite_1101m4rgcpv0fmk96fkt1rkfvrwq",
+  "version": "agtvrsn_4801m4rgbde2ftzv37hhrpr2x6xa",
+  "results": [
+    {
+      "name": "Warbler resource-insurance 2026-10-12: Financial text offer",
+      "status": "passed"
+    },
+    {
+      "name": "Warbler resource-insurance 2026-10-12: Insurance request offer",
+      "status": "passed"
+    },
+    {
+      "name": "Warbler resource-insurance 2026-10-12: Insurance request refusal",
+      "status": "passed"
+    },
+    {
+      "name": "Warbler discovery v2 2026-10-12: Clinical decline override",
+      "status": "passed"
+    },
+    {
+      "name": "Warbler discovery v2 2026-10-12: Renewal dependency",
+      "status": "passed"
+    },
+    {
+      "name": "Warbler resource-insurance 2026-10-12: Financial text refusal",
+      "status": "passed"
+    }
+  ],
+  "targetedFinal": {
+    "suite": "suite_1201m4rgj4ebf4181xqwasq6qevv",
+    "version": "agtvrsn_3101m4rgfa1rem8s4qemfq3gs6a7",
+    "results": [
+      {
+        "name": "Warbler resource-insurance 2026-10-12: Financial text refusal",
+        "status": "passed"
+      },
+      {
+        "name": "Warbler resource-insurance 2026-10-12: Financial text offer",
+        "status": "passed"
+      }
+    ]
+  },
+  "mergedVersion": "agtvrsn_0301m4rgkxm6ebtt6eavvbn5zqfk",
+  "note": "Six initial scenarios passed. Transcript review found ambiguous prior-contact wording in the cost case; final prompt adds a concise cost example and preserves unknown contact recipients. Both financial-text cases passed on that final version. Synthetic text simulations only; no real requests, messages or live audio calls. Exact merge readback verified; voice, model, tools, privacy and admission settings preserved."
+}
