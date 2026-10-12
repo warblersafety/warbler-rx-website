@@ -30,7 +30,7 @@ The browser supports mute, end, cancellation and microphone errors. Sessions end
 
 Audio is processed live by ElevenLabs but audio recording storage is disabled. Conversation text is retained for one day; PII redaction is not enabled on this Free account. The interface discloses this and requests fictional details. Failure logs include bounded request-stage labels, error categories, HTTP status and elapsed time, excluding credentials, query values and provider response bodies. Usage metadata uses an HMAC identifier, not the raw IP; Vercel retains ordinary request logs.
 
-Side effects receive brief empathy and a request for permission to route to the clinical care team, with no symptom, dose, medication-name or callback-time questions. An explicit request for clinical follow-up already counts as permission. Accepted routing highlights **Automatic scheduling** based on the clinical care team’s availability, clearly labeled as a demo preview with no appointment booked. Declined, unanswered and missing consent do not display scheduling; immediate emergencies instead direct real-world help. Other treatment, restart, missed-dose and product-condition questions go to simulated clinician/pharmacist review. No medication instructions, symptom reassurance, coverage guarantees or real follow-up claims are permitted. Immediate emergencies end role-play and direct real-world help.
+Side effects receive brief empathy and at most one missing impact question before a focused clinical handoff. An explicit clinician request, refusal or emergency skips ordinary discovery. Medication-use, restart, missed-dose and product-condition questions remain clinical; the agent gives no medication instructions or symptom treatment guidance. No clinical treatment content has been supplied for this demo. All external actions remain conditional previews; no appointment, message, reminder or contact actually occurs.
 
 ## Usage and deployment
 
@@ -45,26 +45,18 @@ Side effects receive brief empathy and a request for permission to route to the 
 
 `npm test` covers direct orb initiation, duplicate-click prevention, mute/end, cancellation during token fetch and SDK setup, microphone denial, page exit, scenario validation, request restrictions, receipt tampering/expiry, usage/credit admission, clinical routing, unavailable analysis and missing configuration. `npm run build` checks the production bundle.
 
-`scripts/test-elevenlabs.mjs` runs the six existing synthetic conversation tests (coverage, side effects, refill, restart, stop and urgent symptoms) plus four side-effect response regressions from `tests/side-effect-agent-cases.json`: no symptom probing, accepted routing, declined routing and a non-GLP-1 medication. All ten passed on version `agtvrsn_5101m4ece99yfmhsj6jhja8ceq6s` (suite `suite_7101m4echhn4e3ktxdq4as5v1991`). The provider editor normalizes prompt whitespace; readback verified identical prompt content and preservation of voice, tools, privacy, limits and unrelated settings. Provider simulations do not verify human microphone/audio quality or clinical effectiveness. Browser checks cover the compact 761×575 viewport and mobile layout; deployment checks verify session creation and signed-summary access.
+`node scripts/test-discovery-agent.mjs` runs synthetic discovery scenarios plus restart, stop and emergency regressions using the existing restricted ElevenLabs credentials. `scripts/test-elevenlabs.mjs` delegates to that current suite; earlier test JSON files are historical release records. `node scripts/verify-discovery-analysis.mjs` verifies provider extraction and the public mapping using fictional seeded conversations against the main branch, and refuses a mismatched main version. Simulations do not verify human microphone/audio quality or clinical effectiveness.
 
 ## October 9 Sites copy update
 
 Imported the approved ChatGPT Sites copy revisions: simplified demo and founder captions, customized-agent messaging, new workflow and closing headings, and generic voice-service privacy wording. The Vercel site retains its embedded live voice demo. The idle orb says “Tap to speak”; microphone guidance appears while starting a call.
 
-## Call analysis and next-step choices
+## Discovery and support during the call
 
-The post-call card now uses a warm glow and staggered reveal, with a Barrier ID above accessible Autonomous Action / Route to Support tabs. The agreed choice is selected first; each tab separately reports acceptance, refusal, or unconfirmed permission. Reduced-motion preferences disable decorative motion. Clinical concerns hide autonomous actions.
+The dialogue identifies the specific obstacle, its reported treatment impact, prior attempts and relevant support preference. It provides a bounded explanation or organizational plan, checks the patient's response, then chooses an appropriate owner for unresolved work. Examples include covered patient cost versus a coverage gap, authorization versus prescription renewal, refill-request forgetfulness versus dosing questions, and stock shortages versus failed delivery.
 
-| Barrier | Autonomous demo option | Support demo route |
-| --- | --- | --- |
-| Side effects / adverse events | None | Clinical care team |
-| Cost | Cost-support resource text | Customer success financial-support appointment |
-| Coverage | Coverage-review checklist text | Pharmacy insurance support |
-| Routine changes | Reminder for the existing prescribed routine | Pharmacy support |
-| Renewal / prior authorization delay | Reminder to prescribing office / authorization team | Pharmacy renewal team |
-| Forgotten refill | Reminder to pharmacist / prescribing clinician | Pharmacy support |
-| Pickup / delivery | Pharmacy information text | Fulfillment support |
+The post-call card retains the animated reveal and shows **What we learned**, **Support on this call**, **What remains**, and **Recommended next step**, followed by separately consented action/support previews. The eight new fields in `lib/discovery-result.js` use reviewed enums, independent extraction instructions, and explicit unknown states. No arbitrary generated patient narrative is exposed. The server chooses the next team from the discovered obstacle and remaining dependency. Clinical evidence in any classification overrides logistical previews. Text/reminder consent is not staff-handoff consent.
 
-All actions remain simulated. The agent cannot send texts, set reminders, contact support, check status or book appointments. Medication-use questions, symptoms and emergencies override logistical choices. The server returns reviewed text and enumerated permission states, not free-form extracted patient details. `autonomous_action` and `support_routing` supplement the existing independent cost and clinical permission fields. The deployment must pin `ELEVENLABS_AGENT_VERSION_ID` to the tested version in `elevenlabs-agent-config.json`.
+Only explicit patient confirmation of an informational/organizational barrier, substantive support, a matching nonclinical obstacle and no remaining external dependency can display **Barrier addressed — patient report**. An accepted referral or clearer plan never counts as resolved; it is not evidence of adherence. Renewals, approval, affordability, stock, delivery and clinical review remain unfinished. Null or unknown analysis stays visibly unestablished.
 
-The agent leads with a recommended autonomous action, then asks permission. Refill and renewal reminders are directed to pharmacy or prescribing staff rather than asking the patient to chase the request. Administrative prescriber reminders remain distinct from clinical consultations; prescribing and approval decisions remain with the responsible professional.
+The prompt, extraction schema and website version pin must ship together. Provider voice/model, privacy, controls and tools stay unchanged. Revert the website deployment and agent version pin together for rollback; the previous website agent version was `agtvrsn_3501m4hb827wfrtst7ya5vtxvz3x`.

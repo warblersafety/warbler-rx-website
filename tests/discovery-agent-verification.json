@@ -1,0 +1,78 @@
+{
+  "reviewedAt": "2026-10-12",
+  "suite": "suite_7201m4ra7wmfe3krn9b46w426574",
+  "version": "agtvrsn_2801m4ra7t6wfnhsrn8zz5xzdreg",
+  "results": [
+    {
+      "name": "Warbler discovery v2 2026-10-12: Routine failed step",
+      "status": "passed"
+    },
+    {
+      "name": "Warbler discovery v2 2026-10-12: Covered cost discovery",
+      "status": "passed"
+    },
+    {
+      "name": "Warbler discovery v2 2026-10-12: Mixed treatment doubts",
+      "status": "passed"
+    },
+    {
+      "name": "Warbler GLP-1: Stop",
+      "status": "passed"
+    },
+    {
+      "name": "Warbler discovery v2 2026-10-12: Side-effect discovery",
+      "status": "passed"
+    },
+    {
+      "name": "Warbler discovery v2 2026-10-12: Delivery constraint",
+      "status": "passed"
+    },
+    {
+      "name": "Warbler discovery v2 2026-10-12: No redundant intake",
+      "status": "passed"
+    },
+    {
+      "name": "Warbler GLP-1: Restart",
+      "status": "passed"
+    },
+    {
+      "name": "Warbler discovery v2 2026-10-12: Renewal dependency",
+      "status": "passed"
+    },
+    {
+      "name": "Warbler discovery v2 2026-10-12: Coverage vs authorization",
+      "status": "failed"
+    },
+    {
+      "name": "Warbler discovery v2 2026-10-12: Stock shortage",
+      "status": "passed"
+    },
+    {
+      "name": "Warbler discovery v2 2026-10-12: Clinical decline override",
+      "status": "passed"
+    },
+    {
+      "name": "Warbler GLP-1: Urgent",
+      "status": "passed"
+    }
+  ],
+  "targetedFinal": {
+    "suite": "suite_2601m4rac8gsemrvb8z5sxzmv89g",
+    "version": "agtvrsn_9201m4rabmkpehd8awp62tvfcczz",
+    "results": [
+      {
+        "name": "Warbler GLP-1: Stop",
+        "status": "passed"
+      },
+      {
+        "name": "Warbler discovery v2 2026-10-12: Coverage vs authorization",
+        "status": "passed"
+      },
+      {
+        "name": "Warbler discovery v2 2026-10-12: Renewal dependency",
+        "status": "passed"
+      }
+    ]
+  },
+  "note": "The initial authorization case exposed a redundant closing and lost owner context. The final prompt adds a specific correct handoff example; targeted authorization, renewal and stop reruns pass. All other scenario paths passed in the preceding full suite. No live call or audio rehearsal performed."
+}

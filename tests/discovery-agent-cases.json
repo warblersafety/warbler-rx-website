@@ -1,0 +1,49 @@
+{
+  "tests": [
+    {
+      "id": "test_1101m4ra45q9fgpts60p8k6ckyx5",
+      "name": "Side-effect discovery"
+    },
+    {
+      "id": "test_2301m4ra4644fc1rxcnrt4r0zpty",
+      "name": "Covered cost discovery"
+    },
+    {
+      "id": "test_7801m4ra46gnejwvd89d1skqckv4",
+      "name": "Coverage vs authorization"
+    },
+    {
+      "id": "test_4201m4ra46tvfe88apmebecc5vnh",
+      "name": "Routine failed step"
+    },
+    {
+      "id": "test_9401m4ra47wpf1fahysbqw87qhby",
+      "name": "Renewal dependency"
+    },
+    {
+      "id": "test_4101m4ra488sfb18z5nefta81pb9",
+      "name": "Delivery constraint"
+    },
+    {
+      "id": "test_8101m4ra48mvem696ydcczk3xsr6",
+      "name": "Stock shortage"
+    },
+    {
+      "id": "test_4401m4ra498rf7ea4ra3655jq4ny",
+      "name": "Mixed treatment doubts"
+    },
+    {
+      "id": "test_5601m4ra49j2ezwa70q1chyr40ee",
+      "name": "No redundant intake"
+    },
+    {
+      "id": "test_9901m4ra49v7fh39apqs18v3pta3",
+      "name": "Clinical decline override"
+    }
+  ],
+  "regressions": [
+    "test_8801m4bxfsbgfc0a9pz2fnphnqp9",
+    "test_4401m4bxfsmsfenv3s46rzvrvt2j",
+    "test_1401m4bxfsx3eamagjqzwtkxswcc"
+  ]
+}

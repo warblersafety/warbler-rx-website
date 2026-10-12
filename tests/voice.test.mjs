@@ -97,13 +97,13 @@ function analyzed(values) {
   return { analysis: { data_collection_results: Object.fromEntries(Object.entries(values).map(([key, value]) => [key, { value }])) } };
 }
 
-test('side-effect summary names the stated medication and previews scheduling only with consent', () => {
+test('side-effect summary names the stated medication and previews a clinical handoff only with consent', () => {
   for (const [medication, name] of [['glp1', 'GLP-1'], ['ozempic', 'Ozempic'], ['metformin', 'metformin'], ['amoxicillin', 'amoxicillin']]) {
     const result = publicResult(analyzed({ barrier: 'side_effects', medication, clinical_routing: 'accepted' }));
     assert.equal(result.barrier, `Reported ${name} side effect`);
-    assert.equal(result.team, 'Automatic scheduling');
+    assert.equal(result.team, 'Clinical handoff preview');
     assert.equal(result.schedulingPreview, true);
-    assert.match(result.next, /clinical care team’s availability/);
+    assert.match(result.next, /reported concern and its impact/);
     assert.match(result.next, /Demo preview only — no appointment has been booked/);
   }
 });
@@ -112,7 +112,7 @@ test('declined, unanswered and missing consent never become a scheduling preview
   for (const clinical_routing of ['declined', 'unclear', 'not_discussed', undefined, 'booked']) {
     const result = publicResult(analyzed({ barrier: 'side_effects', clinical_routing }));
     assert.equal(result.schedulingPreview, false);
-    assert.doesNotMatch(result.team, /Automatic scheduling/);
+    assert.doesNotMatch(result.team, /Clinical handoff preview/);
     if (clinical_routing === 'declined') assert.match(result.team, /declined/);
     else assert.match(result.next, /Permission for follow-up was not confirmed/);
   }
@@ -141,8 +141,8 @@ test('cost outcomes preserve supply and keep every permission combination indepe
       call.transcript = [{ role: 'user', message: 'My copay is too high. I have two pens left.' }];
       const result = publicResult(call);
       assert.equal(result.barrier, 'Barrier ID: Cost with two pens');
-      assert.equal(result.team.includes('Text sent with resources'), cost_resources === 'accepted');
-      assert.equal(result.team.includes('Appointment auto-scheduled with the customer success team'), cost_appointment === 'accepted');
+      assert.equal(result.team.includes('Resource text preview'), cost_resources === 'accepted');
+      assert.equal(result.team.includes('Financial-support appointment preview'), cost_appointment === 'accepted');
       assert.equal(result.costPreview, cost_resources === 'accepted' || cost_appointment === 'accepted');
       assert.match(result.next, /Simulated outcomes only — no text has been sent and no appointment has been booked/);
       assert.equal(result.schedulingPreview, false);
