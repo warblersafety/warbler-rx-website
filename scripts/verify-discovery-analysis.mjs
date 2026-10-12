@@ -17,8 +17,11 @@ const cases=[
 ];
 const results=[];
 for (const [name,history,check] of cases) {
+ if (process.env.ANALYSIS_CASE && process.env.ANALYSIS_CASE !== name) continue;
  const b=await api(`/v1/convai/agents/${cfg.agentId}/simulate-conversation`,{simulation_specification:{simulated_user_config:{first_message:'Goodbye.',language:'en'},partial_conversation_history:history.map(([role,message],i)=>({role,message,time_in_call_secs:i*5})),dynamic_variables:{scenario_id:'coverage'}},new_turns_limit:0});
  const r=publicResult({analysis:b.analysis,transcript:b.simulated_conversation});
+ const fields=Object.fromEntries(Object.entries(b.analysis?.data_collection_results || {}).map(([key,value])=>[key,value.value]));
+ console.log(name+' extracted: '+JSON.stringify(Object.fromEntries(Object.entries(fields).filter(([key])=>['barrier','review_team','pain_point','treatment_impact','unresolved_need'].includes(key)))));
  try { check(r); results.push({name,passed:true,result:r});console.log(name+': passed'); }
  catch(e) { results.push({name,passed:false,result:r,error:e.message});console.log(name+': FAILED '+e.message); }
 }

@@ -74,5 +74,7 @@
       }
     ]
   },
-  "note": "The initial authorization case exposed a redundant closing and lost owner context. The final prompt adds a specific correct handoff example; targeted authorization, renewal and stop reruns pass. All other scenario paths passed in the preceding full suite. No live call or audio rehearsal performed."
+  "note": "The initial authorization case exposed a redundant closing and lost owner context. The final prompt adds a specific correct handoff example; targeted authorization, renewal and stop reruns pass. All other scenario paths passed in the preceding full suite. No live call or audio rehearsal performed.",
+  "mergedVersion": "agtvrsn_5401m4rb9fjwetyte4gerrehht9z",
+  "mergeVerification": "Main prompt, opening, voice, model, tools, privacy, admission controls and workflow match the tested branch. Post-merge extraction testing exposed an intermittent inference that a failed delivery meant no medication remained; the treatment_impact extraction description now explicitly forbids that inference. Dialogue unchanged."
 }
