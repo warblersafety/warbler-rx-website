@@ -37,3 +37,32 @@ test('administrative prescriber reminders remain autonomous and never imply an i
  assert.match(r.autonomous.description,/if appropriate/);
  assert.equal(r.clinicalOnly,false);
 });
+
+test('insurance filing needs its own explicit action permission and remains unresolved',()=>{
+ for (const [choice,accepted] of [['insurance_request',true],['renewal_outreach',false],['declined',false],['unclear',false],[undefined,false]]) {
+  const r=result({barrier:'renewal',pain_point:'authorization_pending',unresolved_need:'authorization',autonomous_action:choice,handoff_permission:'accepted'});
+  assert.equal(r.autonomous.title,'Insurance-team request');
+  assert.equal(r.autonomous.status==='accepted',accepted);
+  assert.match(r.autonomous.description,/No request has been filed/);
+  assert.equal(r.discovery.route,'Insurance authorization team');
+  assert.equal(r.discovery.resolved,false);
+ }
+});
+
+test('insurance filing cannot replace a prescription renewal or clinical review',()=>{
+ const renewal=result({barrier:'renewal',pain_point:'renewal_needed',unresolved_need:'prescription_renewal',autonomous_action:'insurance_request'});
+ assert.equal(renewal.discovery.route,'Prescribing office');
+ assert.notEqual(renewal.autonomous.status,'accepted');
+ const clinical=result({barrier:'renewal',pain_point:'authorization_pending',treatment_impact:'missed_or_stopped',autonomous_action:'insurance_request'});
+ assert.equal(clinical.autonomous,null);
+ assert.equal(clinical.discovery.route,'Clinical care team');
+});
+
+test('financial link text does not imply an appointment or resolved affordability',()=>{
+ const r=result({barrier:'cost',pain_point:'cost_share',cost_resources:'accepted',cost_appointment:'declined',unresolved_need:'affordability_review'});
+ assert.equal(r.autonomous.title,'Financial-resource link by text');
+ assert.match(r.autonomous.description,/link to financial resources/);
+ assert.equal(r.autonomous.status,'accepted');
+ assert.equal(r.support.status,'declined');
+ assert.equal(r.discovery.resolved,false);
+});
