@@ -74,6 +74,18 @@ for (const type of ['auto', 'support']) {
     selectResultTab(target, true);
   });
 }
+function renderDiscovery(discovery) {
+  $('result-discovery').hidden = !discovery;
+  if (!discovery) return;
+  $('result-pain-point').textContent = discovery.painPoint;
+  $('result-learned').textContent = discovery.learned.join(' · ');
+  $('result-help').textContent = discovery.help;
+  $('result-response').textContent = discovery.response;
+  $('result-outcome').textContent = discovery.outcome;
+  $('result-remaining').textContent = discovery.remaining;
+  $('result-route').textContent = discovery.route;
+  $('result-route-status').textContent = discovery.routingStatus;
+}
 function renderActions(result) {
   const statuses = { accepted: 'Agreed in call · demo preview', declined: 'Declined in call', unclear: 'Permission not confirmed', not_discussed: 'Not discussed in call', urgent: 'Immediate help needed' };
   $('result-auto-tab').hidden = !result.autonomous;
@@ -95,7 +107,7 @@ async function getSummary(activeRun, callReceipt) {
   $('result-loading').hidden = false;
   $('demo-result').setAttribute('aria-busy', 'true');
   $('result-status').hidden = false;
-  $('result-status').textContent = 'Identifying your barrier and next step…';
+  $('result-status').textContent = 'Connecting what we learned, the support provided and the next step…';
   $('demo-result').focus({ preventScroll: true });
   $('result-flow').scrollIntoView({ behavior: window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'start' });
   for (let attempt = 0; attempt < 15; attempt++) {
@@ -107,6 +119,7 @@ async function getSummary(activeRun, callReceipt) {
       if (!response.ok || result.status === 'unavailable') break;
       if (result.status === 'ready') {
         $('result-barrier').textContent = result.barrier.replace(/^Barrier ID:\s*/i, '');
+        renderDiscovery(result.discovery);
         renderActions(result);
         $('result-loading').hidden = true;
         $('demo-result').setAttribute('aria-busy', 'false');

@@ -129,3 +129,16 @@ test('support acceptance takes focus when autonomous action was declined', async
   assert.equal(h.element('result-auto-dot').hidden, true);
   assert.equal(h.element('result-support-dot').hidden, false);
 });
+
+test('results render discovery, delivered support, patient response and remaining owner', async () => {
+  const discovery = {painPoint:'New prescription or renewal needed',learned:['Already contacted the prescribing office','Supply risk reported'],help:'Explained the blocked refill step',response:'Plan is clearer',outcome:'Next step clarified — work remains',remaining:'Renewal still needed',route:'Prescribing office',routingStatus:'Handoff agreed · demo preview'};
+  const h = harness({resultPayload:{status:'ready',barrier:'Refill delay',discovery}});
+  h.click('voice-orb');await flush();await h.click('end-voice');await flush();
+  assert.equal(h.element('result-discovery').hidden,false);
+  assert.equal(h.element('result-pain-point').textContent,discovery.painPoint);
+  assert.equal(h.element('result-learned').textContent,discovery.learned.join(' · '));
+  assert.equal(h.element('result-help').textContent,discovery.help);
+  assert.equal(h.element('result-remaining').textContent,discovery.remaining);
+  assert.equal(h.element('result-route').textContent,'Prescribing office');
+  assert.match(h.element('result-route-status').textContent,/preview/);
+});

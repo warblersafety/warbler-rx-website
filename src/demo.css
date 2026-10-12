@@ -65,3 +65,10 @@
 @keyframes analysis-orbit{0%,100%{transform:scale(.85);opacity:.4}50%{transform:scale(1.12);opacity:1}}
 @media(max-width:640px){.result-flow{padding-top:28px}.demo-result{border-radius:22px}.analysis-heading{padding:18px}.barrier-card{padding:26px 22px}.result-next-step{padding:0 10px}.result-tabs button{font-size:12px;padding:13px 6px}.action-panel{padding:24px 12px;min-height:230px}.analysis-disclaimer{padding:16px 22px}.analysis-loading{padding:26px 22px;gap:16px}}
 @media(prefers-reduced-motion:reduce){.analysis-aura,.demo-result,.barrier-card,.result-next-step,.action-panel,.analysis-orbit i{animation:none!important;filter:none}.result-tabs button{transition:none}}
+
+/* Discovery stays readable within the existing animated results card. */
+.discovery-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin: 20px 24px; }
+.discovery-item { border: 1px solid #e6e2d5; border-radius: 16px; padding: 18px; background: #fffdf7; min-width: 0; }
+.discovery-title { margin: 8px 0; font-size: 16px; font-weight: 500; line-height: 1.45; overflow-wrap: anywhere; }
+.discovery-item .result-description { font-size: 13px; line-height: 1.65; }
+@media (max-width: 600px) { .discovery-grid { grid-template-columns: 1fr; } }

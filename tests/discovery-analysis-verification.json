@@ -1,0 +1,270 @@
+{
+  "versionId": "agtvrsn_5401m4rb9fjwetyte4gerrehht9z",
+  "results": [
+    {
+      "name": "renewal",
+      "passed": true,
+      "result": {
+        "discovery": {
+          "painPoint": "New prescription or renewal needed",
+          "learned": [
+            "Patient is concerned about a supply gap",
+            "Already contacted the prescribing office",
+            "Support preference not established"
+          ],
+          "help": "Explained which refill step is blocked and who owns it",
+          "response": "Patient understands the next step; work remains",
+          "outcome": "Next step clarified — work remains",
+          "remaining": "A prescription renewal is still needed",
+          "route": "Prescribing office",
+          "routingStatus": "Handoff agreed · demo preview",
+          "handoffPermission": "accepted",
+          "resolved": false
+        },
+        "status": "ready",
+        "barrier": "Refill or renewal delays",
+        "team": "Pharmacy support",
+        "next": "The pharmacy support team would review the GLP-1 access barrier. No insurance review, order, or follow-up has been arranged.",
+        "schedulingPreview": false,
+        "costPreview": false,
+        "autonomous": {
+          "title": "Remind the renewal team",
+          "description": "Preview a reminder to the prescribing office or authorization team to review the pending renewal or prior authorization request.",
+          "status": "accepted"
+        },
+        "support": {
+          "title": "Prescribing office",
+          "description": "A prescription renewal is still needed",
+          "status": "accepted"
+        },
+        "clinicalOnly": false
+      }
+    },
+    {
+      "name": "authorization",
+      "passed": true,
+      "result": {
+        "discovery": {
+          "painPoint": "Prior authorization pending",
+          "learned": [
+            "Effect on treatment not established",
+            "Already contacted the pharmacy",
+            "Support preference not established"
+          ],
+          "help": "Explained the coverage issue and information needed for review",
+          "response": "Patient understands the next step; work remains",
+          "outcome": "Next step clarified — work remains",
+          "remaining": "Authorization is still pending",
+          "route": "Authorization team",
+          "routingStatus": "Handoff agreed · demo preview",
+          "handoffPermission": "accepted",
+          "resolved": false
+        },
+        "status": "ready",
+        "barrier": "Refill or renewal delays",
+        "team": "Pharmacy support",
+        "next": "The pharmacy support team would review the GLP-1 access barrier. No insurance review, order, or follow-up has been arranged.",
+        "schedulingPreview": false,
+        "costPreview": false,
+        "autonomous": {
+          "title": "Remind the renewal team",
+          "description": "Preview a reminder to the prescribing office or authorization team to review the pending renewal or prior authorization request.",
+          "status": "not_discussed"
+        },
+        "support": {
+          "title": "Authorization team",
+          "description": "Authorization is still pending",
+          "status": "accepted"
+        },
+        "clinicalOnly": false
+      }
+    },
+    {
+      "name": "delivery",
+      "passed": true,
+      "result": {
+        "discovery": {
+          "painPoint": "Delivery attempt or receipt problem",
+          "learned": [
+            "Effect on treatment not established",
+            "A delivery was already attempted",
+            "Prefers pickup if available"
+          ],
+          "help": "Clarified the access or receiving constraint for fulfillment",
+          "response": "Patient understands the next step; work remains",
+          "outcome": "Next step clarified — work remains",
+          "remaining": "A workable fulfillment arrangement still needs confirmation",
+          "route": "Fulfillment support",
+          "routingStatus": "Handoff agreed · demo preview",
+          "handoffPermission": "accepted",
+          "resolved": false
+        },
+        "status": "ready",
+        "barrier": "GLP-1 supply or delivery concern",
+        "team": "Pharmacy support",
+        "next": "The pharmacy support team would review the GLP-1 access barrier. No insurance review, order, or follow-up has been arranged.",
+        "schedulingPreview": false,
+        "costPreview": false,
+        "autonomous": {
+          "title": "Pickup & delivery information",
+          "description": "Preview a text with pharmacy-provided pickup or delivery information.",
+          "status": "not_discussed"
+        },
+        "support": {
+          "title": "Fulfillment support",
+          "description": "A workable fulfillment arrangement still needs confirmation",
+          "status": "accepted"
+        },
+        "clinicalOnly": false
+      }
+    },
+    {
+      "name": "clinical-refusal",
+      "passed": true,
+      "result": {
+        "discovery": {
+          "painPoint": "Symptoms affecting the treatment experience",
+          "learned": [
+            "Patient reports missed or interrupted treatment",
+            "Previous attempts not established",
+            "Does not want additional support"
+          ],
+          "help": "No substantive support was established beyond an offer",
+          "response": "Patient response to the support was not established",
+          "outcome": "Clinical review needed",
+          "remaining": "Clinical review is still needed; logistical support does not resolve the clinical concern.",
+          "route": "Clinical care team",
+          "routingStatus": "Handoff declined",
+          "handoffPermission": "declined",
+          "resolved": false
+        },
+        "status": "ready",
+        "barrier": "Reported medication side effect",
+        "team": "Clinical follow-up declined",
+        "next": "The patient declined clinical follow-up. No scheduling or clinician contact will occur through this demo.",
+        "schedulingPreview": false,
+        "costPreview": false,
+        "autonomous": null,
+        "support": {
+          "title": "Clinical care team",
+          "description": "Clinical review is still needed; logistical support does not resolve the clinical concern.",
+          "status": "declined"
+        },
+        "clinicalOnly": true
+      }
+    },
+    {
+      "name": "routine-addressed",
+      "passed": true,
+      "result": {
+        "discovery": {
+          "painPoint": "Remembering the existing routine",
+          "learned": [
+            "No change in medication use reported by the patient",
+            "Previous attempts not established",
+            "Prefers a text reminder"
+          ],
+          "help": "Developed a reminder approach around the step that was being missed",
+          "response": "Patient says the informational or organizational barrier was addressed",
+          "outcome": "Barrier addressed — patient report",
+          "remaining": "No remaining need reported",
+          "route": "No staff follow-up identified",
+          "routingStatus": "No handoff needed for the reported concern",
+          "handoffPermission": "declined",
+          "resolved": true
+        },
+        "status": "ready",
+        "barrier": "Routine changes",
+        "team": "No staff follow-up identified",
+        "next": "No staff follow-up was identified in this demo. A plan to request a GLP-1 refill is not a confirmed order or evidence of medication use.",
+        "schedulingPreview": false,
+        "costPreview": false,
+        "autonomous": {
+          "title": "Routine reminder",
+          "description": "Preview a reminder to follow the existing prescribed routine.",
+          "status": "accepted"
+        },
+        "support": {
+          "title": "No staff follow-up identified",
+          "description": "No remaining need reported",
+          "status": "not_discussed"
+        },
+        "clinicalOnly": false
+      }
+    },
+    {
+      "name": "text-is-not-resolution",
+      "passed": true,
+      "result": {
+        "discovery": {
+          "painPoint": "High patient cost after insurance",
+          "learned": [
+            "Effect on treatment not established",
+            "Previous attempts not established",
+            "Wants help with affordability"
+          ],
+          "help": "No substantive support was established beyond an offer",
+          "response": "Patient still reports a barrier",
+          "outcome": "Resolution not established",
+          "remaining": "Affordability options still need review",
+          "route": "Customer success financial support",
+          "routingStatus": "Handoff not discussed",
+          "handoffPermission": "not_discussed",
+          "resolved": false
+        },
+        "status": "ready",
+        "barrier": "Barrier ID: Cost with supply not established",
+        "team": "Resource text preview",
+        "next": "Simulated outcomes only — no text has been sent and no appointment has been booked. Financial-support appointment declined.",
+        "schedulingPreview": false,
+        "costPreview": true,
+        "autonomous": {
+          "title": "Cost-support resources",
+          "description": "Preview a text with additional cost-support resources.",
+          "status": "accepted"
+        },
+        "support": {
+          "title": "Customer success financial support",
+          "description": "Affordability options still need review",
+          "status": "not_discussed"
+        },
+        "clinicalOnly": false
+      }
+    },
+    {
+      "name": "early-stop",
+      "passed": true,
+      "result": {
+        "discovery": {
+          "painPoint": "Specific obstacle not established",
+          "learned": [
+            "Effect on treatment not established",
+            "Previous attempts not established",
+            "Support preference not established"
+          ],
+          "help": "No substantive support was established beyond an offer",
+          "response": "Patient response to the support was not established",
+          "outcome": "Resolution not established",
+          "remaining": "Remaining needs were not established",
+          "route": "More information needed",
+          "routingStatus": "Handoff not discussed",
+          "handoffPermission": "not_discussed",
+          "resolved": false
+        },
+        "status": "ready",
+        "barrier": "GLP-1 need not established",
+        "team": "More information needed",
+        "next": "There was not enough information to identify a next step for GLP-1 support.",
+        "schedulingPreview": false,
+        "costPreview": false,
+        "autonomous": null,
+        "support": {
+          "title": "More information needed",
+          "description": "Remaining needs were not established",
+          "status": "not_discussed"
+        },
+        "clinicalOnly": false
+      }
+    }
+  ]
+}
