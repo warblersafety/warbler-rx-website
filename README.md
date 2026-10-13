@@ -1,6 +1,6 @@
 # Warbler Health website
 
-Marketing website with a fictional GLP-1 patient-support voice demo, hosted on Vercel. Independent of the pharmacy application and presenter sales demo.
+Marketing website for same-day follow-up in opioid treatment programs and outpatient MOUD clinics, hosted on Vercel. The homepage uses a fictional static sample conversation. Independent of the pharmacy application and presenter sales demo.
 
 ## Development
 
@@ -62,3 +62,7 @@ Only explicit patient confirmation of an informational/organizational barrier, s
 The prompt, extraction schema and website version pin must ship together. Provider voice/model, privacy, controls and tools stay unchanged. Revert the website deployment and agent version pin together for rollback; the previous website agent version was `agtvrsn_3501m4hb827wfrtst7ya5vtxvz3x`.
 
 Affordability conversations conclude by offering a text with a link to financial resources, with independent permission and no implied appointment or resolution. Insurance-related refill delays offer to file an insurance-team review request on the patient's behalf using the reported blocker, prior attempts and supply if stated. Prescription renewals still belong to the prescribing office. The result card distinguishes the financial-resource text from an insurance-team request and records acceptance or refusal; both remain previews, because no messaging or request-filing tool is connected. `node scripts/test-resource-insurance-agent.mjs` exercises these revised offers and related regressions. `ANALYSIS_CASE=financial-link,insurance-request,insurance-declined,insurance-clinical,renewal node scripts/verify-discovery-analysis.mjs` verifies the affected extraction paths and records the selected cases separately.
+
+## October 13 addiction treatment pivot
+
+Replaced the homepage copy with the approved addiction treatment positioning, workflow, fictional Daniel conversation, privacy commitments, and Medicaid OTP retention reference. The sample link scrolls to the static conversation; the homepage no longer loads the GLP-1 voice demo or requests microphone access. Existing provider configuration, voice endpoints, admission controls, and their tests are preserved. Earlier voice-demo sections above document the retained implementation, not the current homepage experience. Booking and email destinations, fonts, colors, logo, and existing booking hover effects are retained.
