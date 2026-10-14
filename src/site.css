@@ -17,11 +17,14 @@
 /* Pair the scale of the problem with Warbler’s intended response. */
 .adherence-gap{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:48px 80px;align-items:end;padding:0 clamp(20px,4vw,48px) 72px}
 .adherence-stat{display:flex;flex-direction:column;gap:20px}
-.adherence-number{font-size:clamp(110px,15vw,220px);line-height:.9;letter-spacing:-.06em;font-weight:300}
+.adherence-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:8px 0}
+.adherence-metric{display:flex;flex-direction:column;gap:12px;padding-top:18px;border-top:1px solid #deded7}
+.adherence-metric dt{order:2;font-size:14px;line-height:1.4;color:#5e5e5a}
+.adherence-number{margin:0;font-size:clamp(30px,4vw,56px);line-height:1;letter-spacing:-.045em;font-weight:400;font-variant-numeric:tabular-nums;white-space:nowrap}
 .adherence-stat h2{font-size:clamp(28px,2.8vw,40px);line-height:1.08;letter-spacing:-.02em;max-width:640px;text-wrap:pretty}
 .adherence-source{font-size:13px;line-height:1.55;color:#5e5e5a;max-width:520px}
 .adherence-source a{text-decoration:underline;text-underline-offset:3px;color:#0a0a0a}
 .adherence-purpose{max-width:460px;padding-bottom:8px}
 .adherence-purpose h3{font-size:clamp(30px,3vw,42px);line-height:1.15;letter-spacing:-.035em;margin-bottom:22px}
 .adherence-purpose>p{font-size:20px;line-height:1.5;letter-spacing:-.01em;color:#5e5e5a;text-wrap:pretty}
-@media(max-width:760px){.adherence-gap{grid-template-columns:1fr;gap:36px;padding-bottom:48px}.adherence-purpose>p{font-size:18px}}
+@media(max-width:760px){.adherence-gap{grid-template-columns:1fr;gap:36px;padding-bottom:48px}.adherence-metrics{gap:12px}.adherence-number{font-size:clamp(30px,8vw,56px)}.adherence-purpose>p{font-size:18px}}
