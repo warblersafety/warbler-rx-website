@@ -59,7 +59,7 @@ test('actual analysis overrides scenario and clinical concerns retain clinical r
 test('unknown analysis cannot produce a completed or invented outcome', () => {
   const result = publicResult({ analysis: { data_collection_results: { barrier: {value:'approved'}, review_team: {value:'booked'} } } });
   assert.equal(result.team, 'More information needed');
-  assert.equal(result.barrier, 'GLP-1 need not established');
+  assert.equal(result.barrier, 'Treatment-support need not established');
 });
 
 test('missing secrets and the kill switch fail closed; a pinned version is required', () => {
@@ -159,9 +159,9 @@ test('supply is a bounded verbatim visitor phrase, never inferred or arbitrary a
   for (const supply of [undefined, '', '<script>name</script>', 'call 555 123 4567', 'two pens; John Smith', '4000 pills', 'two weeks']) {
     const call = analyzed({ barrier: 'cost', remaining_supply: supply });
     call.transcript = [{ role: 'user', message: 'I have two pens.' }, { role: 'agent', message: 'That means two weeks.' }];
-    assert.equal(publicResult(call).barrier, 'Barrier ID: Cost with supply not established');
+    assert.equal(publicResult(call).barrier, 'Treatment affordability concern');
   }
-  assert.equal(publicResult(analyzed({ barrier: 'cost', remaining_supply: 'two pens' })).barrier, 'Barrier ID: Cost with supply not established');
+  assert.equal(publicResult(analyzed({ barrier: 'cost', remaining_supply: 'two pens' })).barrier, 'Treatment affordability concern');
 });
 
 test('clinical and emergency routing override cost previews even with financial permissions', () => {

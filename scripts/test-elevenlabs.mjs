@@ -1,2 +1,2 @@
-// Run the current discovery suite; earlier release fixtures remain historical.
-import './test-discovery-agent.mjs';
+// Current addiction-treatment conversations; earlier suites remain historical.
+import './test-addiction-agent.mjs';

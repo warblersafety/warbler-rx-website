@@ -163,7 +163,7 @@ async function start() {
   try {
     const { Conversation } = await loadConversation();
     if (activeRun !== run || cancelled) return;
-    const response = await fetch('/api/voice/start', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ scenarioId: 'coverage' }), signal: AbortSignal.timeout(25000) });
+    const response = await fetch('/api/voice/start', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ scenarioId: 'open' }), signal: AbortSignal.timeout(25000) });
     const body = await response.json().catch(() => ({}));
     if (activeRun !== run || cancelled) return;
     if (!response.ok) { const error = new Error(body.error || 'Connection unavailable'); error.demoMessage = body.error; throw error; }

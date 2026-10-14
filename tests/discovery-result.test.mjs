@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { publicResult } from '../lib/voice-server.js';
 const result = values => publicResult({analysis:{data_collection_results:Object.fromEntries(Object.entries(values).map(([k,value])=>[k,{value}]))}});
 test('discovery distinguishes owners within a broad barrier without implying completed work',()=>{
- for(const [pain,need,route] of [['renewal_needed','prescription_renewal','Prescribing office'],['authorization_pending','authorization','Insurance authorization team'],['stock_shortage','stock_confirmation','Pharmacy inventory team'],['failed_delivery','delivery_arrangement','Fulfillment support'],['cost_share','affordability_review','Customer success financial support']]) {
+ for(const [pain,need,route] of [['renewal_needed','prescription_renewal','Prescribing office'],['authorization_pending','authorization','Insurance authorization team'],['stock_shortage','stock_confirmation','Pharmacy inventory team'],['failed_delivery','delivery_arrangement','Fulfillment support'],['cost_share','affordability_review','Clinic financial support']]) {
   const r=result({barrier:'refill',pain_point:pain,unresolved_need:need,support_provided:'refill_dependency_explained',barrier_response:'addressed',handoff_permission:'accepted'}).discovery;
   assert.equal(r.route,route);assert.equal(r.resolved,false);assert.match(r.routingStatus,/preview/);assert.doesNotMatch(r.outcome,/Barrier addressed/);
  }

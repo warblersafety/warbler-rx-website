@@ -10,10 +10,10 @@ export default async function handler(req, res) {
     const config = getConfig();
     visitor = fingerprint(req, config.secret);
     const request = buildCall(req.body.scenarioId, config, visitor);
-    if (starting.has(visitor)) throw new DemoError(409, 'Your GLP-1 conversation is already connecting.');
+    if (starting.has(visitor)) throw new DemoError(409, 'Your demo conversation is already connecting.');
     const now=Date.now();
     for(const [id,times] of attempts){const recent=times.filter(t=>now-t<3600_000);if(recent.length)attempts.set(id,recent);else attempts.delete(id);}
-    if((attempts.get(visitor)?.length || 0)>=3) throw new DemoError(429, 'You’ve tried three GLP-1 conversations this hour. Please try again later.');
+    if((attempts.get(visitor)?.length || 0)>=3) throw new DemoError(429, 'You’ve tried three demo conversations this hour. Please try again later.');
     starting.add(visitor); ownsLock = true;
     const api = provider(config);
     const filter = { agent_id: config.agentId, call_start_after_unix: Math.floor((now-86400_000)/1000), page_size:100 };

@@ -1,6 +1,6 @@
 # Warbler Health website
 
-Marketing website with a fictional GLP-1 patient-support voice demo, hosted on Vercel. Independent of the pharmacy application and presenter sales demo.
+Marketing website with a fictional addiction-clinic support voice demo, hosted on Vercel. Independent of the pharmacy application and presenter sales demo.
 
 ## Development
 
@@ -12,17 +12,17 @@ The public homepage implements the supplied **Warbler Rx v2** design from “War
 
 The prototype’s simulated call is replaced with the real voice controller. Mute/end controls, error recovery, duration, and actual post-call analysis remain available. The gold connector and result-card reveal are retained. Reduced-motion preferences disable animation. The demo caption reflects browser role-play rather than implying that this demo makes phone calls or sends texts.
 
-The 53.6% first-year discontinuation statistic from JAMA Network Open is paired with Warbler’s intended role in addressing barriers; it is not evidence of Warbler’s effectiveness. The separate “Why patients stop” study breakdown was removed at Noah’s request on October 9, 2026.
+The study reports 61.2% median 30-day retention among Medicaid patients at opioid treatment programs (DeLisle et al., JAMA Network Open, 2026); it is context, not evidence of Warbler’s effectiveness. The separate “Why patients stop” study breakdown was removed at Noah’s request on October 9, 2026.
 
 ## Voice flow
 
-Click the gold orb to talk about a fictional GLP-1 prescription barrier in your own words. There is no scenario picker or second demo interface. The existing default coverage label starts the pinned agent; actual conversation analysis determines the summary. The orb blends gold and pale-yellow currents with a soft highlight. Hover, keyboard focus and press provide feedback; connecting, listening, processing and speaking change its movement, while mute desaturates and pauses it. State labels follow provider events; reduced-motion preferences keep the orb static. The SDK alone owns microphone access. Repeated clicks cannot create duplicate sessions, cancellation ignores late connection callbacks, and leaving the page ends the session. The SDK loads before interaction to install its iOS audio-unlock listener.
+Click the gold orb to talk about a fictional addiction-treatment barrier in your own words. There is no scenario picker or second demo interface. An open check-in starts the pinned agent; actual conversation analysis determines the summary. The orb blends gold and pale-yellow currents with a soft highlight. Hover, keyboard focus and press provide feedback; connecting, listening, processing and speaking change its movement, while mute desaturates and pauses it. State labels follow provider events; reduced-motion preferences keep the orb static. The SDK alone owns microphone access. Repeated clicks cannot create duplicate sessions, cancellation ignores late connection callbacks, and leaving the page ends the session. The SDK loads before interaction to install its iOS audio-unlock listener.
 
 `/api/voice/start` accepts a validated scenario ID and obtains an ephemeral ElevenLabs WebRTC token for the pinned website agent/version. The restricted provider key stays on the server. Agent prompt, voice, tools and privacy overrides are disabled. The client sends only a scenario label, treated as untrusted input by the agent, and an HMAC visitor identifier. Only the native end-call tool is enabled; no clinical, pharmacy, messaging or scheduling integrations exist.
 
 The browser supports mute, end, cancellation and microphone errors. Sessions end after two minutes on both client and provider. LiveKit is pinned to 2.16.1 per ElevenLabs plugin compatibility guidance; recheck compatibility before upgrading.
 
-`/api/voice/result` verifies a one-hour signed conversation receipt and the agent/version. It maps actual enum analysis to reviewed labels. Side effects use the medication explicitly reported by the visitor, including supported non-GLP-1 medications; an unknown or unlisted medication stays generic rather than being relabeled GLP-1. Missing analysis remains pending/unavailable; it never substitutes an expected scenario result. No transcript, audio, free-form model output or API key is returned.
+`/api/voice/result` verifies a one-hour signed conversation receipt and the agent/version. It maps actual enum analysis to reviewed labels. Side effects use the medication explicitly reported by the visitor, including methadone, buprenorphine and other supported medications; an unknown or unlisted medication stays generic rather than being relabeled GLP-1. Missing analysis remains pending/unavailable; it never substitutes an expected scenario result. No transcript, audio, free-form model output or API key is returned.
 
 ## Agent and privacy
 
@@ -45,7 +45,7 @@ Side effects receive brief empathy and at most one missing impact question befor
 
 `npm test` covers direct orb initiation, duplicate-click prevention, mute/end, cancellation during token fetch and SDK setup, microphone denial, page exit, scenario validation, request restrictions, receipt tampering/expiry, usage/credit admission, clinical routing, unavailable analysis and missing configuration. `npm run build` checks the production bundle.
 
-`node scripts/test-discovery-agent.mjs` runs synthetic discovery scenarios plus restart, stop and emergency regressions using the existing restricted ElevenLabs credentials. `scripts/test-elevenlabs.mjs` delegates to that current suite; earlier test JSON files are historical release records. `node scripts/verify-discovery-analysis.mjs` verifies provider extraction and the public mapping using fictional seeded conversations against the main branch, and refuses a mismatched main version. Simulations do not verify human microphone/audio quality or clinical effectiveness.
+`node scripts/test-addiction-agent.mjs` runs 12 fictional conversations covering clinic transport, work and childcare, return to use, clinic discharge/access, missed methadone, medication concerns, privacy, fees, insurance, emergencies and housing/phone access using existing restricted credentials. `scripts/test-elevenlabs.mjs` delegates to that current suite; earlier test JSON files are historical release records. `node scripts/verify-discovery-analysis.mjs` verifies provider extraction and the public mapping using fictional seeded conversations against the main branch, and refuses a mismatched main version. Simulations do not verify human microphone/audio quality or clinical effectiveness.
 
 ## October 9 Sites copy update
 
@@ -62,3 +62,11 @@ Only explicit patient confirmation of an informational/organizational barrier, s
 The prompt, extraction schema and website version pin must ship together. Provider voice/model, privacy, controls and tools stay unchanged. Revert the website deployment and agent version pin together for rollback; the previous website agent version was `agtvrsn_3501m4hb827wfrtst7ya5vtxvz3x`.
 
 Affordability conversations conclude by offering a text with a link to financial resources, with independent permission and no implied appointment or resolution. Insurance-related refill delays offer to file an insurance-team review request on the patient's behalf using the reported blocker, prior attempts and supply if stated. Prescription renewals still belong to the prescribing office. The result card distinguishes the financial-resource text from an insurance-team request and records acceptance or refusal; both remain previews, because no messaging or request-filing tool is connected. `node scripts/test-resource-insurance-agent.mjs` exercises these revised offers and related regressions. `ANALYSIS_CASE=financial-link,insurance-request,insurance-declined,insurance-clinical,renewal node scripts/verify-discovery-analysis.mjs` verifies the affected extraction paths and records the selected cases separately.
+
+## Addiction-treatment demo — October 13, 2026
+
+The visitor role-plays a patient; the agent remains a clinic assistant. It discovers attendance and medication-access barriers, responds without blame, and previews clinic support with permission. Missed counseling visits alone do not imply missed doses. Actual medication interruption, withdrawal, return to substance use and medication decisions receive clinical review. Transport, scheduling, access, privacy and financial barriers map to the appropriate clinic team. No ride, appointment, readmission or external contact is promised.
+
+The deployed version lives on the isolated addiction-treatment branch recorded in `elevenlabs-agent-config.json`; Vercel production and preview pin that exact version. The prior production version for rollback is `agtvrsn_0301m4rgkxm6ebtt6eavvbn5zqfk`. The existing voice, provider model, privacy settings, usage controls, visual design and animation remain unchanged.
+
+Validation: 45 local checks pass. Initial synthetic suite passed 11/12; the clinic-fee explanation was improved. The final suite passed emergency and privacy checks, but ten conversations were interrupted by exhausted account credits (30,000/30,000). `tests/addiction-agent-verification.json` records this limitation. Live voice availability requires restored credits; no allowance or billing controls were changed.
