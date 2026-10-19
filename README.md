@@ -39,7 +39,7 @@ Side effects receive brief empathy and at most one missing impact question befor
 - History may lag and per-instance locks/counters are not distributed. User metadata is not a security boundary. These checks reduce abuse; provider limits and the account allowance are the independent limits. Revisit controls before promoting to high traffic.
 - Review the account's applicable licensing before commercial promotion. See https://elevenlabs.io/pricing/agents and https://help.elevenlabs.io/hc/en-us/articles/13313564601361-Can-I-publish-the-content-I-generate-on-the-platform . The optional attribution link is omitted from the demo interface.
 - `VOICE_DEMO_ENABLED=false` plus redeployment disables new calls. Production and preview use the isolated website agent. The previous Retell implementation is preserved in Git history; there is no automatic provider fallback.
-- Stage with Vercel `--prod --skip-domain`, verify, then promote. Keep the pharmacy and presenter deployments untouched. The canonical site is https://warbler-health.com; both old warblersafety.com hosts, the new www host and stable Vercel aliases redirect there with paths and queries preserved. GoDaddy remains the registrar/DNS provider; Vercel hosts the site. Existing email addresses remain unchanged until replacement mailboxes are configured. GitHub Pages is retired.
+- Stage with Vercel `--prod --skip-domain`, verify, then promote. Keep the pharmacy and presenter deployments untouched. The canonical site is https://warbler-health.com; both old warblersafety.com hosts, the new www host and stable Vercel aliases redirect there with paths and queries preserved. GoDaddy remains the registrar/DNS provider; Vercel hosts the site. The public contact is noah@warbler-health.com, verified against the completed Google Workspace email update. GitHub Pages is retired.
 
 ## Verification
 
@@ -70,3 +70,12 @@ The visitor role-plays a patient; the agent remains a clinic assistant. It disco
 The deployed version lives on the isolated addiction-treatment branch recorded in `elevenlabs-agent-config.json`; Vercel production and preview pin that exact version. The prior production version for rollback is `agtvrsn_0301m4rgkxm6ebtt6eavvbn5zqfk`. The existing voice, provider model, privacy settings, usage controls, visual design and animation remain unchanged.
 
 Validation: 45 local checks pass. Initial synthetic suite passed 11/12; the clinic-fee explanation was improved. The final suite passed emergency and privacy checks, but ten conversations were interrupted by exhausted account credits (30,000/30,000). `tests/addiction-agent-verification.json` records this limitation. Live voice availability requires restored credits; no allowance or billing controls were changed.
+
+
+## Treatment-retention positioning — October 19, 2026
+
+The homepage now leads with helping patients stay in opioid treatment, followed immediately by the existing sourced 30-, 90-, and 180-day retention statistics. The study notes distinguish program-level medians, differing episode populations, and transfers from universal completion rates. Four treatment moments describe proposed clinic pilot workflows; the measurement section separates published research from unestablished Warbler outcomes.
+
+A scripted fictional conversation is shown beside an illustrative staff handoff, separate from actual post-conversation analysis. Recording generation was blocked by exhausted ElevenLabs credits, so this release uses an honest “Read a sample conversation” CTA and no audio player or missing asset. The voice agent, server admission controls, privacy policy and clinical routing are unchanged. The existing calendar URL and booking portrait treatment are retained.
+
+Visual styling continues Geist, Instrument Serif, neutral rounded cards and the existing gold accent. The footer and privacy dialog use the verified noah@warbler-health.com mailbox.

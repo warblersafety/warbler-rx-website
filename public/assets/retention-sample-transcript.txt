@@ -1,0 +1,18 @@
+Warbler Health — fictional sample conversation
+
+This is a scripted fictional example. It does not contain patient information or place a call, request, or appointment booking.
+
+Warbler: This is a fictional sample conversation. Hi, I'm Warbler, an AI assistant. Is now a good time for a quick check-in?
+
+Patient (fictional): Yes. I've missed appointments since my work schedule changed.
+
+Warbler: Thanks for telling me. What's making it hard to get to your visits?
+
+Patient (fictional): My shifts start earlier now. I want to keep coming, but I need a different appointment time.
+
+Warbler: Would you like your clinic's scheduling team to call you about options?
+
+Patient (fictional): Yes, please. A call would help.
+
+Warbler: I'll note that you'd like a callback to discuss a different time. Your clinic would confirm any change.
+
