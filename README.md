@@ -79,3 +79,8 @@ The homepage now leads with helping patients stay in opioid treatment, followed 
 A scripted fictional conversation is shown beside an illustrative staff handoff, separate from actual post-conversation analysis. Recording generation was blocked by exhausted ElevenLabs credits, so this release uses an honest “Read a sample conversation” CTA and no audio player or missing asset. The voice agent, server admission controls, privacy policy and clinical routing are unchanged. The existing calendar URL and booking portrait treatment are retained.
 
 Visual styling continues Geist, Instrument Serif, neutral rounded cards and the existing gold accent. The footer and privacy dialog use the verified noah@warbler-health.com mailbox.
+
+
+## Copy simplification — October 19, 2026
+
+Removed hero and section subtitles, eyebrow labels, repeated demo explanations, the peripheral trust and founder promotion blocks, and closing support copy. Journey and pilot cards retain one title and one useful sentence. Research context, fictional-example labels, demo privacy disclosures and all functional voice/result elements remain.
