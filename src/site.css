@@ -81,3 +81,11 @@ summary{cursor:pointer;width:fit-content;text-decoration:underline;text-underlin
 /* Keep the shorter copy compact within the existing card treatment. */
 .journey-card{justify-content:flex-start;gap:0}.adherence-purpose h3{margin-bottom:0}
 @media(max-width:760px){.interactive-copy{order:-1;padding:32px 24px 0;text-align:center}}
+
+/* Let visitors start a conversation directly beneath the headline. */
+.hero-demo{padding:0 clamp(20px,4vw,48px) 56px}
+.hero-demo .interactive-grid{display:flex;justify-content:center;border:0;overflow:visible;gap:0}
+.hero-demo .voice-panel{padding:0 20px!important;gap:16px!important;width:100%}
+.hero-demo .orb{width:clamp(160px,18vw,200px);height:clamp(160px,18vw,200px)}
+.hero-demo .voice-panel .disclosure{max-width:520px}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:28px}

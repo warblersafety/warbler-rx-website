@@ -35,9 +35,69 @@
 
 <main id="top">
 
-<section style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:28px;padding:clamp(56px,8vw,104px) clamp(20px,4vw,48px) 40px">
+<section style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:28px;padding:clamp(32px,4vw,56px) clamp(20px,4vw,48px) 24px">
   <h1 style="font-size:clamp(42px,6.4vw,88px);line-height:1.04;letter-spacing:-0.045em;font-weight:400;text-wrap:balance;max-width:1000px">Help more patients stay in <span style="font-family:'Instrument Serif',serif;font-style:italic;font-size:1.12em;letter-spacing:-0.02em">opioid treatment.</span></h1>
-  <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
+</section>
+
+<section id="demo" class="content-section interactive-section hero-demo" aria-labelledby="interactive-title">
+  <h2 id="interactive-title" class="sr-only">Try a conversation of your own.</h2>
+  <div class="interactive-grid">
+    <div id="try-warbler" class="voice-panel" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;padding:56px 24px;text-align:center">
+      <button class="orb" id="voice-orb" data-start-demo data-state="idle" aria-label="Talk to Warbler — start voice demo" aria-describedby="demo-disclosure"></button>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+        <p id="voice-state" aria-hidden="true" style="font-size:15px;font-weight:500;color:#0a0a0a">Tap to speak</p><span id="connection-announcement" class="sr-only" role="status" aria-live="polite"></span>
+        <p id="voice-hint" style="font-size:14px;line-height:1.5;color:#5e5e5a;max-width:340px;text-wrap:pretty" hidden></p>
+      </div>
+      <div class="voice-controls">
+<button class="pill" id="start-voice" data-start-demo>Talk to Warbler</button>
+<button class="pill soft" id="mute-voice" hidden aria-pressed="false">Mute mic</button>
+<button class="pill" id="end-voice" hidden>End conversation</button>
+</div><p id="duration" class="mono duration">2 MIN DEMO</p><p id="demo-error" class="demo-error" role="alert" hidden></p>
+      <p id="demo-disclosure" class="disclosure">Use fictional details. AI demo, not medical care. No messages, bookings or clinical follow-up. Audio is processed live; recordings aren’t stored. <a href="#privacy-policy" data-policy="privacy-policy">Privacy</a></p>
+    </div>
+  </div>
+      <div id="result-flow" class="result-flow" hidden>
+        <div class="analysis-aura" aria-hidden="true"></div>
+        <div id="demo-result" class="demo-result" hidden tabindex="-1" aria-label="Call analysis" aria-busy="true">
+          <div class="analysis-heading"><span class="analysis-mark" aria-hidden="true">✦</span><span>Conversation insights</span><span class="result-preview">Demo preview</span></div>
+          <div id="result-loading" class="analysis-loading">
+            <div class="analysis-orbit" aria-hidden="true"><i></i><i></i><i></i></div>
+            <p id="result-status" role="status">Connecting what we learned, the support provided and the next step…</p>
+          </div>
+          <div id="result-content" hidden>
+            <section class="barrier-card" aria-labelledby="barrier-label">
+              <h3 id="barrier-label" class="result-label">Barrier ID</h3>
+              <p id="result-barrier" class="result-value"></p>
+              <p id="result-clinical-note" class="result-description" hidden>Clinical review is needed. The call can clarify the concern; treatment decisions stay with the care team.</p>
+            </section>
+            <div id="result-discovery" class="discovery-grid" hidden>
+              <section class="discovery-item"><h3 class="result-label">What we learned</h3><p id="result-pain-point" class="discovery-title"></p><p id="result-learned" class="result-description"></p></section>
+              <section class="discovery-item"><h3 class="result-label">Support on this call</h3><p id="result-help" class="discovery-title"></p><p id="result-response" class="result-description"></p></section>
+              <section class="discovery-item"><h3 class="result-label">What remains</h3><p id="result-outcome" class="discovery-title"></p><p id="result-remaining" class="result-description"></p></section>
+              <section class="discovery-item"><h3 class="result-label">Recommended next step</h3><p id="result-route" class="discovery-title"></p><p id="result-route-status" class="result-description"></p></section>
+            </div>
+            <div id="result-next-step" class="result-next-step">
+              <div class="result-tabs" role="tablist" aria-label="Next step options">
+                <button id="result-auto-tab" type="button" role="tab" aria-controls="result-auto-panel" aria-selected="true">Action preview <span id="result-auto-dot" class="tab-dot" hidden aria-label="Agreed in call"></span></button>
+                <button id="result-support-tab" type="button" role="tab" aria-controls="result-support-panel" aria-selected="false" tabindex="-1">Support preview <span id="result-support-dot" class="tab-dot" hidden aria-label="Agreed in call"></span></button>
+              </div>
+              <section id="result-auto-panel" class="action-panel" role="tabpanel" aria-labelledby="result-auto-tab" tabindex="0">
+                <span id="result-auto-status" class="action-status"></span>
+                <h4 id="result-auto-title" class="action-title"></h4>
+                <p id="result-auto-description" class="result-description"></p>
+              </section>
+              <section id="result-support-panel" class="action-panel" role="tabpanel" aria-labelledby="result-support-tab" tabindex="0" hidden>
+                <span id="result-support-status" class="action-status"></span>
+                <h4 id="result-support-title" class="action-title"></h4>
+                <p id="result-support-description" class="result-description"></p>
+              </section>
+            </div>
+            <p class="analysis-disclaimer">Demo only. No messages sent, reminders set, appointments booked, or support contacted.</p>
+          </div>
+        </div>
+      </div>
+
+  <div class="hero-actions">
     <a class="demo-booking" href="https://calendar.app.google/dAj1Fv4UhSUbFGfz8" style="display:inline-flex;align-items:center;gap:10px;background:#0a0a0a;color:#fff;border-radius:999px;white-space:nowrap;padding:15px 26px;font-size:16px;font-weight:500;text-decoration:none"><span>Book a 20-minute demo</span><span class="demo-portraits" aria-hidden="true"><img class="demo-founder" src="/assets/founder.jpg" alt="" width="72" height="72"><img class="demo-founder" src="/assets/demo-portrait.png" alt="" width="72" height="72"></span></a>
     <a href="#sample" style="display:inline-flex;align-items:center;gap:10px;background:#f4f4f2;color:#0a0a0a;border-radius:999px;white-space:nowrap;padding:15px 26px;font-size:16px;font-weight:500;text-decoration:none">Read a sample conversation</a>
   </div>
@@ -92,67 +152,6 @@
       </dl>
     </aside>
   </div>
-</section>
-<section id="demo" class="content-section interactive-section" aria-labelledby="interactive-title">
-  <div class="interactive-grid">
-    <div id="try-warbler" class="voice-panel" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;padding:56px 24px;text-align:center">
-      <button class="orb" id="voice-orb" data-start-demo data-state="idle" aria-label="Talk to Warbler — start voice demo" aria-describedby="demo-disclosure"></button>
-      <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
-        <p id="voice-state" aria-hidden="true" style="font-size:15px;font-weight:500;color:#0a0a0a">Tap to speak</p><span id="connection-announcement" class="sr-only" role="status" aria-live="polite"></span>
-        <p id="voice-hint" style="font-size:14px;line-height:1.5;color:#5e5e5a;max-width:340px;text-wrap:pretty" hidden></p>
-      </div>
-      <div class="voice-controls">
-<button class="pill" id="start-voice" data-start-demo>Talk to Warbler</button>
-<button class="pill soft" id="mute-voice" hidden aria-pressed="false">Mute mic</button>
-<button class="pill" id="end-voice" hidden>End conversation</button>
-</div><p id="duration" class="mono duration">2 MIN DEMO</p><p id="demo-error" class="demo-error" role="alert" hidden></p>
-      <p id="demo-disclosure" class="disclosure">Use fictional details. AI demo, not medical care. No messages, bookings or clinical follow-up. Audio is processed live; recordings aren’t stored. <a href="#privacy-policy" data-policy="privacy-policy">Privacy</a></p>
-    </div>
-    <div class="interactive-copy">
-      <h2 id="interactive-title" class="section-title">Try a conversation<br>of your own.</h2>
-    </div>
-  </div>
-      <div id="result-flow" class="result-flow" hidden>
-        <div class="analysis-aura" aria-hidden="true"></div>
-        <div id="demo-result" class="demo-result" hidden tabindex="-1" aria-label="Call analysis" aria-busy="true">
-          <div class="analysis-heading"><span class="analysis-mark" aria-hidden="true">✦</span><span>Conversation insights</span><span class="result-preview">Demo preview</span></div>
-          <div id="result-loading" class="analysis-loading">
-            <div class="analysis-orbit" aria-hidden="true"><i></i><i></i><i></i></div>
-            <p id="result-status" role="status">Connecting what we learned, the support provided and the next step…</p>
-          </div>
-          <div id="result-content" hidden>
-            <section class="barrier-card" aria-labelledby="barrier-label">
-              <h3 id="barrier-label" class="result-label">Barrier ID</h3>
-              <p id="result-barrier" class="result-value"></p>
-              <p id="result-clinical-note" class="result-description" hidden>Clinical review is needed. The call can clarify the concern; treatment decisions stay with the care team.</p>
-            </section>
-            <div id="result-discovery" class="discovery-grid" hidden>
-              <section class="discovery-item"><h3 class="result-label">What we learned</h3><p id="result-pain-point" class="discovery-title"></p><p id="result-learned" class="result-description"></p></section>
-              <section class="discovery-item"><h3 class="result-label">Support on this call</h3><p id="result-help" class="discovery-title"></p><p id="result-response" class="result-description"></p></section>
-              <section class="discovery-item"><h3 class="result-label">What remains</h3><p id="result-outcome" class="discovery-title"></p><p id="result-remaining" class="result-description"></p></section>
-              <section class="discovery-item"><h3 class="result-label">Recommended next step</h3><p id="result-route" class="discovery-title"></p><p id="result-route-status" class="result-description"></p></section>
-            </div>
-            <div id="result-next-step" class="result-next-step">
-              <div class="result-tabs" role="tablist" aria-label="Next step options">
-                <button id="result-auto-tab" type="button" role="tab" aria-controls="result-auto-panel" aria-selected="true">Action preview <span id="result-auto-dot" class="tab-dot" hidden aria-label="Agreed in call"></span></button>
-                <button id="result-support-tab" type="button" role="tab" aria-controls="result-support-panel" aria-selected="false" tabindex="-1">Support preview <span id="result-support-dot" class="tab-dot" hidden aria-label="Agreed in call"></span></button>
-              </div>
-              <section id="result-auto-panel" class="action-panel" role="tabpanel" aria-labelledby="result-auto-tab" tabindex="0">
-                <span id="result-auto-status" class="action-status"></span>
-                <h4 id="result-auto-title" class="action-title"></h4>
-                <p id="result-auto-description" class="result-description"></p>
-              </section>
-              <section id="result-support-panel" class="action-panel" role="tabpanel" aria-labelledby="result-support-tab" tabindex="0" hidden>
-                <span id="result-support-status" class="action-status"></span>
-                <h4 id="result-support-title" class="action-title"></h4>
-                <p id="result-support-description" class="result-description"></p>
-              </section>
-            </div>
-            <p class="analysis-disclaimer">Demo only. No messages sent, reminders set, appointments booked, or support contacted.</p>
-          </div>
-        </div>
-      </div>
-
 </section>
 
 <section id="pilot" class="content-section pilot-section" aria-labelledby="pilot-title">

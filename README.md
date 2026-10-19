@@ -84,3 +84,8 @@ Visual styling continues Geist, Instrument Serif, neutral rounded cards and the 
 ## Copy simplification — October 19, 2026
 
 Removed hero and section subtitles, eyebrow labels, repeated demo explanations, the peripheral trust and founder promotion blocks, and closing support copy. Journey and pilot cards retain one title and one useful sentence. Research context, fictional-example labels, demo privacy disclosures and all functional voice/result elements remain.
+
+
+## Immediate voice demo — October 19, 2026
+
+The existing interactive voice demo now follows the main headline directly, before the booking/sample links and retention statistics. The centered orb and tighter spacing make the start controls immediately accessible on desktop and mobile. Its redundant visible heading is now screen-reader-only. Voice controller, results, provider configuration and privacy behavior are unchanged.
