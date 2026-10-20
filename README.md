@@ -89,3 +89,13 @@ Removed hero and section subtitles, eyebrow labels, repeated demo explanations, 
 ## Immediate voice demo — October 19, 2026
 
 The existing interactive voice demo now follows the main headline directly, before the booking/sample links and retention statistics. The centered orb and tighter spacing make the start controls immediately accessible on desktop and mobile. Its redundant visible heading is now screen-reader-only. Voice controller, results, provider configuration and privacy behavior are unchanged.
+
+## Visible conversation-to-workflow demo — October 20, 2026
+
+The homepage now pairs the voice controls with a persistent workflow panel. Three explicitly illustrative examples cover transportation, work-schedule conflicts and pharmacy renewal delays. Each demonstrates conversation completion, summary, permission, a care request and pending staff review. The explanatory section reflects the deployed care product's summary, request and patient-status workflow.
+
+During real voice sessions, only observed connection state is shown. After the call, the existing signed-receipt endpoint supplies reviewed analysis. A browser-memory demo care request is created only for an agreed staff handoff with a known owner and an unresolved need. Refusals, unclear permission, missing analysis, resolved concerns and emergencies never create a routine request. These records are examples within the website session, not writes to the private care product. No messages, appointments or staff notifications are executed. Full existing call details remain available in an expandable section.
+
+The public website intentionally does not share the private care app's records or credentials. Replay and scenario switching cannot overwrite an active voice workflow. Example playback supports skipping to results and reduced-motion preferences. Voice errors expose examples as a microphone-free alternative.
+
+For a new ElevenLabs workspace, follow `scripts/elevenlabs-workspace-migration.md`. The helper validates the exact existing agent source, preserves privacy/limits and prepares a separately verified destination candidate. It does not replace production credentials automatically. Save the new key only in the ignored `.env.elevenlabs-new.local` file or Vercel Secrets; never put it in the frontend.

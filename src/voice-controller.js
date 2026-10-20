@@ -7,6 +7,7 @@ export function initVoiceDemo({
   loadConversation,
   setInterval = globalThis.setInterval,
   clearInterval = globalThis.clearInterval,
+  onWorkflowEvent = () => {},
 } = {}) {
 const $ = (id) => document.getElementById(id);
 let session = null;
@@ -101,6 +102,7 @@ function renderActions(result) {
 }
 
 async function getSummary(activeRun, callReceipt) {
+  onWorkflowEvent({ type: 'analyzing' });
   $('result-flow').hidden = false;
   $('demo-result').hidden = false;
   $('result-content').hidden = true;
@@ -108,8 +110,6 @@ async function getSummary(activeRun, callReceipt) {
   $('demo-result').setAttribute('aria-busy', 'true');
   $('result-status').hidden = false;
   $('result-status').textContent = 'Connecting what we learned, the support provided and the next step…';
-  $('demo-result').focus({ preventScroll: true });
-  $('result-flow').scrollIntoView({ behavior: window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'start' });
   for (let attempt = 0; attempt < 15; attempt++) {
     if (run !== activeRun) return;
     try {
@@ -125,6 +125,8 @@ async function getSummary(activeRun, callReceipt) {
         $('demo-result').setAttribute('aria-busy', 'false');
         $('result-content').hidden = false;
         $('result-status').hidden = true;
+        if ($('conversation-details')) $('conversation-details').hidden = false;
+        onWorkflowEvent({ type: 'result', result });
         return;
       }
     } catch { break; }
@@ -133,6 +135,7 @@ async function getSummary(activeRun, callReceipt) {
   if (run === activeRun) {
     $('demo-result').setAttribute('aria-busy', 'false');
     $('result-status').textContent = 'Your call has ended. Analysis is unavailable. Try another conversation using the button above.';
+    onWorkflowEvent({ type: 'unavailable' });
   }
 }
 
@@ -147,19 +150,22 @@ function finish(activeRun) {
   $('voice-hint').hidden = true;
   status(failure ? 'Let’s try that again' : wasConnected ? 'Conversation complete' : 'Conversation ended', failure ? 'error' : 'idle');
   if (wasConnected && receipt) void getSummary(activeRun, receipt);
+  else onWorkflowEvent({ type: failure ? 'error' : 'cancelled' });
 }
 
 async function start() {
   if (busy) return;
-  if (!navigator.mediaDevices?.getUserMedia) { showError('Voice conversations need a browser with microphone support over a secure connection. Try a current version of Safari, Chrome, or Edge.'); return; }
+  if (!navigator.mediaDevices?.getUserMedia) { showError('Voice conversations need a browser with microphone support over a secure connection. Try a current version of Safari, Chrome, or Edge.'); onWorkflowEvent({ type: 'error' }); return; }
   const activeRun = ++run;
   receipt = null; connected = false; failure = false; muted = false; cancelled = false; voiceMode = 'listening';
   $('demo-error').hidden = true; $('demo-result').hidden = true; $('result-flow').hidden = true;
+  if ($('conversation-details')) { $('conversation-details').hidden = true; $('conversation-details').open = false; }
   $('mute-voice').textContent = 'Mute mic'; $('mute-voice').setAttribute('aria-pressed', 'false');
   setBusy(true); status('Connecting…', 'connecting');
+  onWorkflowEvent({ type: 'connecting' });
   $('duration').textContent = 'Up to 2 minutes';
   $('voice-hint').hidden = false;
-  $('voice-hint').textContent = 'Allow your microphone when asked, then describe a fictional prescription barrier.';
+  $('voice-hint').textContent = 'Allow your microphone when asked, then describe a fictional barrier to treatment.';
   try {
     const { Conversation } = await loadConversation();
     if (activeRun !== run || cancelled) return;
@@ -181,6 +187,7 @@ async function start() {
         if (activeRun !== run || cancelled || !busy || connected) return;
         connected = true; startedAt = Date.now(); setBusy(true);
         status('Conversation connected', voiceMode);
+        onWorkflowEvent({ type: 'connected' });
         $('voice-hint').textContent = 'Speak naturally. You can interrupt or end the demo at any time.';
         timer = setInterval(() => {
           const seconds = Math.floor((Date.now() - startedAt) / 1000);

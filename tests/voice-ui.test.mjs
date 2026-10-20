@@ -14,6 +14,7 @@ function harness({ tokenResponse, sessionResponse, resultResponse, resultPayload
   const startButtons = ['voice-orb', 'start-voice', 'nav-demo'].map(element);
   let callbacks, starts = 0, ends = 0, requests = 0, intervals = 0;
   const muted = [];
+  const workflowEvents = [];
   const session = { async endSession() { ends++; callbacks?.onDisconnect(); }, setMicMuted(value) { muted.push(value); } };
   const window = element('window');
   initVoiceDemo({
@@ -35,8 +36,9 @@ function harness({ tokenResponse, sessionResponse, resultResponse, resultPayload
       return { ok: true, json: async () => ({ token: 'fictional-token', receipt: 'test-receipt', scenarioId: 'coverage', userId: 'test' }) };
     },
     setInterval: () => ++intervals, clearInterval() {},
+    onWorkflowEvent: event => workflowEvents.push(event),
   });
-  return { element, session, window, muted, click: id => element(id).handlers.click(),
+  return { element, session, window, muted, workflowEvents, click: id => element(id).handlers.click(),
     get callbacks() { return callbacks; }, get starts() { return starts; }, get ends() { return ends; }, get requests() { return requests; }, get intervals() { return intervals; } };
 }
 
@@ -60,6 +62,7 @@ test('cancel during token fetch never opens a microphone session', async () => {
   h.click('voice-orb'); await flush(); await h.click('end-voice');
   tokenResponse.resolve(); await flush();
   assert.equal(h.starts, 0); assert.equal(h.element('voice-orb').disabled, false);
+  assert.deepEqual(h.workflowEvents.map(event => event.type), ['connecting', 'cancelled']);
 });
 
 test('cancel during SDK setup closes a late session and ignores late connect callbacks', async () => {
@@ -78,6 +81,7 @@ test('microphone denial shows an actionable error and allows retry', async () =>
   assert.match(h.element('demo-error').textContent, /Allow your microphone/);
   assert.equal(h.element('voice-orb').disabled, false);
   assert.equal(h.element('voice-orb').dataset.state, 'error');
+  assert.deepEqual(h.workflowEvents.map(event => event.type), ['connecting', 'error']);
 });
 
 test('leaving the page ends the current session', async () => {
@@ -141,4 +145,21 @@ test('results render discovery, delivered support, patient response and remainin
   assert.equal(h.element('result-remaining').textContent,discovery.remaining);
   assert.equal(h.element('result-route').textContent,'Prescribing office');
   assert.match(h.element('result-route-status').textContent,/preview/);
+});
+
+test('workflow receives actual connection and post-call results in order; in-call messages never fabricate analysis', async () => {
+  const h = harness({ resultPayload: { status: 'ready', barrier: 'Transportation to clinic', discovery: { painPoint: 'Ride fell through', learned: [], route: 'Clinic support', handoffPermission: 'accepted' } } });
+  h.click('voice-orb'); await flush();
+  h.callbacks.onMessage({ role: 'user', message: 'I need a ride' });
+  assert.deepEqual(h.workflowEvents.map(event => event.type), ['connecting', 'connected']);
+  await h.click('end-voice'); await flush();
+  assert.deepEqual(h.workflowEvents.map(event => event.type), ['connecting', 'connected', 'analyzing', 'result']);
+  assert.equal(h.workflowEvents.at(-1).result.discovery.handoffPermission, 'accepted');
+  assert.equal(h.element('conversation-details').hidden, false);
+});
+
+test('unavailable analysis reports the gap and does not invent a result', async () => {
+  const h = harness({ resultPayload: { status: 'unavailable' } });
+  h.click('voice-orb'); await flush(); await h.click('end-voice'); await flush();
+  assert.deepEqual(h.workflowEvents.map(event => event.type), ['connecting', 'connected', 'analyzing', 'unavailable']);
 });

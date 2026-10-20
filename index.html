@@ -52,9 +52,14 @@
 </section>
 
 <section id="demo" class="content-section interactive-section hero-demo" aria-labelledby="interactive-title">
-  <h2 id="interactive-title" class="sr-only">Try a conversation of your own.</h2>
+  <div class="demo-intro">
+    <p class="eyebrow">Demo workspace</p>
+    <h2 id="interactive-title">Hear the conversation. <span class="serif-accent">See what happens next.</span></h2>
+    <p>Try a fictional check-in, or explore how a concern becomes a care request.</p>
+  </div>
   <div class="interactive-grid">
     <div id="try-warbler" class="voice-panel" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;padding:56px 24px;text-align:center">
+      <div class="voice-panel-heading"><span class="eyebrow">01 / The conversation</span><h3>Talk it through.</h3><p>Try a missed visit, a ride problem,<br>or a question about a prescription.</p></div>
       <button class="orb" id="voice-orb" data-start-demo data-state="idle" aria-label="Talk to Warbler — start voice demo" aria-describedby="demo-disclosure"></button>
       <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
         <p id="voice-state" aria-hidden="true" style="font-size:15px;font-weight:500;color:#0a0a0a">Tap to speak</p><span id="connection-announcement" class="sr-only" role="status" aria-live="polite"></span>
@@ -67,7 +72,37 @@
 </div><p id="duration" class="mono duration">2 MIN DEMO</p><p id="demo-error" class="demo-error" role="alert" hidden></p>
       <p id="demo-disclosure" class="disclosure">Use fictional details. AI demo, not medical care. No messages, bookings or clinical follow-up. Audio is processed live; recordings aren’t stored. <a href="#privacy-policy" data-policy="privacy-policy">Privacy</a></p>
     </div>
+    <aside id="workflow-panel" class="workflow-panel" aria-labelledby="workflow-title">
+      <div class="workflow-heading">
+        <span class="eyebrow">02 / What happens next</span>
+        <span id="workflow-mode-label" class="workflow-mode-label">Illustrative example</span>
+      </div>
+      <h3 id="workflow-title">A conversation sets care in motion.</h3>
+      <p id="workflow-caption" class="workflow-caption">Choose an example to see the steps, or start a conversation to create your own demo care request.</p>
+      <div id="workflow-example-controls" class="workflow-example-controls" role="group" aria-label="Example workflows">
+        <button type="button" data-workflow-example="transport" aria-pressed="true">A ride falls through</button>
+        <button type="button" data-workflow-example="schedule" aria-pressed="false">A shift changes</button>
+        <button type="button" data-workflow-example="pharmacy" aria-pressed="false">A pharmacy question</button>
+      </div>
+      <ol id="workflow-steps" class="workflow-steps" aria-label="Care workflow"></ol>
+      <div id="workflow-output" class="workflow-output" hidden>
+        <div class="workflow-output-heading"><span class="eyebrow">Care request</span><span id="workflow-output-status" class="workflow-output-status"></span></div>
+        <h4 id="workflow-output-title"></h4>
+        <p id="workflow-output-body"></p>
+        <p id="workflow-output-owner" class="workflow-output-owner"></p>
+        <p id="workflow-output-note" class="workflow-output-note"></p>
+      </div>
+      <div class="workflow-actions">
+        <button type="button" id="workflow-play" class="workflow-play">Play example <span aria-hidden="true">↗</span></button>
+        <button type="button" id="workflow-reset" class="workflow-text-button" hidden>Replay example</button>
+        <button type="button" id="workflow-live" class="workflow-text-button" hidden>Your conversation</button>
+      </div>
+      <p class="workflow-disclosure">Fictional examples. Care requests stay in this demo; no staff are contacted.</p>
+      <span id="workflow-announcement" class="sr-only" role="status" aria-live="polite"></span>
+    </aside>
   </div>
+    <details id="conversation-details" class="conversation-details" hidden>
+      <summary>Conversation details</summary>
       <div id="result-flow" class="result-flow" hidden>
         <div class="analysis-aura" aria-hidden="true"></div>
         <div id="demo-result" class="demo-result" hidden tabindex="-1" aria-label="Call analysis" aria-busy="true">
@@ -108,10 +143,11 @@
           </div>
         </div>
       </div>
+    </details>
 
   <div class="hero-actions">
     <a class="demo-booking" href="https://calendar.app.google/dAj1Fv4UhSUbFGfz8" style="display:inline-flex;align-items:center;gap:10px;background:#0a0a0a;color:#fff;border-radius:999px;white-space:nowrap;padding:15px 26px;font-size:16px;font-weight:500;text-decoration:none"><span>Book a 20-minute demo</span><span class="demo-portraits" aria-hidden="true"><img class="demo-founder" src="/assets/founder.jpg" alt="" width="72" height="72"><img class="demo-founder" src="/assets/demo-portrait.png" alt="" width="72" height="72"></span></a>
-    <a href="#sample" style="display:inline-flex;align-items:center;gap:10px;background:#f4f4f2;color:#0a0a0a;border-radius:999px;white-space:nowrap;padding:15px 26px;font-size:16px;font-weight:500;text-decoration:none">Read a sample conversation</a>
+    <a href="#demo" data-run-workflow-example style="display:inline-flex;align-items:center;gap:10px;background:#f4f4f2;color:#0a0a0a;border-radius:999px;white-space:nowrap;padding:15px 26px;font-size:16px;font-weight:500;text-decoration:none">See an example workflow</a>
   </div>
 </section>
 
@@ -143,27 +179,17 @@
   </div>
 </section>
 
-<section id="sample" class="content-section sample-section" aria-labelledby="sample-title">
+<section id="sample" class="content-section continuation-section" aria-labelledby="sample-title">
   <div class="section-intro">
-    <h2 id="sample-title" class="section-title">Understand the concern.<br>See the next step.</h2>
+    <p class="eyebrow">Beyond the conversation</p>
+    <h2 id="sample-title" class="section-title">The call ends.<br><span class="serif-accent">The work continues.</span></h2>
   </div>
-  <div class="sample-grid">
-    <div class="sample-listen">
-
-      <h3>Fictional conversation</h3>
-      <div class="sample-transcript" role="region" aria-label="Fictional sample conversation" id="sample-transcript-text"><p><strong>Warbler:</strong> Hi, I&#x27;m Warbler, an AI assistant. Is now a good time for a quick check-in?</p><p><strong>Patient:</strong> Yes. I&#x27;ve missed appointments since my work schedule changed.</p><p><strong>Warbler:</strong> Thanks for telling me. What&#x27;s making it hard to get to your visits?</p><p><strong>Patient:</strong> My shifts start earlier now. I want to keep coming, but I need a different appointment time.</p><p><strong>Warbler:</strong> Would you like your clinic&#x27;s scheduling team to call you about options?</p><p><strong>Patient:</strong> Yes, please. A call would help.</p><p><strong>Warbler:</strong> I&#x27;ll note that you&#x27;d like a callback to discuss a different time. Your clinic would confirm any change.</p></div>
-      <p id="sample-note" class="adherence-source">Illustrative only. No appointment or callback is arranged.</p>
-    </div>
-    <aside class="staff-summary" aria-labelledby="staff-summary-title">
-      <h3 id="staff-summary-title">Example staff summary</h3>
-      <dl class="summary-fields">
-        <div><dt>Barrier</dt><dd>New work schedule conflicts with visits.</dd></div>
-        <div><dt>Patient request</dt><dd>Discuss a different appointment time.</dd></div>
-        <div><dt>Next action</dt><dd>Scheduling team callback.</dd></div>
-        <div><dt>Status</dt><dd><span class="pending-status"><span aria-hidden="true"></span>Awaiting follow-up</span></dd></div>
-      </dl>
-    </aside>
+  <div class="continuation-grid">
+    <article><span class="eyebrow">01 / Capture the context</span><h3>Save what matters.</h3><p>Summarize the barrier, the support discussed, and what the patient wants to happen next.</p></article>
+    <article><span class="eyebrow">02 / Take the next step</span><h3>Create the care request.</h3><p>Turn an agreed next step into a request with the context needed for follow-up.</p></article>
+    <article><span class="eyebrow">03 / Keep care connected</span><h3>Make the handoff clear.</h3><p>Update the patient record and track what still needs the care team. Staff confirm appointments and clinical decisions.</p></article>
   </div>
+  <p class="continuation-note">Explore these steps in the fictional demo above. No clinic staff are contacted.</p>
 </section>
 
 <section id="pilot" class="content-section pilot-section" aria-labelledby="pilot-title">
@@ -176,7 +202,7 @@
   <p class="pilot-note">Warbler’s retention impact has not yet been established.</p>
 </section>
 <section class="closing-section">
-  <div class="closing-card"><div><h2>Help more patients<br><span class="serif-accent">keep going.</span></h2></div><div class="closing-actions"><a class="demo-booking pill gold" href="https://calendar.app.google/dAj1Fv4UhSUbFGfz8"><span>Book a 20-minute demo</span><span class="demo-portraits" aria-hidden="true"><img class="demo-founder" src="/assets/founder.jpg" alt="" width="72" height="72"><img class="demo-founder" src="/assets/demo-portrait.png" alt="" width="72" height="72"></span></a><a class="closing-secondary" href="#sample">Read a sample conversation</a></div></div>
+  <div class="closing-card"><div><h2>Help more patients<br><span class="serif-accent">keep going.</span></h2></div><div class="closing-actions"><a class="demo-booking pill gold" href="https://calendar.app.google/dAj1Fv4UhSUbFGfz8"><span>Book a 20-minute demo</span><span class="demo-portraits" aria-hidden="true"><img class="demo-founder" src="/assets/founder.jpg" alt="" width="72" height="72"><img class="demo-founder" src="/assets/demo-portrait.png" alt="" width="72" height="72"></span></a><a class="closing-secondary" href="#demo" data-run-workflow-example>See an example workflow</a></div></div>
 </section>
 
 </main>
