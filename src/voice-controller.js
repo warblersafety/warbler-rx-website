@@ -109,7 +109,7 @@ async function getSummary(activeRun, callReceipt) {
   $('result-loading').hidden = false;
   $('demo-result').setAttribute('aria-busy', 'true');
   $('result-status').hidden = false;
-  $('result-status').textContent = 'Connecting what we learned, the support provided and the next step…';
+  $('result-status').textContent = 'Preparing your summary…';
   for (let attempt = 0; attempt < 15; attempt++) {
     if (run !== activeRun) return;
     try {
@@ -134,7 +134,7 @@ async function getSummary(activeRun, callReceipt) {
   }
   if (run === activeRun) {
     $('demo-result').setAttribute('aria-busy', 'false');
-    $('result-status').textContent = 'Your call has ended. Analysis is unavailable. Try another conversation using the button above.';
+    $('result-status').textContent = 'Analysis unavailable. Please try another conversation.';
     onWorkflowEvent({ type: 'unavailable' });
   }
 }
@@ -146,7 +146,7 @@ function finish(activeRun) {
   connected = false;
   session = null;
   setBusy(false);
-  $('start-voice').textContent = 'Talk to Warbler again';
+  $('start-voice').textContent = 'Talk again';
   $('voice-hint').hidden = true;
   status(failure ? 'Let’s try that again' : wasConnected ? 'Conversation complete' : 'Conversation ended', failure ? 'error' : 'idle');
   if (wasConnected && receipt) void getSummary(activeRun, receipt);
@@ -165,7 +165,7 @@ async function start() {
   onWorkflowEvent({ type: 'connecting' });
   $('duration').textContent = 'Up to 2 minutes';
   $('voice-hint').hidden = false;
-  $('voice-hint').textContent = 'Allow your microphone when asked, then describe a fictional barrier to treatment.';
+  $('voice-hint').textContent = 'Allow your microphone to begin.';
   try {
     const { Conversation } = await loadConversation();
     if (activeRun !== run || cancelled) return;
@@ -189,7 +189,7 @@ async function start() {
         connected = true; startedAt = Date.now(); setBusy(true);
         status('Conversation connected', voiceMode);
         onWorkflowEvent({ type: 'connected' });
-        $('voice-hint').textContent = 'Speak naturally. You can interrupt or end the demo at any time.';
+        $('voice-hint').textContent = 'You can interrupt or end the call anytime.';
         timer = setInterval(() => {
           const seconds = Math.floor((Date.now() - startedAt) / 1000);
           $('duration').textContent = `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')} / 2:00`;
