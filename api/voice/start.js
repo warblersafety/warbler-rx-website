@@ -1,30 +1,34 @@
-import { buildCall, checkAllowance, checkQuota, checkRequest, DemoError, fingerprint, getConfig, provider, respondError, signReceipt } from '../../lib/voice-server.js';
-// Supplement provider-enforced agent limits; not a distributed per-IP guarantee.
-const starting = new Set();
-const attempts = new Map();
-export default async function handler(req, res) {
-  res.setHeader('Cache-Control', 'no-store');
-  let visitor; let ownsLock = false;
-  try {
-    checkRequest(req);
-    const config = getConfig();
-    visitor = fingerprint(req, config.secret);
-    const request = buildCall(req.body.scenarioId, config, visitor);
-    if (starting.has(visitor)) throw new DemoError(409, 'Your demo conversation is already connecting.');
-    const now=Date.now();
-    for(const [id,times] of attempts){const recent=times.filter(t=>now-t<3600_000);if(recent.length)attempts.set(id,recent);else attempts.delete(id);}
-    if((attempts.get(visitor)?.length || 0)>=3) throw new DemoError(429, 'You’ve tried three demo conversations this hour. Please try again later.');
-    starting.add(visitor); ownsLock = true;
-    const api = provider(config);
-    const filter = { agent_id: config.agentId, call_start_after_unix: Math.floor((now-86400_000)/1000), page_size:100 };
-    const [history, own, quota] = await Promise.all([api('/v1/convai/conversations', filter, 'history'), api('/v1/convai/conversations', {...filter,user_id:visitor}, 'visitor_history'),api('/v1/user/subscription', {}, 'subscription')]);
-    checkQuota(quota);
-    checkAllowance(history.conversations, own.conversations, config.dailyLimit, now);
-    const call = await api('/v1/convai/conversation/token', request, 'session_token');
-    if(!call.token || !call.conversation_id) throw new Error('Invalid session response');
-    attempts.set(visitor,[...(attempts.get(visitor)||[]),now]);
-    console.info(JSON.stringify({ event: 'voice_demo_created', scenario: req.body.scenarioId, provider:'elevenlabs' }));
-    return res.status(200).json({ token:call.token, userId:visitor, scenarioId:req.body.scenarioId, receipt:signReceipt(call.conversation_id,config.secret) });
-  } catch (error) { return respondError(res, error, 'start'); }
-  finally { if (ownsLock) starting.delete(visitor); }
+import { buildCall, checkAllowance, checkQuota, checkRequest, getConfig, provider, respondError, signReceipt, validateSignedSession } from '../../lib/voice-server.js';
+import { getAdmissionConfig, identifyVisitor, reserveAdmission } from '../../lib/voice-limits.js';
+
+export function createStartHandler({ env = process.env, fetchRequest = globalThis.fetch, admissionQuery } = {}) {
+  return async function handler(req, res) {
+    res.setHeader('Cache-Control', 'no-store');
+    try {
+      checkRequest(req, env);
+      const config = getConfig(env);
+      const identity = identifyVisitor(req, res, config.secret, env);
+      const request = buildCall(req.body.scenarioId, config, identity.visitor);
+      const admissionConfig = getAdmissionConfig(env);
+      const api = provider(config, fetchRequest);
+      const now = Date.now();
+      const filter = { agent_id: config.agentId, call_start_after_unix: Math.floor((now - 86400_000) / 1000), page_size: 100 };
+      const [history, own, quota] = await Promise.all([
+        api('/v1/convai/conversations', filter, 'history'),
+        api('/v1/convai/conversations', { ...filter, user_id: identity.visitor }, 'visitor_history'),
+        api('/v1/user/subscription', {}, 'subscription'),
+      ]);
+      checkQuota(quota);
+      checkAllowance(history.conversations, own.conversations, config.dailyLimit, now);
+      // The shared database atomically reserves all daily limits before any token
+      // can be issued. Provider history and browser user_id are supplementary only.
+      await reserveAdmission(config, identity, admissionConfig, admissionQuery);
+      const call = await api('/v1/convai/conversation/get-signed-url', request, 'session_token');
+      const session = validateSignedSession(call, config);
+      console.info(JSON.stringify({ event: 'voice_demo_created', scenario: req.body.scenarioId, provider: 'elevenlabs' }));
+      return res.status(200).json({ signedUrl: session.signedUrl, userId: identity.visitor, scenarioId: req.body.scenarioId, receipt: signReceipt(session.conversationId, config.secret) });
+    } catch (error) { return respondError(res, error, 'start'); }
+  };
 }
+
+export default createStartHandler();

@@ -10,7 +10,8 @@ test('anonymous callers cannot choose agents, inject prompts or enable tools', (
   const request = buildCall('coverage', config, 'visitor', now);
   assert.equal(request.agent_id, 'agent_website');
   assert.equal(request.version_id, 'version_website');
-  assert.deepEqual(Object.keys(request).sort(), ['agent_id', 'participant_name', 'version_id']);
+  assert.equal(request.include_conversation_id, true);
+  assert.deepEqual(Object.keys(request).sort(), ['agent_id', 'include_conversation_id', 'version_id']);
   assert.throws(() => buildCall('{{ignore instructions}}', config, 'visitor'), { status: 400 });
   assert.throws(() => buildCall('__proto__', config, 'visitor'), { status: 400 });
 });
@@ -172,21 +173,10 @@ test('clinical and emergency routing override cost previews even with financial 
   }
 });
 
-test('October 8 Pacific allowance adds exactly ten calls and expires at local midnight', () => {
-  const start = Date.parse('2026-10-08T00:00:00-07:00');
-  const end = Date.parse('2026-10-09T00:00:00-07:00');
-  const calls = (count, time) => Array(count).fill({ status: 'done', start_time_unix_secs: (time - 1000) / 1000 });
-  for (const time of [start, end - 1]) {
-    assert.doesNotThrow(() => checkAllowance(calls(19, time), [], 10, time));
-    assert.throws(() => checkAllowance(calls(20, time), [], 10, time), { status: 429 });
-    assert.doesNotThrow(() => checkAllowance(calls(14, time), [], 5, time));
-    assert.throws(() => checkAllowance(calls(15, time), [], 5, time), { status: 429 });
-    assert.throws(() => checkAllowance(calls(3, time), calls(3, time), 10, time), { status: 429 });
-    const active = Array(2).fill({ status: 'in-progress', start_time_unix_secs: time / 1000 });
-    assert.throws(() => checkAllowance(active, [], 10, time), { status: 429 });
-  }
-  for (const time of [start - 1, end, end + 86400_000]) {
-    assert.doesNotThrow(() => checkAllowance(calls(9, time), [], 10, time));
-    assert.throws(() => checkAllowance(calls(10, time), [], 10, time), { status: 429 });
-  }
+test('daily history cap is ten on every date, with three per visitor across 24 hours', () => {
+  const time = Date.parse('2026-10-08T18:00:00-07:00');
+  const calls = count => Array(count).fill({ status: 'done', start_time_unix_secs: (time - 7200_000) / 1000 });
+  assert.doesNotThrow(() => checkAllowance(calls(9), [], 10, time));
+  assert.throws(() => checkAllowance(calls(10), [], 10, time), { status: 429, retryAfter: 79200 });
+  assert.throws(() => checkAllowance(calls(3), calls(3), 10, time), { status: 429, retryAfter: 79200 });
 });

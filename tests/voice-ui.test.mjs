@@ -4,7 +4,7 @@ import { initVoiceDemo } from '../src/voice-controller.js';
 
 const flush = () => new Promise(resolve => setImmediate(resolve));
 const deferred = () => { let resolve; const promise = new Promise(r => { resolve = r; }); return { promise, resolve }; };
-function harness({ tokenResponse, sessionResponse, resultResponse, resultPayload, failure } = {}) {
+function harness({ tokenResponse, sessionResponse, resultResponse, resultPayload, startPayload, startStatus = 200, failure } = {}) {
   const elements = new Map();
   const element = id => {
     if (!elements.has(id)) elements.set(id, { dataset: {}, hidden: false, disabled: false, textContent: '', handlers: {}, attributes: {},
@@ -33,7 +33,7 @@ function harness({ tokenResponse, sessionResponse, resultResponse, resultPayload
       }
       requests++;
       if (tokenResponse) await tokenResponse.promise;
-      return { ok: true, json: async () => ({ token: 'fictional-token', receipt: 'test-receipt', scenarioId: 'coverage', userId: 'test' }) };
+      return { ok: startStatus === 200, json: async () => (startPayload || { signedUrl: 'wss://api.elevenlabs.io/v1/convai/conversation?conversation_signature=fictional-signature&conversation_id=fictional-call', receipt: 'test-receipt', scenarioId: 'coverage', userId: 'test' }) };
     },
     setInterval: () => ++intervals, clearInterval() {},
     onWorkflowEvent: event => workflowEvents.push(event),
@@ -55,6 +55,38 @@ test('orb starts directly; repeated CTA clicks cannot open a second session; mut
   await h.click('end-voice'); await flush();
   assert.equal(h.ends, 1); assert.equal(h.element('voice-orb').disabled, false);
   assert.equal(h.element('end-voice').hidden, true);
+});
+
+test('voice sessions use the admitted single-use URL without public-agent or configuration fallbacks', async () => {
+  const signedUrl = 'wss://api.elevenlabs.io/v1/convai/conversation?conversation_signature=fictional-signature&conversation_id=fictional-call';
+  const h = harness({ startPayload: { signedUrl, receipt: 'test-receipt', scenarioId: 'coverage', userId: 'test', token: 'ignored-token', agentId: 'ignored-agent', overrides: { conversation: { max_duration_seconds: 99999 } } } });
+  h.click('voice-orb'); await flush();
+  assert.equal(h.starts, 1);
+  assert.equal(h.callbacks.signedUrl, signedUrl);
+  assert.equal(h.callbacks.connectionType, 'websocket');
+  assert.equal('conversationToken' in h.callbacks, false);
+  assert.equal('agentId' in h.callbacks, false);
+  assert.equal('overrides' in h.callbacks, false);
+  assert.deepEqual(h.callbacks.dynamicVariables, { scenario_id: 'coverage' });
+});
+
+test('missing signed admission never opens a microphone session', async () => {
+  const h = harness({ startPayload: { token: 'old-token', receipt: 'test-receipt' } });
+  h.click('voice-orb'); await flush();
+  assert.equal(h.starts, 0);
+  assert.equal(h.element('voice-orb').disabled, false);
+  assert.equal(h.element('voice-orb').dataset.state, 'error');
+  assert.deepEqual(h.workflowEvents.map(event => event.type), ['connecting', 'error']);
+});
+
+test('a daily allowance rejection shows the server message without starting the SDK session', async () => {
+  const message = 'You’ve reached the limit of three demo conversations in 24 hours. Please try again later.';
+  const h = harness({ startStatus: 429, startPayload: { error: message } });
+  h.click('voice-orb'); await flush();
+  assert.equal(h.starts, 0);
+  assert.equal(h.element('demo-error').textContent, message);
+  assert.equal(h.element('voice-orb').disabled, false);
+  assert.deepEqual(h.workflowEvents.map(event => event.type), ['connecting', 'error']);
 });
 
 test('cancel during token fetch never opens a microphone session', async () => {

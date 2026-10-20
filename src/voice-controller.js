@@ -173,10 +173,11 @@ async function start() {
     const body = await response.json().catch(() => ({}));
     if (activeRun !== run || cancelled) return;
     if (!response.ok) { const error = new Error(body.error || 'Connection unavailable'); error.demoMessage = body.error; throw error; }
+    if (typeof body.signedUrl !== 'string' || !body.signedUrl || typeof body.receipt !== 'string' || !body.receipt) throw new Error('Invalid voice session response');
     receipt = body.receipt;
     const conversation = await Conversation.startSession({
-      conversationToken: body.token,
-      connectionType: 'webrtc',
+      signedUrl: body.signedUrl,
+      connectionType: 'websocket',
       dynamicVariables: { scenario_id: body.scenarioId },
       userId: body.userId,
       onConversationCreated: conversation => {
