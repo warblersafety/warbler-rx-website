@@ -54,6 +54,8 @@ test('migration rejects stale extraction, unpinned source, relaxed limits and wo
     s => { s.conversation_config.agent.prompt.tool_ids = ['a_live_webhook']; },
     s => { s.conversation_config.agent.prompt.built_in_tools.transfer_to_number = { number: 'not_for_migration' }; },
     s => { s.platform_settings.workspace_overrides = { webhooks: { webhook_id: 'old_workspace_webhook' } }; },
+    s => { s.platform_settings.workspace_overrides = { webhooks: { post_call_webhook_id: 'old_workspace_webhook' } }; },
+    s => { s.platform_settings.workspace_overrides = { cloud_storage_export: { destination_id: 'old_export' } }; },
   ]) {
     const source = sourceConfig(); mutate(source);
     assert.throws(() => buildCandidate(source, expected));
@@ -80,10 +82,28 @@ test('readback rejects changes to voice, privacy and provider-added action tools
     a => { a.conversation_config.tts.voice_id = 'different'; },
     a => { a.platform_settings.privacy.record_voice = true; },
     a => { a.conversation_config.agent.prompt.built_in_tools.transfer_to_agent = { agent_id: 'other' }; },
+    a => { a.platform_settings.workspace_overrides = { webhooks: { post_call_webhook_id: 'unexpected_export' } }; },
   ]) {
     const actual = { ...structuredClone(body), agent_id: 'new', version_id: 'version', branch_id: 'branch' };
     mutate(actual);
     assert.throws(() => verifyCandidate(actual, body));
+  }
+});
+
+test('readback accepts optional null tool defaults but rejects extra or changed tools', () => {
+  const source = sourceConfig();
+  source.conversation_config.agent.prompt.tools = [{ type: 'system', name: 'end_call', params: { system_tool_type: 'end_call' } }];
+  const body = buildCandidate(source, expected);
+  const actual = { ...structuredClone(body), agent_id: 'new', version_id: 'version', branch_id: 'branch' };
+  actual.conversation_config.agent.prompt.tools[0].tool_call_sound = null;
+  assert.equal(verifyCandidate(actual, body).agentId, 'new');
+  for (const mutate of [
+    a => { a.conversation_config.agent.prompt.tools.push({ type: 'system', name: 'transfer_to_number' }); },
+    a => { a.conversation_config.agent.prompt.tools[0].name = 'transfer_to_number'; },
+    a => { a.conversation_config.agent.prompt.tools[0].params.system_tool_type = 'transfer_to_number'; },
+  ]) {
+    const changed = structuredClone(actual); mutate(changed);
+    assert.throws(() => verifyCandidate(changed, body));
   }
 });
 

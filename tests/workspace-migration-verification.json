@@ -1,0 +1,20 @@
+{
+  "versionId": "agtvrsn_7901m5dent0hevxrd8r0x48qt6xn",
+  "kind": "fictional seeded analysis, no audio or external calls",
+  "results": [
+    {
+      "name": "transport-accepted",
+      "passed": true,
+      "owner": "Clinic care coordinator",
+      "permission": "accepted",
+      "demoRequestCreated": true
+    },
+    {
+      "name": "schedule-declined",
+      "passed": true,
+      "owner": "Clinic scheduling team",
+      "permission": "declined",
+      "demoRequestCreated": false
+    }
+  ]
+}

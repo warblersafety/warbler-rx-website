@@ -18,7 +18,7 @@ const populated = value => value != null && value !== false && value !== '' &&
 function rejectDependencies(value, key = '') {
   if (!value || typeof value !== 'object') return;
   for (const [name, child] of Object.entries(value)) {
-    if (/^(api_key|authorization|password|secret|secret_id|webhook_id|url|custom_llm|tool_ids|tool_ids_strict|mcp_server_ids|native_mcp_server_ids|knowledge_base|pronunciation_dictionary_locators|supported_voices)$/.test(name)) {
+    if (/^(api_key|authorization|password|secret|secret_id|webhook_id|post_call_webhook_id|destination_id|conversation_initiation_client_data_webhook|url|custom_llm|tool_ids|tool_ids_strict|mcp_server_ids|native_mcp_server_ids|knowledge_base|pronunciation_dictionary_locators|supported_voices)$/.test(name)) {
       requireValue(!populated(child), 'Source contains a credential or workspace dependency; migrate it explicitly first.');
     }
     rejectDependencies(child, `${key}.${name}`);
@@ -81,7 +81,11 @@ export function buildCandidate(source, expected) {
 
 function compareSubset(actual, expected) {
   if (expected === null || typeof expected !== 'object') return isDeepStrictEqual(actual, expected);
-  if (Array.isArray(expected)) return isDeepStrictEqual(actual, expected);
+  // Providers may add optional defaults to a tool (for example tool_call_sound:
+  // null). Preserve array length/order and every requested field while allowing
+  // the same harmless extra object fields that are allowed outside arrays.
+  if (Array.isArray(expected)) return Array.isArray(actual) && actual.length === expected.length &&
+    expected.every((value, index) => compareSubset(actual[index], value));
   return actual && typeof actual === 'object' && Object.entries(expected).every(([key, value]) => compareSubset(actual[key], value));
 }
 
@@ -98,6 +102,9 @@ export function verifyCandidate(actual, body) {
     'Created agent has unexpected workspace dependencies.');
   requireValue(Object.entries(prompt.built_in_tools || {}).every(([name, tool]) => name === 'end_call' || !populated(tool)),
     'Created agent has an unexpected active built-in tool.');
+  requireValue((prompt.tools || []).every(tool => tool.type === 'system' && tool.name === 'end_call'),
+    'Created agent has an unexpected action tool.');
+  rejectDependencies({ conversation_config: actual.conversation_config, platform_settings: actual.platform_settings, workflow: actual.workflow });
   return { agentId: actual.agent_id, versionId: actual.version_id, branchId: actual.branch_id, voiceId: actual.conversation_config.tts.voice_id };
 }
 

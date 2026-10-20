@@ -99,3 +99,11 @@ During real voice sessions, only observed connection state is shown. After the c
 The public website intentionally does not share the private care app's records or credentials. Replay and scenario switching cannot overwrite an active voice workflow. Example playback supports skipping to results and reduced-motion preferences. Voice errors expose examples as a microphone-free alternative.
 
 For a new ElevenLabs workspace, follow `scripts/elevenlabs-workspace-migration.md`. The helper validates the exact existing agent source, preserves privacy/limits and prepares a separately verified destination candidate. It does not replace production credentials automatically. Save the new key only in the ignored `.env.elevenlabs-new.local` file or Vercel Secrets; never put it in the frontend.
+
+## ElevenLabs workspace migration — October 20, 2026
+
+The website now pins the recreated addiction-demo agent in the new ElevenLabs workspace. Production and Preview use the destination key as a Vercel Secret and the matching agent/version IDs. Prompt, opening, voice/model, 17 extraction definitions, privacy, client override restrictions and usage limits were read back against the source. The destination has no configured initiation webhook, post-call webhook or cloud-storage export destination. The prior agent and its test attachments remain in the original workspace.
+
+Validation includes 60 local checks and two fictional provider analysis cases covering accepted transportation handoff and declined scheduling handoff; the record is `tests/workspace-migration-verification.json`. Provider tool readback may add optional null defaults; verification permits these within equal-length arrays while rejecting modified or additional tools. No patient phone calls or microphone sessions were used for migration verification.
+
+Previous website deployment for rollback: `dpl_GN8XUE3FYaMAHbye1NbTmpEs9cjj`. The prior config is preserved locally in the ignored `.elevenlabs-previous-config.local.json` and in Git history. Roll back the deployment as a unit; do not mix a workspace's key with another workspace's agent/version IDs.
