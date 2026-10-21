@@ -1,11 +1,11 @@
 [hidden]{display:none!important}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 /* Layered color currents stay inside the existing accessible voice button. */
-.orb{position:relative;isolation:isolate;overflow:hidden;display:block;border:0;padding:0;outline-offset:10px;background:#ffc21a;box-shadow:inset 0 -16px 32px #6e5a1440,0 24px 60px -18px #b8962ab3;transition:transform .35s,filter .35s,box-shadow .35s;--flow-speed:14s}
+.orb{position:relative;isolation:isolate;overflow:hidden;display:block;border:0;padding:0;outline-offset:10px;background:#dde3ec;box-shadow:inset 0 -16px 32px #1b243340,0 24px 60px -18px #1b243350;transition:transform .35s,filter .35s,box-shadow .35s;--flow-speed:14s}
 .orb::before,.orb::after{content:"";position:absolute;pointer-events:none;border-radius:50%}
-.orb::before{inset:-30%;background:radial-gradient(at 30% 28%,#fff7d6 0%,transparent 38%),radial-gradient(at 75% 78%,#b8962a 0%,transparent 46%),conic-gradient(from 35deg,#ffc21a,#ffd65c,#f2b200,#ffe08a,#ffc21a);filter:blur(14px);animation:orb-current var(--flow-speed) linear infinite}
-.orb::after{inset:0;background:radial-gradient(circle at 32% 22%,#ffffff73,transparent 40%);box-shadow:inset 0 -14px 30px #6e5a1440}
-.orb:hover:not(:disabled),.orb:focus-visible{transform:scale(1.045);box-shadow:inset 0 -16px 32px #6e5a1440,0 28px 72px -14px #b8962ac4;--flow-speed:8s}
+.orb::before{inset:-30%;background:radial-gradient(at 30% 28%,#ffffffaa 0%,transparent 38%),conic-gradient(from 0deg,#f2c230,#fff 18%,#8496b8 35%,#1b2433 52%,#5e7299 68%,#f7e3a1 84%,#f2c230);filter:blur(20px);animation:orb-current var(--flow-speed) linear infinite}
+.orb::after{inset:0;background:radial-gradient(circle at 32% 22%,#ffffffb3,transparent 40%);box-shadow:inset 0 -14px 30px #1b243340}
+.orb:hover:not(:disabled),.orb:focus-visible{transform:scale(1.045);box-shadow:inset 0 -16px 32px #1b243340,0 28px 72px -14px #1b24336b;--flow-speed:8s}
 .orb:active:not(:disabled){transform:scale(.97)}
 .orb[data-state=connecting]{--flow-speed:6s;animation:orb-breathe 2s ease-in-out infinite}
 .orb[data-state=listening]{--flow-speed:11s;animation:orb-breathe 3s ease-in-out infinite}

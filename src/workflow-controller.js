@@ -20,13 +20,15 @@ export function initWorkflow({ document = globalThis.document, window = globalTh
       const marker = document.createElement('span'); marker.className = 'workflow-step-marker'; marker.textContent = item.state === 'complete' ? '✓' : String(index + 1); marker.setAttribute('aria-hidden', 'true');
       const copy = document.createElement('div'); copy.className = 'workflow-step-copy';
       const title = document.createElement('p'); title.className = 'workflow-step-title'; title.textContent = item.title;
-      const status = document.createElement('span'); status.className = 'workflow-step-status'; status.textContent = item.status; status.hidden = item.state === 'pending' || item.state === 'complete';
+      const status = document.createElement('span'); status.className = 'workflow-step-status'; status.textContent = item.status;
       copy.append(title);
       if (item.description) {
         const description = document.createElement('p'); description.className = 'workflow-step-description'; description.textContent = item.description;
         copy.append(description);
       }
-      li.append(marker, copy, status); return li;
+      const progress = document.createElement('span'); progress.className = 'workflow-step-progress'; progress.setAttribute('aria-hidden', 'true');
+      const fill = document.createElement('span'); progress.append(fill);
+      li.append(marker, copy, status, progress); return li;
     }));
   }
   function renderOutput(request) {
@@ -34,11 +36,13 @@ export function initWorkflow({ document = globalThis.document, window = globalTh
     for (const field of ['title', 'body', 'status', 'owner', 'note']) $('workflow-output-' + field).textContent = request?.[field] || '';
   }
   function controls() {
+    $('workflow-panel').dataset.mode = mode;
+    $('workflow-panel').dataset.playing = String(playing);
     $('workflow-example-controls').hidden = voiceBusy;
     document.querySelectorAll('[data-workflow-example]').forEach(button => { button.disabled = voiceBusy; button.setAttribute('aria-pressed', String(mode === 'example' && button.dataset.workflowExample === selected)); });
     $('workflow-play').hidden = mode !== 'example';
     $('workflow-play').disabled = voiceBusy;
-    $('workflow-play').textContent = playing ? 'Skip to result' : exampleStarted ? 'Replay example' : 'Run example';
+    $('workflow-play').textContent = playing ? 'Skip to result' : exampleStarted ? 'Replay example' : 'Play example';
     $('workflow-reset').hidden = mode !== 'example' || !exampleStarted;
     $('workflow-reset').textContent = 'Reset';
     $('workflow-reset').disabled = voiceBusy;
@@ -48,8 +52,8 @@ export function initWorkflow({ document = globalThis.document, window = globalTh
   function showExample(id = selected) {
     if (voiceBusy || !Object.hasOwn(examples, id)) return;
     stopPlayback(); mode = 'example'; selected = id; exampleStarted = false;
-    $('workflow-mode-label').textContent = 'Example';
-    $('workflow-title').textContent = 'Workflow';
+    $('workflow-mode-label').textContent = 'Illustrative example';
+    $('workflow-title').textContent = 'From one call to one clear task';
     $('workflow-caption').textContent = examples[id].quote;
     $('workflow-caption').hidden = false;
     $('workflow-announcement').textContent = '';
@@ -60,20 +64,29 @@ export function initWorkflow({ document = globalThis.document, window = globalTh
     exampleStarted = true;
     renderOutput(null);
     const model = workflowFromResult(examples[selected]);
-    const finish = () => { stopPlayback(); renderSteps(model.steps); renderOutput(model.request); $('workflow-announcement').textContent = 'Example complete. Demo care request ready for review.'; controls(); };
+    const finish = () => {
+      stopPlayback(); renderSteps(model.steps); renderOutput(model.request);
+      $('workflow-title').textContent = 'An example care request, ready for review';
+      $('workflow-announcement').textContent = `Example complete. ${model.announcement}`;
+      controls();
+    };
     if (playing || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) { finish(); return; }
     stopPlayback(); playing = true; const activeGeneration = generation;
+    $('workflow-title').textContent = 'From one call to one clear task';
+    $('workflow-announcement').textContent = 'Playing an illustrative example. No live call is taking place.';
     let progress = 0;
     function advance() {
       if (activeGeneration !== generation || mode !== 'example' || voiceBusy) return;
       const stages = waitingSteps();
       for (let i = 0; i < progress; i++) stages[i] = model.steps[i];
-      if (progress < stages.length) { stages[progress].state = 'active'; stages[progress].status = 'In progress'; }
+      if (progress < stages.length) {
+        stages[progress] = { ...model.steps[progress], state: 'active', status: 'Example in progress' };
+      }
       renderSteps(stages);
-      if (progress >= 4) renderOutput(model.request);
+      if (progress >= 3) renderOutput(model.request);
       controls();
       if (progress++ >= stages.length) { finish(); return; }
-      timer = setTimeout(advance, 950);
+      timer = setTimeout(advance, 1200);
     }
     advance();
   }
@@ -90,15 +103,15 @@ export function initWorkflow({ document = globalThis.document, window = globalTh
   function onVoiceEvent(event) {
     if (event.type === 'connecting') {
       voiceBusy = true;
-      const steps = waitingSteps(); steps[0] = { ...steps[0], state: 'active', status: 'Connecting' };
+      const steps = waitingSteps(); steps[0] = { ...steps[0], description: 'Connecting your microphone to Warbler.', state: 'active', status: 'Connecting' };
       live = { title: 'Connecting', steps, request: null };
     } else if (event.type === 'connected') {
-      const steps = waitingSteps(); steps[0] = { ...steps[0], state: 'active', status: 'In progress' };
+      voiceBusy = true;
+      const steps = waitingSteps(); steps[0] = { ...steps[0], description: 'Listening. A reviewed summary appears after the call.', state: 'active', status: 'In progress' };
       live = { title: 'Conversation in progress', steps, request: null };
     } else if (event.type === 'analyzing') {
       voiceBusy = true; const steps = waitingSteps();
-      steps[0] = { ...steps[0], title: 'Conversation complete', state: 'complete', status: 'Complete' };
-      steps[1] = { ...steps[1], state: 'active', status: 'Analyzing' };
+      steps[0] = { ...steps[0], description: 'Call ended. Reviewing the conversation before showing a summary.', state: 'active', status: 'Reviewing' };
       live = { title: 'Analyzing conversation', steps, request: null };
     } else if (event.type === 'result') {
       voiceBusy = false; const model = workflowFromResult(event.result);
@@ -106,9 +119,10 @@ export function initWorkflow({ document = globalThis.document, window = globalTh
     } else if (event.type === 'error' || event.type === 'unavailable' || event.type === 'cancelled') {
       voiceBusy = false; const steps = waitingSteps();
       const unavailable = event.type === 'unavailable';
-      steps[unavailable ? 1 : 0] = { ...steps[unavailable ? 1 : 0], state: 'held', status: unavailable ? 'Unavailable' : 'Stopped', description: unavailable ? 'No analysis; no care request created.' : 'No completed conversation to analyze.' };
-      if (unavailable) steps[0] = { ...steps[0], state: 'complete', status: 'Complete' };
-      live = { title: unavailable ? 'Analysis unavailable' : event.type === 'error' ? 'Could not connect' : 'Conversation cancelled', steps, request: null };
+      steps[0] = { ...steps[0], state: 'held', status: unavailable ? 'Unavailable' : 'Stopped', description: unavailable ? 'No reviewed summary is available for this call.' : 'No completed conversation to analyze.' };
+      steps[2] = { ...steps[2], state: 'held', status: 'Not created', description: 'No care request was created.' };
+      steps[3] = { ...steps[3], state: 'held', status: 'No follow-up', description: 'No staff have been contacted. You can still explore an example below.' };
+      live = { title: unavailable ? 'Analysis unavailable' : event.type === 'error' ? 'Could not connect' : 'Conversation cancelled', steps, request: null, announcement: 'No care request created. Illustrative examples are still available.' };
     } else return;
     showLive();
   }

@@ -21,82 +21,52 @@
   <meta name="twitter:description" content="Personalized support between visits, designed to help more patients stay in opioid treatment.">
   <meta name="twitter:image" content="https://warbler-health.com/assets/warbler-share-retention-v1.png">
   <meta name="twitter:image:alt" content="Warbler Health — Help more patients stay in opioid treatment.">
-  <meta name="theme-color" content="#ffffff">
+  <meta name="theme-color" content="#FAF9F6">
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/warbler-favicon-32.png">
   <link rel="icon" type="image/png" sizes="192x192" href="/assets/warbler-icon-192.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/warbler-apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400&family=Instrument+Serif:ital@1&family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/src/site.css">
 </head>
 <body>
 <a class="skip-link" href="#top">Skip to content</a>
-<div style="max-width:1440px;margin:0 auto">
-
-<header class="site-header" style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding:20px clamp(20px,4vw,48px);flex-wrap:wrap">
-  <a href="#top" style="display:flex;align-items:center;gap:8px;font-size:18px;font-weight:600;letter-spacing:-0.02em;text-decoration:none">
-    <img src="/assets/warbler-logo.png" width="44" height="44" alt="" style="display:block;object-fit:contain">
-    <span style="white-space:nowrap">Warbler Health</span>
-  </a>
-  <nav aria-label="Main navigation" style="display:flex;align-items:center;gap:8px">
-    <a href="#how" style="font-size:15px;padding:10px 14px;color:#3a3a3a;white-space:nowrap">How it works</a>
-    <a class="demo-booking" href="https://calendar.app.google/dAj1Fv4UhSUbFGfz8" style="display:inline-flex;align-items:center;gap:8px;background:#0a0a0a;color:#fff;border-radius:999px;white-space:nowrap;padding:11px 20px;font-size:15px;font-weight:500;text-decoration:none;margin-left:6px"><span>Book a demo</span><span class="demo-portraits" aria-hidden="true"><img class="demo-founder" src="/assets/founder.jpg" alt="" width="72" height="72"><img class="demo-founder" src="/assets/demo-portrait.png" alt="" width="72" height="72"></span></a>
-  </nav>
+<header class="site-header page-width">
+  <a class="wordmark" href="#top" aria-label="Warbler Health home"><img src="/assets/warbler-logo.png" width="40" height="40" alt=""><span>Warbler Health</span></a>
+  <nav aria-label="Main navigation"><a href="#workflow">How it works</a><a href="#guardrails">Safety</a><a class="demo-booking pill" href="https://calendar.app.google/dAj1Fv4UhSUbFGfz8"><span>Book a demo</span><span class="demo-portraits" aria-hidden="true"><img class="demo-founder" src="/assets/founder.jpg" alt="" width="72" height="72"><img class="demo-founder" src="/assets/demo-portrait.png" alt="" width="72" height="72"></span></a></nav>
 </header>
-
 <main id="top">
-
-<section style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:28px;padding:clamp(32px,4vw,56px) clamp(20px,4vw,48px) 24px">
-  <h1 style="font-size:clamp(42px,6.4vw,88px);line-height:1.04;letter-spacing:-0.045em;font-weight:400;text-wrap:balance;max-width:1000px">Help patients stay in <span style="font-family:'Instrument Serif',serif;font-style:italic;font-size:1.12em;letter-spacing:-0.02em">opioid treatment.</span></h1>
-</section>
-
-<section id="demo" class="content-section interactive-section hero-demo" aria-labelledby="interactive-title">
-  <h2 id="interactive-title" class="sr-only">Try Warbler</h2>
-  <div class="interactive-grid">
-    <div id="try-warbler" class="voice-panel" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;padding:56px 24px;text-align:center">
-      <h3 class="sr-only">Voice demo</h3>
-      <button class="orb" id="voice-orb" data-start-demo data-state="idle" aria-label="Talk to Warbler — start voice demo" aria-describedby="demo-disclosure"></button>
-      <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
-        <p id="voice-state" aria-hidden="true" style="font-size:15px;font-weight:500;color:#0a0a0a">Tap to speak</p><span id="connection-announcement" class="sr-only" role="status" aria-live="polite"></span>
-        <p id="voice-hint" style="font-size:14px;line-height:1.5;color:#5e5e5a;max-width:340px;text-wrap:pretty" hidden></p>
-      </div>
-      <div class="voice-controls">
-<button class="pill" id="start-voice" data-start-demo>Talk to Warbler</button>
-<button class="pill soft" id="mute-voice" hidden aria-pressed="false">Mute mic</button>
-<button class="pill" id="end-voice" hidden>End conversation</button>
-</div><p id="duration" class="mono duration">2 MIN DEMO</p><p id="demo-error" class="demo-error" role="alert" hidden></p>
-      <p id="demo-disclosure" class="disclosure">AI demo, not medical care. Use fictional details.<br><a href="#privacy-policy" data-policy="privacy-policy">Privacy</a> · <a href="#terms" data-policy="terms">Usage limits</a></p>
+  <section class="hero page-width" aria-labelledby="hero-title">
+    <div class="hero-intro">
+      <h1 id="hero-title">Help patients stay in<br class="desktop-break"> opioid treatment.</h1>
+      <p>Warbler is designed to check in between visits, listen for what’s in the way, and turn an agreed next step into work your team can act on.</p>
     </div>
-    <aside id="workflow-panel" class="workflow-panel" aria-labelledby="workflow-title">
-      <div class="workflow-heading">
-        <h3 id="workflow-title">Workflow</h3>
-        <span id="workflow-mode-label" class="workflow-mode-label">Example</span>
+    <div id="demo" class="hero-demo" aria-label="Try Warbler">
+      <div id="try-warbler" class="voice-panel">
+        <h2 class="sr-only">Voice demo</h2>
+        <div class="orb-wrap"><button class="orb" id="voice-orb" data-start-demo data-state="idle" aria-label="Talk to Warbler — start voice demo" aria-describedby="demo-disclosure"></button></div>
+        <div class="voice-status"><p id="voice-state" aria-hidden="true">Tap to speak</p><span id="connection-announcement" class="sr-only" role="status" aria-live="polite"></span><p id="voice-hint" hidden></p></div>
+        <div class="voice-controls"><button class="pill" id="start-voice" data-start-demo>Talk to Warbler <span aria-hidden="true">↗</span></button><button class="pill soft" id="mute-voice" hidden aria-pressed="false">Mute mic</button><button class="pill" id="end-voice" hidden>End conversation</button></div>
+        <p id="duration" class="mono duration">2 MIN DEMO</p>
+        <p id="demo-error" class="demo-error" role="alert" hidden></p>
+        <p id="demo-disclosure" class="disclosure">A two-minute AI role-play. Use fictional details.<br>No medical care or staff contact. <a href="#privacy-policy" data-policy="privacy-policy">Privacy</a> · <a href="#terms" data-policy="terms">Usage limits</a></p>
       </div>
-      <p id="workflow-caption" class="workflow-caption" hidden></p>
-      <div id="workflow-example-controls" class="workflow-example-controls" role="group" aria-label="Example workflows">
-        <button type="button" data-workflow-example="transport" aria-pressed="true">Transport</button>
-        <button type="button" data-workflow-example="schedule" aria-pressed="false">Scheduling</button>
-        <button type="button" data-workflow-example="pharmacy" aria-pressed="false">Pharmacy</button>
-      </div>
-      <ol id="workflow-steps" class="workflow-steps" aria-label="Care workflow"></ol>
-      <div id="workflow-output" class="workflow-output" hidden>
-        <div class="workflow-output-heading"><span class="eyebrow">Care request</span><span id="workflow-output-status" class="workflow-output-status"></span></div>
-        <h4 id="workflow-output-title"></h4>
-        <p id="workflow-output-body"></p>
-        <p id="workflow-output-owner" class="workflow-output-owner"></p>
-        <p id="workflow-output-note" class="workflow-output-note"></p>
-      </div>
-      <div class="workflow-actions">
-        <button type="button" id="workflow-play" class="workflow-play">Play example <span aria-hidden="true">↗</span></button>
-        <button type="button" id="workflow-reset" class="workflow-text-button" hidden>Replay example</button>
-        <button type="button" id="workflow-live" class="workflow-text-button" hidden>Your conversation</button>
-      </div>
-      <p class="workflow-disclosure">Demo only. No staff are contacted.</p>
-      <span id="workflow-announcement" class="sr-only" role="status" aria-live="polite"></span>
-    </aside>
-  </div>
-    <details id="conversation-details" class="conversation-details" hidden>
+      <section id="workflow" aria-labelledby="workflow-title">
+        <div id="workflow-panel" class="workflow-panel">
+          <div class="workflow-heading"><h2 id="workflow-title">From one call to one clear task</h2><span id="workflow-mode-label" class="workflow-mode-label">Example</span></div>
+          <div class="workflow-toolbar">
+            <div id="workflow-example-controls" class="workflow-example-controls" role="group" aria-label="Example workflows"><span class="example-intro">Explore an example</span><button type="button" data-workflow-example="transport" aria-pressed="true">Ride fell through</button><button type="button" data-workflow-example="schedule" aria-pressed="false">New work shift</button><button type="button" data-workflow-example="pharmacy" aria-pressed="false">Pharmacy delay</button></div>
+            <div class="workflow-actions"><button type="button" id="workflow-play" class="workflow-play">Run example <span aria-hidden="true">↗</span></button><button type="button" id="workflow-reset" class="workflow-text-button" hidden>Reset</button><button type="button" id="workflow-live" class="workflow-text-button" hidden>Your conversation</button></div>
+          </div>
+          <p id="workflow-caption" class="workflow-caption" hidden></p>
+          <ol id="workflow-steps" class="workflow-steps" aria-label="Care workflow"></ol>
+          <div id="workflow-output" class="workflow-output" hidden><div class="workflow-output-heading"><span class="eyebrow">Care request</span><span id="workflow-output-status" class="workflow-output-status"></span></div><h3 id="workflow-output-title"></h3><p id="workflow-output-body"></p><p id="workflow-output-owner" class="workflow-output-owner"></p><p id="workflow-output-note" class="workflow-output-note"></p></div>
+          <p class="workflow-disclosure">Illustrative workflow. Demo requests stay in this browser session; no staff are contacted.</p>
+          <span id="workflow-announcement" class="sr-only" role="status" aria-live="polite"></span>
+        </div>
+      </section>
+          <details id="conversation-details" class="conversation-details" hidden>
       <summary>Conversation details</summary>
       <div id="result-flow" class="result-flow" hidden>
         <div class="analysis-aura" aria-hidden="true"></div>
@@ -140,77 +110,50 @@
       </div>
     </details>
 
-  <div class="hero-actions">
-    <a class="demo-booking" href="https://calendar.app.google/dAj1Fv4UhSUbFGfz8" style="display:inline-flex;align-items:center;gap:10px;background:#0a0a0a;color:#fff;border-radius:999px;white-space:nowrap;padding:15px 26px;font-size:16px;font-weight:500;text-decoration:none"><span>Book a demo</span><span class="demo-portraits" aria-hidden="true"><img class="demo-founder" src="/assets/founder.jpg" alt="" width="72" height="72"><img class="demo-founder" src="/assets/demo-portrait.png" alt="" width="72" height="72"></span></a>
-    <a href="#demo" data-run-workflow-example style="display:inline-flex;align-items:center;gap:10px;background:#f4f4f2;color:#0a0a0a;border-radius:999px;white-space:nowrap;padding:15px 26px;font-size:16px;font-weight:500;text-decoration:none">See workflow</a>
-  </div>
-</section>
 
-<section id="adherence-gap" class="adherence-gap" aria-labelledby="adherence-title">
-  <div class="adherence-stat">
-    <h2 id="adherence-title">Starting is<br>only the beginning.</h2>
-    <dl class="adherence-metrics">
-      <div class="adherence-metric"><dt>30-day retention</dt><dd class="adherence-number">61.2%</dd></div>
-      <div class="adherence-metric"><dt>90-day retention</dt><dd class="adherence-number">41.5%</dd></div>
-      <div class="adherence-metric"><dt>180-day retention</dt><dd class="adherence-number">27.5%</dd></div>
-    </dl>
-    <p class="adherence-source">Medicaid retention at U.S. opioid treatment programs. <a href="https://jamanetwork.com/journals/jamanetworkopen/fullarticle/2844211" target="_blank" rel="noopener noreferrer">DeLisle et al., 2026</a>.</p>
-    <details class="study-details"><summary>Study details</summary><p>Median same-program retention among Medicaid treatment episodes, 2023. Episodes began July 2022–June 2023. Retention measured continued care at the initial program beyond each time point; 15 days without services counted as discontinuation. Eligible episodes differed by follow-up period. Transfers may count as nonretention. These figures describe published research, not Warbler’s results or treatment completion.</p></details>
-  </div>
-  <div class="adherence-purpose">
-    <h3>A new shift.<br>A ride that falls through.<br><span class="study-highlight">A reason to check in.</span></h3>
-  </div>
-</section>
-
-<section id="how" class="content-section journey-section" aria-labelledby="journey-title">
-  <div class="section-intro">
-    <h2 id="journey-title" class="section-title">Support between visits.</h2>
-  </div>
-  <div class="journey-grid">
-    <article class="journey-card"><h3>Starting treatment</h3></article>
-    <article class="journey-card"><h3>Missing a visit</h3></article>
-    <article class="journey-card"><h3>Considering stopping</h3></article>
-    <article class="journey-card"><h3>Returning to care</h3></article>
-  </div>
-</section>
-
-<section id="sample" class="content-section continuation-section" aria-labelledby="sample-title">
-  <div class="section-intro">
-    <h2 id="sample-title" class="section-title">The work <span class="serif-accent">continues.</span></h2>
-  </div>
-  <div class="continuation-grid">
-    <article><h3>Summarize the conversation.</h3></article>
-    <article><h3>Create the care request.</h3></article>
-    <article><h3>Track the follow-up.</h3></article>
-  </div>
-</section>
-
-<section id="pilot" class="content-section pilot-section" aria-labelledby="pilot-title">
-  <div class="section-intro"><h2 id="pilot-title" class="section-title">Pilot measures.</h2></div>
-  <div class="pilot-grid">
-    <article><h3>30- and 90-day retention</h3></article>
-    <article><h3>Follow-up outcomes</h3></article>
-    <article><h3>Staff workload</h3></article>
-  </div>
-  <p class="pilot-note">Retention impact not yet established.</p>
-</section>
-<section class="closing-section">
-  <div class="closing-card"><div><h2>Help more patients<br><span class="serif-accent">keep going.</span></h2></div><div class="closing-actions"><a class="demo-booking pill gold" href="https://calendar.app.google/dAj1Fv4UhSUbFGfz8"><span>Book a demo</span><span class="demo-portraits" aria-hidden="true"><img class="demo-founder" src="/assets/founder.jpg" alt="" width="72" height="72"><img class="demo-founder" src="/assets/demo-portrait.png" alt="" width="72" height="72"></span></a><a class="closing-secondary" href="#demo" data-run-workflow-example>See workflow</a></div></div>
-</section>
-
+    </div>
+  </section>
+  <section class="retention-section" aria-labelledby="retention-title">
+    <div class="page-width section-grid">
+      <div class="section-copy"><h2 id="retention-title">Starting is only<br>the beginning.</h2><p>A new shift. A ride that falls through. A week that gets away from you. A small obstacle can make it harder to stay in treatment. Those are the moments Warbler is built for.</p></div>
+      <div class="retention-chart">      <svg viewBox="0 0 540 290" style="width:100%;height:auto;display:block;overflow:visible" role="img" aria-label="Median same-program retention: 61.2% at 30 days, 41.5% at 90 days, and 27.5% at 180 days. Eligible episodes differ by follow-up period.">
+        <g stroke="#DAD7CF" stroke-width="1">
+          <line x1="40" y1="20" x2="510" y2="20"></line>
+          <line x1="40" y1="77.5" x2="510" y2="77.5"></line>
+          <line x1="40" y1="135" x2="510" y2="135"></line>
+          <line x1="40" y1="192.5" x2="510" y2="192.5"></line>
+        </g>
+        <line x1="40" y1="250" x2="510" y2="250" stroke="#1B2433" stroke-width="1"></line>
+        <g font-family="IBM Plex Mono, monospace" font-size="12" fill="#556074" text-anchor="end">
+          <text x="30" y="24">100%</text><text x="30" y="81.5">75%</text><text x="30" y="139">50%</text><text x="30" y="196.5">25%</text><text x="30" y="254">0</text>
+        </g>
+        <g font-family="IBM Plex Mono, monospace" font-size="12" fill="#556074" text-anchor="middle">
+          <text x="40" y="272">Start</text><text x="116.7" y="272">30 days</text><text x="270" y="272">90 days</text><text x="500" y="272">180 days</text>
+        </g>
+        <path d="M40,20 L116.7,109.2 L270,154.6 L500,186.75 L500,250 L40,250 Z" fill="#1B2433" fill-opacity="0.07"></path>
+        <path d="M40,20 L116.7,109.2 L270,154.6 L500,186.75" fill="none" stroke="#1B2433" stroke-width="2.5" stroke-linejoin="round"></path>
+        <path d="M40,20 L116.7,109.2" fill="none" stroke="#F2C230" stroke-width="5" stroke-linecap="round" stroke-opacity="0.9"></path>
+        <circle cx="40" cy="20" r="4.5" fill="#1B2433"></circle>
+        <circle cx="116.7" cy="109.2" r="5" fill="#FAF9F6" stroke="#1B2433" stroke-width="2.5"></circle>
+        <circle cx="270" cy="154.6" r="5" fill="#FAF9F6" stroke="#1B2433" stroke-width="2.5"></circle>
+        <circle cx="500" cy="186.75" r="5" fill="#FAF9F6" stroke="#1B2433" stroke-width="2.5"></circle>
+        <g font-family="Source Serif 4, serif" font-size="22" fill="#1B2433">
+          <text x="128" y="104">61.2%</text><text x="281" y="149">41.5%</text><text x="500" y="172" text-anchor="end">27.5%</text>
+        </g>
+        <text x="86" y="52" font-family="Public Sans, sans-serif" font-size="13" fill="#1B2433" font-weight="600">61.2% retained at 30 days</text>
+      </svg>
+<p class="study-source">Median same-program retention, Medicaid episodes at U.S. opioid treatment programs, 2023. <a href="https://jamanetwork.com/journals/jamanetworkopen/fullarticle/2844211" target="_blank" rel="noopener noreferrer">DeLisle et al., 2026</a>. Published research, not Warbler results.</p><details class="study-details"><summary>About these numbers</summary><p>These are program-level medians, with different eligible episode populations at each follow-up period; the connecting line is a visual guide. Episodes began July 2022–June 2023. Fifteen days without services counted as discontinuation. Transfers may count as nonretention. The figures do not measure treatment completion or Warbler’s effectiveness.</p></details></div>
+    </div>
+  </section>
+  <section id="guardrails" class="guardrails-section" aria-labelledby="guardrails-title">
+    <div class="page-width section-grid">
+      <div class="section-copy"><h2 id="guardrails-title">What Warbler won’t do.</h2><p>Patients in early recovery have heard enough judgment. Warbler is designed to sound like the most patient person on your staff — and to know when to hand off.</p></div>
+      <dl class="guardrails-list"><div><dt>Give medical advice</dt><dd>Dosing and medication questions belong with a nurse or prescriber.</dd></div><div><dt>Shame or lecture</dt><dd>Person-first language, without blame or guilt about missed visits.</dd></div><div><dt>Act without consent</dt><dd>A demo care request requires the patient’s agreement to staff follow-up.</dd></div><div><dt>Handle a crisis alone</dt><dd>Urgent concerns need immediate human help. This demo cannot arrange emergency care.</dd></div></dl>
+    </div>
+  </section>
+  <section class="closing-section page-width" aria-labelledby="closing-title"><h2 id="closing-title">Help more patients keep going.</h2><p>Explore a pilot for your opioid treatment program, with measures for retention, follow-up outcomes, and staff workload.</p><div class="closing-actions"><a class="demo-booking pill" href="https://calendar.app.google/dAj1Fv4UhSUbFGfz8"><span>Book a demo</span><span class="demo-portraits" aria-hidden="true"><img class="demo-founder" src="/assets/founder.jpg" alt="" width="72" height="72"><img class="demo-founder" src="/assets/demo-portrait.png" alt="" width="72" height="72"></span></a><a class="pill outline" href="mailto:noah@warbler-health.com">noah@warbler-health.com</a></div></section>
 </main>
-
-<footer id="privacy" style="display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding:24px clamp(20px,4vw,48px) 40px;font-size:14px">
-  <p style="color:#5e5e5a">© 2026 Warbler Health</p>
-  <nav style="display:flex;gap:24px;flex-wrap:wrap">
-    <a href="#privacy-policy" data-policy="privacy-policy" style="color:#3a3a3a">Privacy</a>
-    <a href="#terms" data-policy="terms" style="color:#3a3a3a">Terms</a>
-    <a href="#security-overview" data-policy="security-overview" style="color:#3a3a3a">Security</a>
-    <a href="mailto:noah@warbler-health.com" style="color:#0a0a0a">noah@warbler-health.com</a>
-  </nav>
-</footer>
-
-</div>
+<footer class="site-footer"><div class="page-width"><p>© 2026 Warbler Health</p><nav aria-label="Legal"><a href="#privacy-policy" data-policy="privacy-policy">Privacy</a><a href="#terms" data-policy="terms">Terms</a><a href="#security-overview" data-policy="security-overview">Security</a></nav></div></footer>
 <dialog id="privacy-policy" aria-labelledby="privacy-title"><form method="dialog"><button class="dialog-close" aria-label="Close privacy information">×</button></form><h2 id="privacy-title">Your microphone &amp; privacy</h2><p>When you start the demo, your browser asks for microphone permission. A third party AI voice-to-text service processes your audio live. Audio recording storage is disabled; conversation text is retained for up to one day. Please use fictional details.</p><p>End the conversation to stop microphone access. A first-party security cookie and hashed browser and network identifiers enforce demo limits. A separate quota database stores only those hashes and start times, with up to ten recent starts; expired entries are removed when the next request arrives. People on the same network share its three-start allowance. Vercel retains ordinary website request logs.</p><p>Questions? <a href="mailto:noah@warbler-health.com">noah@warbler-health.com</a></p></dialog>
 <dialog id="terms" aria-labelledby="terms-title"><form method="dialog"><button class="dialog-close" aria-label="Close demo terms">×</button></form><h2 id="terms-title">A fictional conversation</h2><p>This website demo is an AI addiction-clinic role-play, not medical care. Try a missed visit, ride problem or concern about returning. Use fictional details. It cannot arrange refills, appointments or clinical follow-up, and it does not send texts or contact a clinician.</p><p>Sessions last up to two minutes. A rolling 24-hour window allows three starts per visitor and network, and ten starts across the website. A reserved start counts even if the connection fails. You can still explore the example workflows after reaching a limit. Discuss medication decisions with your pharmacist or prescribing clinician.</p></dialog>
 <dialog id="security-overview" aria-labelledby="security-title"><form method="dialog"><button class="dialog-close" aria-label="Close security overview">×</button></form><h2 id="security-title">How this demo is protected</h2><p>Provider credentials stay on the server. Single-use voice-session links connect your browser to the configured agent. Shared usage counters reserve each start before a connection is allowed. If the counter cannot be checked, new calls pause until it is available.</p><p>Conversation summaries require a signed, expiring receipt. The website returns reviewed summary labels rather than transcripts. Audio recording storage is disabled, and conversation text is retained for up to one day.</p><p>This public demo is for fictional information. Production addiction treatment use requires separate agreements and readiness review; the demo does not establish HIPAA compliance.</p></dialog>

@@ -118,3 +118,11 @@ The website uses the free `warbler-voice-limits` Neon resource. October 20 verif
 ## Concise website copy — October 20, 2026
 
 Removed repeated demo headings, generic workflow descriptions, section eyebrows and marketing-card subtext. The main page emphasizes the headline, voice controls, examples and workflow steps. Completed workflows show the substantive concern and owner in the request card without repeating them in each step. Privacy, usage limits and study methods remain accessible through links and disclosures. Desktop and mobile previews, example playback, 74 local checks and the production build passed; the final display-only refinements also passed the 20 workflow/voice UI checks.
+
+## Homepage v2 — October 20, 2026
+
+Rebuilt the homepage from the supplied `Voice Agent Workflow Demo.zip` / `Warbler Homepage v2.dc.html` design reference: Public Sans and Source Serif 4, cream and navy surfaces, a blue-and-gold live voice orb, four workflow cards, the sourced retention chart, guardrails and closing booking links. Both original photos remain on each Book a demo link and reveal on pointer hover or keyboard focus without moving the button. The calendar destination is unchanged.
+
+The prototype's scripted call is replaced with the existing real ElevenLabs controller. Four stages show the barrier, agreed next step, demo request and pending follow-up. Live sessions display only observed connection state until reviewed analysis arrives. Fictional examples remain explicitly labeled and usable without a microphone. Requests require explicit handoff permission, a recognized owner and a confirmed unresolved need; emergencies and refusals never enter a routine queue. No agent configuration, credentials, privacy settings or admission limits changed.
+
+Validation: 79 unit/lifecycle tests pass, plus all five real-database admission tests. Browser checks cover 360–1440 px layouts, both portraits, keyboard focus, all three example workflows, dialogs, and reduced motion. Provider readback confirms the pinned agent configuration and available credits. The pre-release production deployment for rollback is `dpl_5LWQQoCWXT5Hb3Biqjws9qKsKYHa`.
