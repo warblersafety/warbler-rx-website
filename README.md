@@ -26,7 +26,7 @@ The browser supports mute, end, cancellation and microphone errors. Sessions end
 
 ## Agent and privacy
 
-`elevenlabs-agent-config.json` records the agent, pinned version, branch and Roger voice. `scripts/configure-elevenlabs.mjs` creates the isolated agent once, refuses duplicates, and saves its readback. Subsequent changes need a new version and verified application pin. The prompt source is `lib/agent-prompt.js`; scenario definitions and analysis enums are in `lib/scenarios.js`.
+`elevenlabs-agent-config.json` records the agent, pinned version, branch and Jon — Calm Presence voice. `scripts/configure-elevenlabs.mjs` creates the isolated agent once, refuses duplicates, and saves its readback. Subsequent changes need a new version and verified application pin. The prompt source is `lib/agent-prompt.js`; scenario definitions and analysis enums are in `lib/scenarios.js`.
 
 Audio is processed live by ElevenLabs but audio recording storage is disabled. Conversation text is retained for one day; PII redaction is not enabled on this account. The interface discloses this and requests fictional details. Failure logs include bounded request-stage labels, error categories, HTTP status and elapsed time, excluding credentials, query values and provider response bodies. Usage metadata uses an HMAC identifier, not the raw IP; Vercel retains ordinary request logs.
 
@@ -126,3 +126,11 @@ Rebuilt the homepage from the supplied `Voice Agent Workflow Demo.zip` / `Warble
 The prototype's scripted call is replaced with the existing real ElevenLabs controller. Four stages show the barrier, agreed next step, demo request and pending follow-up. Live sessions display only observed connection state until reviewed analysis arrives. Fictional examples remain explicitly labeled and usable without a microphone. Requests require explicit handoff permission, a recognized owner and a confirmed unresolved need; emergencies and refusals never enter a routine queue. No agent configuration, credentials, privacy settings or admission limits changed.
 
 Validation: 79 unit/lifecycle tests pass, plus all five real-database admission tests. Browser checks cover 360–1440 px layouts, both portraits, keyboard focus, all three example workflows, dialogs, and reduced motion. Provider readback confirms the pinned agent configuration and available credits. The pre-release production deployment for rollback is `dpl_5LWQQoCWXT5Hb3Biqjws9qKsKYHa`.
+
+## Conversational male voice — October 29, 2026
+
+The website agent now uses Jon — Calm Presence, a calm American male voice, with stability 0.45 and the existing 0.95 speech speed. The greeting and spoken style use everyday language, contractions, short replies and one useful question at a time. Specific acknowledgment replaces repetitive stock empathy; the agent follows interruptions and avoids sounding like a questionnaire.
+
+The exact version in `elevenlabs-agent-config.json` was verified against the provider. Only the prompt, greeting, voice and stability changed. Model, clinical boundaries, consent, extraction, tools, privacy, conversation duration and admission controls remain intact. Validation: 79 local checks passed, five opt-in live database checks skipped, production build passed, five fictional provider simulations passed, and the new voice generated non-silent greeting audio using the existing speech model. This does not establish subjective listening quality or human microphone performance. Details are in `tests/conversational-voice-verification.json`.
+
+Rollback as a unit to deployment `dpl_Fbs7cwQxgdUxiufCQ1Rws7KMXbg1` and agent version `agtvrsn_7901m5dent0hevxrd8r0x48qt6xn`.
