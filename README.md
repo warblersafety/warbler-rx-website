@@ -2,6 +2,18 @@
 
 Marketing website with a fictional addiction-clinic support voice demo, hosted on Vercel. Independent of the pharmacy application and presenter sales demo.
 
+## November 4, 2026 — approved simplified design
+
+The local homepage is a simplified revision of the selected Care operations concept. It keeps the requested headline, followed by an 18-second illustrative EHR → autonomous outreach walkthrough, the existing voice agent, compact retention evidence and a closing booking action. Longer post-call examples are optional. Desktop uses a wide scene; mobile shows one readable patient journey. All three Book a Demo links retain the original calendar destination and Noah's founder portrait only.
+
+The $70,000 potential lost-revenue figure is attributed to one customer's estimate, as Noah clarified on November 4. It is not an industry statistic, a validated result, or guaranteed recoverable revenue. The 61.2% / 41.5% / 27.5% retention figures, citation and methods remain intact. Policy dialog text is unchanged.
+
+Noah approved this design on November 4 with two final changes: remove the “Voice AI for addiction treatment” eyebrow and start the walkthrough naturally as visitors scroll into it. That approval releases the earlier review-only hold. The walkthrough starts once its scene is 35% visible, pauses fully offscreen or in a hidden tab, and resumes at the same point. A manual pause or step selection overrides autoplay. It completes once without looping; reduced-motion visitors retain manual controls only.
+
+`npm run dev -- --port 4373` provides the local preview. Development and the standalone approval file link voice controls to the current hosted demo; a plain local server lacks provider endpoints. Production keeps the embedded voice controller and opens the post-call workflow when analysis begins. Provider settings, API routes, privacy behavior, admission limits and dependencies are unchanged.
+
+Validation: 79 existing tests passed; five optional real-database tests skipped. The production build passed. Controller IDs, policy text, booking portraits and retention figures were checked. Desktop/mobile checks cover the walkthrough, retained post-call example, study notes and policy dialogs. Ten additional autoplay lifecycle checks pass. No provider call was placed. The approved self-contained preview and screenshots are in `../outputs/website-sleek-preview-2026-11-04/`.
+
 ## Development
 
 Node 24: `npm ci`, `npm test`, `npm run build`. `npm run dev` previews the interface; use `vercel dev` for server endpoints. Set `.env.example` variables in Vercel or an ignored local file. Never prefix credentials with `VITE_`.
