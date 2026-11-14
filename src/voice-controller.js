@@ -5,6 +5,7 @@ export function initVoiceDemo({
   navigator = globalThis.navigator,
   fetch = globalThis.fetch,
   loadConversation,
+  getEhrContext = () => null,
   setInterval = globalThis.setInterval,
   clearInterval = globalThis.clearInterval,
   onWorkflowEvent = () => {},
@@ -155,6 +156,8 @@ function finish(activeRun) {
 
 async function start() {
   if (busy) return;
+  let ehr;
+  try { ehr = getEhrContext(); } catch (error) { showError(error.demoMessage || error.message); return; }
   if (!navigator.mediaDevices?.getUserMedia) { showError('Voice conversations need a browser with microphone support over a secure connection. Try a current version of Safari, Chrome, or Edge.'); onWorkflowEvent({ type: 'error' }); return; }
   const activeRun = ++run;
   receipt = null; connected = false; failure = false; muted = false; cancelled = false; voiceMode = 'listening';
@@ -169,16 +172,16 @@ async function start() {
   try {
     const { Conversation } = await loadConversation();
     if (activeRun !== run || cancelled) return;
-    const response = await fetch('/api/voice/start', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ scenarioId: 'open' }), signal: AbortSignal.timeout(25000) });
+    const response = await fetch('/api/voice/start', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ scenarioId: 'open', ...(ehr ? { ehr } : {}) }), signal: AbortSignal.timeout(25000) });
     const body = await response.json().catch(() => ({}));
     if (activeRun !== run || cancelled) return;
-    if (!response.ok) { const error = new Error(body.error || 'Connection unavailable'); error.demoMessage = body.error; throw error; }
+    if (!response.ok) { const error = new Error(body.error || 'Connection unavailable'); error.demoMessage = body.message || body.error; throw error; }
     if (typeof body.signedUrl !== 'string' || !body.signedUrl || typeof body.receipt !== 'string' || !body.receipt) throw new Error('Invalid voice session response');
     receipt = body.receipt;
     const conversation = await Conversation.startSession({
       signedUrl: body.signedUrl,
       connectionType: 'websocket',
-      dynamicVariables: { scenario_id: body.scenarioId },
+      dynamicVariables: body.dynamicVariables || { scenario_id: body.scenarioId },
       userId: body.userId,
       onConversationCreated: conversation => {
         if (activeRun !== run || cancelled || !busy) void conversation.endSession();

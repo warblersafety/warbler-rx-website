@@ -1,4 +1,5 @@
 import { buildCall, checkAllowance, checkQuota, checkRequest, getConfig, provider, respondError, signReceipt, validateSignedSession } from '../../lib/voice-server.js';
+import { sanitizeEhr, ehrDynamicVariables } from '../../lib/mock-ehr.js';
 import { getAdmissionConfig, identifyVisitor, reserveAdmission } from '../../lib/voice-limits.js';
 
 export function createStartHandler({ env = process.env, fetchRequest = globalThis.fetch, admissionQuery } = {}) {
@@ -8,7 +9,9 @@ export function createStartHandler({ env = process.env, fetchRequest = globalThi
       checkRequest(req, env);
       const config = getConfig(env);
       const identity = identifyVisitor(req, res, config.secret, env);
-      const request = buildCall(req.body.scenarioId, config, identity.visitor);
+      const ehr = req.body.ehr === undefined ? null : sanitizeEhr(req.body.ehr);
+      const scenarioId = ehr ? 'open' : req.body.scenarioId;
+      const request = buildCall(scenarioId, config, identity.visitor);
       const admissionConfig = getAdmissionConfig(env);
       const api = provider(config, fetchRequest);
       const now = Date.now();
@@ -25,8 +28,8 @@ export function createStartHandler({ env = process.env, fetchRequest = globalThi
       await reserveAdmission(config, identity, admissionConfig, admissionQuery);
       const call = await api('/v1/convai/conversation/get-signed-url', request, 'session_token');
       const session = validateSignedSession(call, config);
-      console.info(JSON.stringify({ event: 'voice_demo_created', scenario: req.body.scenarioId, provider: 'elevenlabs' }));
-      return res.status(200).json({ signedUrl: session.signedUrl, userId: identity.visitor, scenarioId: req.body.scenarioId, receipt: signReceipt(session.conversationId, config.secret) });
+      console.info(JSON.stringify({ event: 'voice_demo_created', scenario: scenarioId, provider: 'elevenlabs' }));
+      return res.status(200).json({ signedUrl: session.signedUrl, userId: identity.visitor, scenarioId, ...(ehr ? { dynamicVariables: ehrDynamicVariables(ehr) } : {}), receipt: signReceipt(session.conversationId, config.secret) });
     } catch (error) { return respondError(res, error, 'start'); }
   };
 }

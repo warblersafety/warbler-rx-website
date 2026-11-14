@@ -4,7 +4,7 @@ import { initVoiceDemo } from '../src/voice-controller.js';
 
 const flush = () => new Promise(resolve => setImmediate(resolve));
 const deferred = () => { let resolve; const promise = new Promise(r => { resolve = r; }); return { promise, resolve }; };
-function harness({ tokenResponse, sessionResponse, resultResponse, resultPayload, startPayload, startStatus = 200, failure } = {}) {
+function harness({ tokenResponse, sessionResponse, resultResponse, resultPayload, startPayload, startStatus = 200, failure, getEhrContext } = {}) {
   const elements = new Map();
   const element = id => {
     if (!elements.has(id)) elements.set(id, { dataset: {}, hidden: false, disabled: false, textContent: '', handlers: {}, attributes: {},
@@ -14,6 +14,7 @@ function harness({ tokenResponse, sessionResponse, resultResponse, resultPayload
   const startButtons = ['voice-orb', 'start-voice', 'nav-demo'].map(element);
   let callbacks, starts = 0, ends = 0, requests = 0, intervals = 0;
   const muted = [];
+  const requestBodies = [];
   const workflowEvents = [];
   const session = { async endSession() { ends++; callbacks?.onDisconnect(); }, setMicMuted(value) { muted.push(value); } };
   const window = element('window');
@@ -26,19 +27,21 @@ function harness({ tokenResponse, sessionResponse, resultResponse, resultPayload
       if (sessionResponse) return sessionResponse.promise;
       options.onConversationCreated(session); options.onConnect(); return session;
     } } }),
-    fetch: async url => {
+    getEhrContext,
+    fetch: async (url, options) => {
       if (url.endsWith('/result')) {
         if (resultResponse) await resultResponse.promise;
         return { ok: true, json: async () => (resultPayload || { status: 'ready', barrier: 'Coverage barrier', team: 'Pharmacy support', next: 'Demo preview only.' }) };
       }
       requests++;
+      requestBodies.push(JSON.parse(options.body));
       if (tokenResponse) await tokenResponse.promise;
       return { ok: startStatus === 200, json: async () => (startPayload || { signedUrl: 'wss://api.elevenlabs.io/v1/convai/conversation?conversation_signature=fictional-signature&conversation_id=fictional-call', receipt: 'test-receipt', scenarioId: 'coverage', userId: 'test' }) };
     },
     setInterval: () => ++intervals, clearInterval() {},
     onWorkflowEvent: event => workflowEvents.push(event),
   });
-  return { element, session, window, muted, workflowEvents, click: id => element(id).handlers.click(),
+  return { element, session, window, muted, workflowEvents, requestBodies, click: id => element(id).handlers.click(),
     get callbacks() { return callbacks; }, get starts() { return starts; }, get ends() { return ends; }, get requests() { return requests; }, get intervals() { return intervals; } };
 }
 
@@ -194,4 +197,21 @@ test('unavailable analysis reports the gap and does not invent a result', async 
   const h = harness({ resultPayload: { status: 'unavailable' } });
   h.click('voice-orb'); await flush(); await h.click('end-voice'); await flush();
   assert.deepEqual(h.workflowEvents.map(event => event.type), ['connecting', 'connected', 'analyzing', 'unavailable']);
+});
+
+
+test('edited record is admitted on the server and only server-normalized variables reach the SDK', async () => {
+  const ehr = { patientName: 'Alex', reason: 'missed_visit', notes: 'Needs a ride.' };
+  const dynamicVariables = { scenario_id: 'open', mock_ehr: 'Patient Alex; transportation concern.' };
+  const h = harness({ getEhrContext: () => ehr, startPayload: { signedUrl: 'wss://api.elevenlabs.io/v1/convai/conversation?conversation_signature=fictional-signature&conversation_id=fictional-call', receipt: 'test-receipt', dynamicVariables } });
+  h.click('voice-orb'); await flush();
+  assert.deepEqual(h.requestBodies, [{scenarioId:'open', ehr}]);
+  assert.deepEqual(h.callbacks.dynamicVariables, dynamicVariables);
+});
+
+test('invalid edited records never reserve a voice session', async () => {
+  const h = harness({ getEhrContext: () => { throw new Error('Add a fictional patient name.'); } });
+  h.click('voice-orb'); await flush();
+  assert.equal(h.requests, 0); assert.equal(h.starts, 0);
+  assert.equal(h.element('demo-error').textContent, 'Add a fictional patient name.');
 });
