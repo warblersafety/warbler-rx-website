@@ -50,7 +50,7 @@ export function initWalkthrough(root = document) {
     }
 
     function pause(complete = false) {
-      if (playing) elapsed = Math.min(DURATION, performance.now() - started);
+      if (playing) elapsed = Math.max(0, Math.min(DURATION, performance.now() - started));
       complete = complete || elapsed >= DURATION;
       playing = false;
       cancelAnimationFrame(frame);
@@ -64,7 +64,7 @@ export function initWalkthrough(root = document) {
 
     function tick(now) {
       if (!playing) return;
-      elapsed = Math.min(DURATION, now - started);
+      elapsed = Math.max(0, Math.min(DURATION, now - started));
       renderTime();
       if (elapsed >= DURATION) pause(true);
       else frame = requestAnimationFrame(tick);
