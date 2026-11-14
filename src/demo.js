@@ -41,3 +41,16 @@ document.querySelectorAll('[data-policy]').forEach(link => {
     dialog.showModal();
   });
 });
+
+const menuToggle = document.querySelector('.menu-toggle');
+menuToggle?.addEventListener('click', () => {
+  const open = menuToggle.getAttribute('aria-expanded') !== 'true';
+  menuToggle.setAttribute('aria-expanded', String(open));
+  menuToggle.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
+});
+document.querySelector('#main-nav')?.addEventListener('click', event => {
+  if (event.target.closest('a')) {
+    menuToggle.setAttribute('aria-expanded', 'false');
+    menuToggle.setAttribute('aria-label', 'Open navigation');
+  }
+});

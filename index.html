@@ -21,7 +21,7 @@
   <meta name="twitter:description" content="Personalized support between visits, designed to help more patients stay in opioid treatment.">
   <meta name="twitter:image" content="https://warbler-health.com/assets/warbler-share-retention-v1.png">
   <meta name="twitter:image:alt" content="Warbler Health — Help more patients stay in opioid treatment.">
-  <meta name="theme-color" content="#f4f7f8">
+  <meta name="theme-color" content="#FFFFFF">
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/warbler-favicon-32.png">
   <link rel="icon" type="image/png" sizes="192x192" href="/assets/warbler-icon-192.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/warbler-apple-touch-icon.png">
@@ -31,15 +31,15 @@
 <a class="skip-link" href="#top">Skip to content</a>
 <header class="site-header page-width">
   <a class="wordmark" href="#top" aria-label="Warbler Health home"><img src="/assets/warbler-logo.png" width="34" height="34" alt=""><span>warbler<span class="wordmark-health"> health</span></span></a>
-  <nav aria-label="Main navigation"><a href="#how-it-works">How it works</a><a href="#demo">Try the voice</a><a class="demo-booking pill" href="https://calendar.app.google/dAj1Fv4UhSUbFGfz8"><img class="demo-founder" src="/assets/founder.jpg" alt="" width="32" height="32"><span>Book a Demo</span><span aria-hidden="true">↗</span></a></nav>
+  <button class="menu-toggle" aria-label="Open navigation" aria-expanded="false" aria-controls="main-nav"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 6H17M3 14H17" stroke="currentColor" stroke-width="1.5"/></svg></button><nav id="main-nav" aria-label="Main navigation"><a href="#how-it-works">How it works</a><a href="#demo">Try the voice</a><a class="demo-booking pill" href="https://calendar.app.google/dAj1Fv4UhSUbFGfz8"><img class="demo-founder" src="/assets/founder.jpg" alt="" width="32" height="32"><span>Book a Demo</span><span aria-hidden="true">↗</span></a></nav>
 </header>
 <main id="top">
-  <section class="hero page-width" aria-labelledby="hero-title">
-    <h1 id="hero-title">Your clinical care team shouldn't spend the day <span>on the phone.</span></h1>
-    <p class="hero-lead">Turn your EHR into an autonomous outreach team.<br>Keep patients in treatment. Give your team its time back.</p>
-    <div class="hero-actions"><a class="demo-booking pill" href="https://calendar.app.google/dAj1Fv4UhSUbFGfz8"><img class="demo-founder" src="/assets/founder.jpg" alt="" width="32" height="32"><span>Book a Demo</span><span aria-hidden="true">↗</span></a><a class="watch-link" href="#how-it-works"><span class="play-small" aria-hidden="true">▶</span> See how it works</a></div>
-  </section>
-  <section class="walkthrough-section page-width" id="how-it-works" aria-label="From EHR to autonomous outreach">
+  <section class="hero page-width" aria-labelledby="hero-title"><div class="hero-copy">
+    <h1 id="hero-title">Your clinical care<br class="desktop-break">team shouldn't<br class="desktop-break">spend the day<br class="desktop-break"><span>on the phone.</span></h1>
+
+    <div class="hero-actions"><a class="demo-booking pill" href="https://calendar.app.google/dAj1Fv4UhSUbFGfz8"><img class="demo-founder" src="/assets/founder.jpg" alt="" width="32" height="32"><span>Book a Demo</span><span aria-hidden="true">↗</span></a><a class="watch-link" href="#how-it-works">See how it works <span aria-hidden="true">↘</span></a></div>
+  </div>
+  <section class="walkthrough-section" id="how-it-works" aria-label="From EHR to autonomous outreach">
     <section class="walkthrough" data-walkthrough data-walkthrough-step="scan" data-walkthrough-state="ready" aria-label="Illustrative product walkthrough">
   <div class="walkthrough-toolbar">
     <span class="walkthrough-label">Illustrative product walkthrough</span>
@@ -80,23 +80,10 @@
   <p class="walkthrough-sr-only" aria-live="polite" data-walkthrough-announcement>Ready. Scan EHR, start outreach, and keep care moving.</p>
 </section>
 
-    <p class="walkthrough-footnote">Medication follow-up. Missed visits. Barriers to care.<span>Clinical decisions stay with your team.</span></p>
-  </section>
-  <section class="voice-section page-width" id="demo" aria-labelledby="voice-section-title">
-    <div class="voice-intro"><p class="eyebrow">Now, hear it for yourself</p><h2 id="voice-section-title">Meet your next<br>outreach agent.</h2><p>Try a missed visit or a ride that fell through.<br>Warbler takes the conversation from there.</p></div>
-    <div id="try-warbler" class="voice-panel">
-      <div class="voice-interface">
-        <div class="orb-wrap"><button class="orb" id="voice-orb" data-start-demo data-state="idle" aria-label="Talk to Warbler — start voice demo" aria-describedby="demo-disclosure"></button></div>
-        <div class="voice-interaction">
-          <div class="voice-status"><p id="voice-state" aria-hidden="true">Ready when you are</p><span id="connection-announcement" class="sr-only" role="status" aria-live="polite"></span><p id="voice-hint" hidden></p></div>
-          <div class="voice-controls"><button class="pill" id="start-voice" data-start-demo>Talk to Warbler <span aria-hidden="true">↗</span></button><button class="pill soft" id="mute-voice" hidden aria-pressed="false">Mute mic</button><button class="pill" id="end-voice" hidden>End conversation</button></div>
-          <p id="duration" class="duration">2-minute voice demo</p>
-        </div>
-      </div>
-      <p id="demo-error" class="demo-error" role="alert" hidden></p>
-      <p id="demo-disclosure" class="disclosure">AI role-play. Use fictional details. No medical care or staff contact.<br><a href="#privacy-policy" data-policy="privacy-policy">Privacy</a> · <a href="#terms" data-policy="terms">Usage limits</a></p>
-    </div>
-    <details id="workflow-details" class="workflow-details"><summary>See what happens after a call <span aria-hidden="true">+</span></summary><section id="workflow" aria-labelledby="workflow-title">
+    </section></section>
+  <section class="intro-statement page-width"><p>We use your EHR to call every patient between visits with clinician-approved guidance, so more of them stay in treatment.</p></section>
+  <section class="voice-section" id="demo" aria-labelledby="voice-section-title">
+    <div class="voice-intro"><h2 id="voice-section-title">Meet your next<br>outreach agent.</h2>    <details id="workflow-details" class="workflow-details"><summary>See what happens after a call <span aria-hidden="true">+</span></summary><section id="workflow" aria-labelledby="workflow-title">
         <div id="workflow-panel" class="workflow-panel">
           <div class="workflow-heading"><h2 id="workflow-title">From one call to one clear task</h2><span id="workflow-mode-label" class="workflow-mode-label">Example</span></div>
           <div class="workflow-toolbar">
@@ -110,7 +97,20 @@
           <span id="workflow-announcement" class="sr-only" role="status" aria-live="polite"></span>
         </div>
       </section>
-</details>
+</details></div>
+    <div id="try-warbler" class="voice-panel">
+      <div class="voice-card-meta"><span id="voice-state" aria-hidden="true">Ready when you are</span><span id="duration" class="duration">2-minute voice demo</span></div><div class="voice-interface">
+        <div class="orb-wrap"><button class="orb" id="voice-orb" data-start-demo data-state="idle" aria-label="Talk to Warbler — start voice demo" aria-describedby="demo-disclosure"><svg width="80" height="70" viewBox="0 0 80 70" aria-hidden="true"><path d="M8 30V40 M18 20V50 M29 9V61 M40 23V47 M51 16V54 M62 26V44 M72 31V39" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg></button></div>
+        <div class="voice-interaction">
+          <div class="voice-status"><span id="connection-announcement" class="sr-only" role="status" aria-live="polite"></span><p id="voice-hint" hidden></p></div>
+          <div class="voice-controls"><button class="pill" id="start-voice" data-start-demo>Talk to Warbler <span aria-hidden="true">↗</span></button><button class="pill soft" id="mute-voice" hidden aria-pressed="false">Mute mic</button><button class="pill" id="end-voice" hidden>End conversation</button></div>
+
+        </div>
+      </div>
+      <p id="demo-error" class="demo-error" role="alert" hidden></p>
+      <p id="demo-disclosure" class="disclosure">AI role-play. Use fictional details. No medical care or staff contact.<br><a href="#privacy-policy" data-policy="privacy-policy">Privacy</a> · <a href="#terms" data-policy="terms">Usage limits</a></p>
+    </div>
+
     <details id="conversation-details" class="conversation-details" hidden>
       <summary>Conversation details</summary>
       <div id="result-flow" class="result-flow" hidden>
@@ -157,13 +157,13 @@
 
   </section>
   <section class="value-section" id="evidence" aria-labelledby="value-title"><div class="page-width">
-    <div class="value-heading"><p class="eyebrow">Better follow-through. A stronger clinic.</p><h2 id="value-title">Keep patients. Protect revenue.</h2></div>
+    <div class="value-heading"><h2 id="value-title">Keep patients. Protect revenue.</h2></div>
     <div class="value-grid">
       <div class="revenue-evidence"><p class="metric-label">One customer’s estimate</p><p class="revenue-number"><span>up to</span> $70,000</p><p class="metric-caption">lost when one patient leaves care.</p><p class="estimate-note">Potential lost revenue. Actual impact varies by clinic.</p></div>
-      <div class="retention-evidence"><p class="metric-label">Staying in treatment is the challenge.</p><div class="retention-numbers" aria-label="Median same-program retention"><div><strong>61.2<span>%</span></strong><span>30 days</span></div><div><strong>41.5<span>%</span></strong><span>90 days</span></div><div><strong>27.5<span>%</span></strong><span>180 days</span></div></div><p class="study-source">Median same-program retention in U.S. opioid treatment programs.<br>Published research, not Warbler results. <a href="https://jamanetwork.com/journals/jamanetworkopen/fullarticle/2844211" target="_blank" rel="noopener noreferrer">DeLisle et al., 2026 ↗</a></p><details class="study-details"><summary>About the data</summary><p>Medicaid episodes at U.S. opioid treatment programs, 2023. These are program-level medians, with different eligible episode populations at each follow-up period. Episodes began July 2022–June 2023. Fifteen days without services counted as discontinuation. Transfers may count as nonretention. The figures do not measure treatment completion or Warbler’s effectiveness.</p></details></div>
+      <div class="retention-evidence"><p class="metric-label">Staying in treatment is the challenge.</p><div class="retention-numbers" aria-label="Median same-program retention"><div class="retention-row"><span>30 days</span><div class="retention-track"><div style="width:61.2%"></div></div><strong>61.2%</strong></div><div class="retention-row"><span>90 days</span><div class="retention-track"><div style="width:41.5%"></div></div><strong>41.5%</strong></div><div class="retention-row"><span>180 days</span><div class="retention-track"><div style="width:27.5%"></div></div><strong>27.5%</strong></div></div><p class="study-source">Median same-program retention in U.S. opioid treatment programs.<br>Published research, not Warbler results. <a href="https://jamanetwork.com/journals/jamanetworkopen/fullarticle/2844211" target="_blank" rel="noopener noreferrer">DeLisle et al., 2026 ↗</a></p><details class="study-details"><summary>About the data</summary><p>Medicaid episodes at U.S. opioid treatment programs, 2023. These are program-level medians, with different eligible episode populations at each follow-up period. Episodes began July 2022–June 2023. Fifteen days without services counted as discontinuation. Transfers may count as nonretention. The figures do not measure treatment completion or Warbler’s effectiveness.</p></details></div>
     </div>
   </div></section>
-  <section class="closing-section page-width" aria-labelledby="closing-title"><div><p class="eyebrow">For your patients. For your team.</p><h2 id="closing-title">No one should slip<br>through the cracks.</h2><p>Autonomous outreach. Fewer routine calls for your staff.</p></div><div class="closing-actions"><a class="demo-booking pill" href="https://calendar.app.google/dAj1Fv4UhSUbFGfz8"><img class="demo-founder" src="/assets/founder.jpg" alt="" width="32" height="32"><span>Book a Demo</span><span aria-hidden="true">↗</span></a><span>A conversation with Noah, our founder.</span></div></section>
+  <section class="closing-section" aria-labelledby="closing-title"><h2 id="closing-title">We ensure that no patient slips through the cracks.</h2><div class="closing-actions"><div class="founder-intro"><img class="demo-founder" src="/assets/founder.jpg" alt="Noah, founder of Warbler Health" width="74" height="74"><span>A conversation with<br>Noah, our founder.</span></div><a class="pill" href="https://calendar.app.google/dAj1Fv4UhSUbFGfz8"><span>Learn more</span><span aria-hidden="true">↗</span></a></div></section>
 </main>
 <footer class="site-footer page-width"><a class="wordmark" href="#top" aria-label="Warbler Health home"><img src="/assets/warbler-logo.png" width="28" height="28" alt=""><span>warbler<span class="wordmark-health"> health</span></span></a><span>© 2026 Warbler Health</span><nav aria-label="Legal"><a href="mailto:noah@warbler-health.com">Contact</a><a href="#privacy-policy" data-policy="privacy-policy">Privacy</a><a href="#terms" data-policy="terms">Terms</a><a href="#security-overview" data-policy="security-overview">Security</a></nav></footer>
 <dialog id="privacy-policy" aria-labelledby="privacy-title"><form method="dialog"><button class="dialog-close" aria-label="Close privacy information">×</button></form><h2 id="privacy-title">Your microphone &amp; privacy</h2><p>When you start the demo, your browser asks for microphone permission. A third party AI voice-to-text service processes your audio live. Audio recording storage is disabled; conversation text is retained for up to one day. Please use fictional details.</p><p>End the conversation to stop microphone access. A first-party security cookie and hashed browser and network identifiers enforce demo limits. A separate quota database stores only those hashes and start times, with up to ten recent starts; expired entries are removed when the next request arrives. People on the same network share its three-start allowance. Vercel retains ordinary website request logs.</p><p>Questions? <a href="mailto:noah@warbler-health.com">noah@warbler-health.com</a></p></dialog>
